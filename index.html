@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adilet agai-дан дүниежүзі тарихы</title>
+    <title>Adilet agai - Дүниежүзі тарихы</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,30 +16,41 @@
             --text-muted: #718096;
             --border: #E2E8F0;
             --danger: #E53E3E;
+            --whatsapp: #25D366;
             --radius: 14px;
+            --sidebar-width: 280px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg); color: var(--text); display: flex; min-height: 100vh; overflow-x: hidden; }
 
+        /* --- Mobile Toggle & Header --- */
+        .top-bar {
+            display: none;
+            position: fixed; top: 0; left: 0; right: 0; height: 60px;
+            background: var(--surface); border-bottom: 1px solid var(--border);
+            align-items: center; justify-content: space-between; padding: 0 16px; z-index: 900;
+        }
+        .toggle-btn {
+            background: transparent; border: 1px solid var(--border);
+            padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 18px;
+            display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--text);
+        }
+
         /* --- Auth Screen Styling --- */
         #auth-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #fdf6ee 0%, #e2e8f0 100%);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 1000;
+            display: flex; justify-content: center; align-items: center; z-index: 2000;
         }
         .auth-box {
             background: var(--surface); padding: 40px; border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 400px;
-            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 90%; max-width: 400px; text-align: center;
         }
         .auth-box h2 { color: var(--primary); margin-bottom: 24px; font-size: 24px; }
         .auth-tabs { display: flex; margin-bottom: 24px; border-bottom: 2px solid var(--border); }
         .auth-tab {
-            flex: 1; padding: 12px; cursor: pointer; font-weight: 600; color: var(--text-muted);
-            transition: all 0.3s;
+            flex: 1; padding: 12px; cursor: pointer; font-weight: 600; color: var(--text-muted); transition: all 0.3s;
         }
         .auth-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); margin-bottom: -2px; }
         
@@ -47,19 +58,26 @@
         .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
         .form-control { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; outline: none; }
         .form-control:focus { border-color: var(--primary); }
-        .btn { width: 100%; padding: 12px; border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        
+        .btn { width: 100%; padding: 12px; border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-hover); }
+        .btn-whatsapp { background: var(--whatsapp); color: white; }
+        .btn-whatsapp:hover { background: #20ba5a; }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
         .btn-outline:hover { background: #EDF2F7; }
         .btn-danger { background: #FFF5F5; color: var(--danger); border: 1px solid #FEB2B2; }
         .btn-danger:hover { background: var(--danger); color: white; }
-        
-        /* --- Main App Layout --- */
-        #app-layout { display: none; width: 100%; }
 
-        .sidebar { width: 280px; background: var(--surface); border-right: 1px solid var(--border); padding: 24px; display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0; }
-        .brand { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 32px; display: flex; align-items: center; gap: 10px; }
+        /* --- Sidebar Navigation --- */
+        .sidebar {
+            width: var(--sidebar-width); background: var(--surface); border-right: 1px solid var(--border);
+            padding: 24px; display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0;
+            z-index: 1000; transition: transform 0.3s ease;
+        }
+        .sidebar.collapsed { transform: translateX(-100%); }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .brand { font-size: 20px; font-weight: 700; color: var(--primary); }
         .nav-list { list-style: none; display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
         .nav-item { padding: 12px 16px; border-radius: var(--radius); color: var(--text-muted); font-weight: 500; cursor: pointer; transition: all 0.2s; display: flex; justify-content: space-between; text-decoration: none; }
         .nav-item:hover, .nav-item.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
@@ -67,40 +85,68 @@
         .user-controls { padding-top: 16px; border-top: 1px solid var(--border); }
         .user-email { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; text-align: center; word-break: break-all; }
 
-        .main-content { margin-left: 280px; flex-grow: 1; padding: 40px; }
-        .header { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; }
+        /* --- Main Layout --- */
+        .main-content { margin-left: var(--sidebar-width); flex-grow: 1; padding: 40px; transition: margin-left 0.3s ease; width: calc(100% - var(--sidebar-width)); }
+        .main-content.expanded { margin-left: 0; width: 100%; }
+
+        .header { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
         .header h1 { font-size: 28px; font-weight: 700; }
         
-        .era-tabs { display: flex; gap: 12px; margin-bottom: 28px; background: var(--surface); padding: 6px; border-radius: var(--radius); border: 1px solid var(--border); width: fit-content; }
-        .era-tab { padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: 500; font-size: 14px; color: var(--text-muted); transition: all 0.2s ease; }
+        /* Era Tabs with '+' button */
+        .era-tabs-container { display: flex; align-items: center; gap: 8px; overflow-x: auto; margin-bottom: 28px; padding-bottom: 4px; }
+        .era-tabs { display: flex; gap: 8px; background: var(--surface); padding: 6px; border-radius: var(--radius); border: 1px solid var(--border); }
+        .era-tab { padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: 500; font-size: 14px; color: var(--text-muted); transition: all 0.2s; white-space: nowrap; }
         .era-tab.active { background: var(--primary); color: white; }
+        .btn-add-era { background: var(--surface); border: 1px dashed var(--primary); color: var(--primary); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .btn-add-era:hover { background: var(--primary-light); }
 
+        /* Cards & Grid */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
-        .card:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.04); }
-        .card-preview { width: 100%; height: 160px; background: #edf2f7; object-fit: cover; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+        .card-preview { width: 100%; height: 170px; object-fit: cover; background: #edf2f7; }
         .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
         .card-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
         .card-actions { display: flex; gap: 8px; align-items: center; }
-        .card-actions a, .card-actions button { flex-grow: 1; text-align: center; font-size: 14px; padding: 10px;}
 
-        .hero { background: linear-gradient(135deg, var(--primary), #8F4C09); color: white; padding: 48px; border-radius: 20px; margin-bottom: 40px; }
-        .hero h2 { font-size: 32px; margin-bottom: 12px; }
+        /* Hero Banner */
+        .hero { background: linear-gradient(135deg, #BD6D18, #6d3a05); color: white; padding: 40px; border-radius: 20px; margin-bottom: 40px; display: flex; flex-direction: column; gap: 20px; }
+        .hero h2 { font-size: 32px; line-height: 1.2; }
         .hero p { font-size: 16px; opacity: 0.9; max-width: 600px; }
+        .hero-btn-group { display: flex; gap: 12px; flex-wrap: wrap; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 2000; }
-        .modal { background: var(--surface); padding: 32px; border-radius: 20px; width: 100%; max-width: 480px; }
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 3000; }
+        .modal { background: var(--surface); padding: 32px; border-radius: 20px; width: 90%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
         .modal h3 { margin-bottom: 20px; font-size: 20px; }
+        .image-preview-box { width: 100%; height: 140px; border-radius: 10px; border: 2px dashed var(--border); margin-top: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f7fafc; }
+        .image-preview-box img { width: 100%; height: 100%; object-fit: cover; }
 
         .view-section { display: none; }
         .view-section.active { display: block; }
-        .badge { display: inline-block; padding: 4px 8px; background: var(--primary-light); color: var(--primary); border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 8px; }
+        .badge { display: inline-block; padding: 4px 10px; background: var(--primary-light); color: var(--primary); border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 10px; align-self: flex-start; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .top-bar { display: flex; }
+            .sidebar { transform: translateX(-100%); top: 60px; height: calc(100vh - 60px); }
+            .sidebar.active-mobile { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; padding: 20px; padding-top: 80px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- 1. Тіркелу / Кіру терезесі (Auth Screen) -->
+    <!-- Top Mobile Header -->
+    <header class="top-bar">
+        <button class="toggle-btn" onclick="toggleSidebar()">
+            <span>☰</span> Мәзір
+        </button>
+        <div class="brand" style="font-size: 16px;">📚 Adilet agai</div>
+    </header>
+
+    <!-- 1. Auth Screen -->
     <div id="auth-screen">
         <div class="auth-box">
             <h2>Adilet agai</h2>
@@ -109,7 +155,6 @@
                 <div class="auth-tab" onclick="toggleAuthTab('register')">Тіркелу</div>
             </div>
 
-            <!-- Login Form -->
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label>Email</label>
@@ -123,7 +168,6 @@
                 <button type="submit" class="btn btn-primary">Жүйеге кіру</button>
             </form>
 
-            <!-- Register Form -->
             <form id="registerForm" style="display: none;" onsubmit="handleRegister(event)">
                 <div class="form-group">
                     <label>Email</label>
@@ -139,87 +183,95 @@
         </div>
     </div>
 
-    <!-- 2. Негізгі Платформа (Main Layout) -->
-    <div id="app-layout">
-        <aside class="sidebar">
+    <!-- 2. Main Platform -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
             <div class="brand">📚 Adilet agai</div>
-            <ul class="nav-list">
-                <li class="nav-item active" onclick="switchTab('home')">Басты бет</li>
-                <li class="nav-item" onclick="switchTab('checklists')">Чеклисттер</li>
-                <li class="nav-item" onclick="switchTab('analyses')">Нұсқа талдаулар</li>
-                <li class="nav-item" onclick="switchTab('books')">Кітаптар</li>
-                <a href="https://zetix.kz" target="_blank" class="nav-item">Zetix.kz ↗</a>
-            </ul>
-            <div class="user-controls">
-                <div class="user-email" id="currentUserEmail"></div>
-                <button class="btn btn-outline" onclick="logout()">Шығу</button>
+            <button class="toggle-btn" style="border:none;" onclick="toggleSidebar()">✕</button>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item active" onclick="switchTab('home')">Басты бет</li>
+            <li class="nav-item" onclick="switchTab('checklists')">Чеклисттер</li>
+            <li class="nav-item" onclick="switchTab('analyses')">Нұсқа талдаулар</li>
+            <li class="nav-item" onclick="switchTab('books')">Кітаптар</li>
+            <a href="https://zetix.kz" target="_blank" class="nav-item">Zetix.kz ↗</a>
+        </ul>
+        <div class="user-controls">
+            <div class="user-email" id="currentUserEmail"></div>
+            <button class="btn btn-outline" onclick="logout()">Шығу</button>
+        </div>
+    </aside>
+
+    <main class="main-content" id="mainContent">
+        <!-- Home View -->
+        <section id="home-view" class="view-section active">
+            <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+                <button class="toggle-btn" onclick="toggleSidebar()" title="Сайдбарды жасу/ашу">
+                    <span>☰</span> Панельді жасыру/ашу
+                </button>
             </div>
-        </aside>
-
-        <main class="main-content">
-            <!-- Home -->
-            <section id="home-view" class="view-section active">
-                <div class="hero">
+            <div class="hero">
+                <div>
                     <h2>Adilet agai-дан дүниежүзі тарихы</h2>
-                    <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы.</p>
+                    <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы. Қажетті чеклисттерді жүктеп алыңыз немесе видео нұсқа талдауларды қараңыз.</p>
                 </div>
-                <h3 style="margin-bottom: 20px;">Соңғы қосылған чеклисттер</h3>
-                <div id="home-checklists-preview" class="grid"></div>
-            </section>
+                <div class="hero-btn-group">
+                    <!-- WhatsApp тіркелу батырмасы -->
+                    <a href="https://wa.me/77471401404?text=Саламатсыз%20ба!%20Дүниежүзі%20тарихы%20курсына%20тіркелу%20туралы%20білгім%20келеді." target="_blank" class="btn btn-whatsapp" style="width: auto; padding: 14px 24px;">
+                        💬 Курсқа тіркелу (WhatsApp)
+                    </a>
+                </div>
+            </div>
+            <h3 style="margin-bottom: 20px;">Соңғы қосылған чеклисттер</h3>
+            <div id="home-checklists-preview" class="grid"></div>
+        </section>
 
-            <!-- Checklists -->
-            <section id="checklists-view" class="view-section">
-                <div class="header">
-                    <div>
-                        <h1>Чеклисттер</h1>
-                        <p class="text-muted">Пән бойынша барлық қысқаша конспектілер</p>
-                    </div>
-                    <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('checklists')">+ Қосу</button>
+        <!-- Checklists View -->
+        <section id="checklists-view" class="view-section">
+            <div class="header">
+                <div>
+                    <h1>Чеклисттер</h1>
+                    <p class="text-muted">Пән бойынша барлық қысқаша конспектілер</p>
                 </div>
-                <div class="era-tabs">
-                    <div class="era-tab active" onclick="filterEra('checklists', 'all')">Барлығы</div>
-                    <div class="era-tab" onclick="filterEra('checklists', 'ancient')">Ежелгі заман</div>
-                    <div class="era-tab" onclick="filterEra('checklists', 'medieval')">Орта ғасырлар</div>
-                    <div class="era-tab" onclick="filterEra('checklists', 'modern')">Жаңа заман</div>
-                    <div class="era-tab" onclick="filterEra('checklists', 'contemporary')">Қазіргі заман</div>
-                </div>
-                <div id="checklists-grid" class="grid"></div>
-            </section>
+                <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('checklists')">+ Қосу</button>
+            </div>
+            <div class="era-tabs-container">
+                <div class="era-tabs" id="checklists-era-tabs"></div>
+                <button class="btn-add-era admin-only" style="display: none;" onclick="promptNewEra()" title="Жаңа дәуір қосу">+</button>
+            </div>
+            <div id="checklists-grid" class="grid"></div>
+        </section>
 
-            <!-- Analyses -->
-            <section id="analyses-view" class="view-section">
-                <div class="header">
-                    <div>
-                        <h1>Нұсқа талдаулар</h1>
-                        <p class="text-muted">Тақырыптық және ҰБТ нұсқаларының видео талдаулары</p>
-                    </div>
-                    <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('analyses')">+ Қосу</button>
+        <!-- Analyses View -->
+        <section id="analyses-view" class="view-section">
+            <div class="header">
+                <div>
+                    <h1>Нұсқа талдаулар</h1>
+                    <p class="text-muted">Тақырыптық және ҰБТ нұсқаларының видео талдаулары</p>
                 </div>
-                <div class="era-tabs">
-                    <div class="era-tab active" onclick="filterEra('analyses', 'all')">Барлығы</div>
-                    <div class="era-tab" onclick="filterEra('analyses', 'ancient')">Ежелгі заман</div>
-                    <div class="era-tab" onclick="filterEra('analyses', 'medieval')">Орта ғасырлар</div>
-                    <div class="era-tab" onclick="filterEra('analyses', 'modern')">Жаңа заман</div>
-                    <div class="era-tab" onclick="filterEra('analyses', 'contemporary')">Қазіргі заман</div>
-                </div>
-                <div id="analyses-grid" class="grid"></div>
-            </section>
+                <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('analyses')">+ Қосу</button>
+            </div>
+            <div class="era-tabs-container">
+                <div class="era-tabs" id="analyses-era-tabs"></div>
+                <button class="btn-add-era admin-only" style="display: none;" onclick="promptNewEra()" title="Жаңа дәуір қосу">+</button>
+            </div>
+            <div id="analyses-grid" class="grid"></div>
+        </section>
 
-            <!-- Books -->
-            <section id="books-view" class="view-section">
-                <div class="header">
-                    <div>
-                        <h1>Кітаптар</h1>
-                        <p class="text-muted">Дүниежүзі тарихы бойынша ресми оқулықтар базасы</p>
-                    </div>
-                    <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('books')">+ Кітап қосу</button>
+        <!-- Books View -->
+        <section id="books-view" class="view-section">
+            <div class="header">
+                <div>
+                    <h1>Кітаптар</h1>
+                    <p class="text-muted">Дүниежүзі тарихы бойынша ресми оқулықтар базасы</p>
                 </div>
-                <div id="books-grid" class="grid"></div>
-            </section>
-        </main>
-    </div>
+                <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('books')">+ Кітап қосу</button>
+            </div>
+            <div id="books-grid" class="grid"></div>
+        </section>
+    </main>
 
-    <!-- Admin Add Modal -->
+    <!-- Admin Content Add Modal -->
     <div id="addModal" class="modal-overlay">
         <div class="modal">
             <h3>Жаңа материал қосу</h3>
@@ -231,13 +283,19 @@
                 </div>
                 <div class="form-group" id="eraSelectGroup">
                     <label>Дәуірді таңдаңыз</label>
-                    <select id="addEra" class="form-control">
-                        <option value="ancient">Ежелгі заман</option>
-                        <option value="medieval">Орта ғасырлар</option>
-                        <option value="modern">Жаңа заман</option>
-                        <option value="contemporary">Қазіргі заман</option>
-                    </select>
+                    <select id="addEra" class="form-control"></select>
                 </div>
+
+                <!-- Preview Photo Section -->
+                <div class="form-group">
+                    <label>Сурет / Превью (URL немесе Файл)</label>
+                    <input type="text" id="addImageUrl" class="form-control" placeholder="https://... (сурет сілтемесі)" oninput="updateModalPreview()">
+                    <input type="file" id="addImageFile" class="form-control" style="margin-top: 6px;" accept="image/*" onchange="previewSelectedFile(this)">
+                    <div class="image-preview-box" id="modalImagePreview">
+                        <span style="color: var(--text-muted); font-size: 13px;">Сурет превьюі осында көрінеді</span>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>Материал түрі</label>
                     <select id="addSourceType" class="form-control" onchange="toggleSourceInput()">
@@ -246,7 +304,7 @@
                     </select>
                 </div>
                 <div class="form-group" id="fileInputWrapper">
-                    <label>Файлды таңдаңыз</label>
+                    <label>Документ / Файлды таңдаңыз</label>
                     <input type="file" id="addFile" class="form-control">
                 </div>
                 <div class="form-group" id="linkInputWrapper" style="display: none;">
@@ -262,29 +320,103 @@
     </div>
 
     <script>
-        // --- 1. Аутентификация және Мәліметтер Базасы (Локалды) ---
+        // --- Dynamic Eras Storage ---
+        let erasMap = JSON.parse(localStorage.getItem('adilet_eras')) || {
+            'ancient': 'Ежелгі заман',
+            'medieval': 'Орта ғасырлар',
+            'modern': 'Жаңа заман',
+            'contemporary': 'Қазіргі заман'
+        };
+
+        const defaultImages = {
+            ancient: 'https://images.unsplash.com/photo-1568667256549-094345857637?w=600&q=80',
+            medieval: 'https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?w=600&q=80',
+            modern: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?w=600&q=80',
+            contemporary: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80',
+            book: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&q=80'
+        };
+
+        // --- Initial Content DB ---
+        let contentDB = JSON.parse(localStorage.getItem('adilet_content_db')) || {
+            checklists: [
+                { id: 1, title: 'Ежелгі Египет пен Месопотамия', era: 'ancient', fileUrl: '#', coverUrl: defaultImages.ancient },
+                { id: 2, title: 'Орта ғасырлардағы Еуропа', era: 'medieval', fileUrl: '#', coverUrl: defaultImages.medieval }
+            ],
+            analyses: [
+                { id: 101, title: 'ҰБТ Дүниежүзі тарихы нұсқа талдау #1', era: 'ancient', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', coverUrl: '' }
+            ],
+            books: [
+                { id: 201, title: '9-сынып Дүниежүзі тарихы оқулығы', fileUrl: '#', coverUrl: defaultImages.book }
+            ]
+        };
+
         let currentUser = null;
         let isAdmin = false;
+        let currentFilters = { checklists: 'all', analyses: 'all' };
+        let customPreviewData = '';
 
-        // Базаны инициализациялау
+        // --- Local Auth ---
         let usersDB = JSON.parse(localStorage.getItem('adilet_users')) || [];
-        
-        // Код ішінде құпия сөзді ашық жазбау үшін Админді базаға алдын ала 암(шифрлап) салып қоямыз
         if(usersDB.length === 0) {
-            // btoa('admin123') = YWRtaW4xMjM= (Бұл қарапайым жасыру тәсілі)
             usersDB.push({ email: 'admin@adilet.kz', passHash: 'YWRtaW4xMjM=', role: 'admin' });
             localStorage.setItem('adilet_users', JSON.stringify(usersDB));
         }
 
-        // --- Auth UI логикасы ---
+        // --- Sidebar Collapsing Logic ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('active-mobile');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            }
+        }
+
+        // --- Dynamic Era Management ---
+        function saveEras() {
+            localStorage.setItem('adilet_eras', JSON.stringify(erasMap));
+        }
+
+        function renderEraTabsUI() {
+            ['checklists', 'analyses'].forEach(type => {
+                const container = document.getElementById(`${type}-era-tabs`);
+                let html = `<div class="era-tab ${currentFilters[type] === 'all' ? 'active' : ''}" onclick="filterEra('${type}', 'all')">Барлығы</div>`;
+                
+                for(let key in erasMap) {
+                    html += `<div class="era-tab ${currentFilters[type] === key ? 'active' : ''}" onclick="filterEra('${type}', '${key}')">${erasMap[key]}</div>`;
+                }
+                container.innerHTML = html;
+            });
+
+            // Update Add Modal Era Dropdown
+            const select = document.getElementById('addEra');
+            select.innerHTML = '';
+            for(let key in erasMap) {
+                select.innerHTML += `<option value="${key}">${erasMap[key]}</option>`;
+            }
+        }
+
+        function promptNewEra() {
+            const eraName = prompt("Жаңа дәуір/санат атауын енгізіңіз (мыс: Қайта өрлеу дәуірі):");
+            if(eraName && eraName.trim() !== "") {
+                const key = 'era_' + Date.now();
+                erasMap[key] = eraName.trim();
+                saveEras();
+                renderEraTabsUI();
+            }
+        }
+
+        // --- Auth UI Logics ---
         function toggleAuthTab(tab) {
             document.querySelectorAll('.auth-tab').forEach(el => el.classList.remove('active'));
             if(tab === 'login') {
-                document.querySelector('.auth-tab:nth-child(1)').classList.add('active');
+                document.querySelectorAll('.auth-tab')[0].classList.add('active');
                 document.getElementById('loginForm').style.display = 'block';
                 document.getElementById('registerForm').style.display = 'none';
             } else {
-                document.querySelector('.auth-tab:nth-child(2)').classList.add('active');
+                document.querySelectorAll('.auth-tab')[1].classList.add('active');
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('registerForm').style.display = 'block';
             }
@@ -294,19 +426,13 @@
             e.preventDefault();
             const email = document.getElementById('regEmail').value;
             const pass = document.getElementById('regPass').value;
-            
-            const exists = usersDB.find(u => u.email === email);
-            if(exists) {
+            if(usersDB.find(u => u.email === email)) {
                 document.getElementById('regError').style.display = 'block';
                 return;
             }
-
-            // Жаңа оқушыны сақтау
             const newUser = { email: email, passHash: btoa(pass), role: 'student' };
             usersDB.push(newUser);
             localStorage.setItem('adilet_users', JSON.stringify(usersDB));
-            
-            // Автоматты кіру
             authorizeUser(newUser);
         }
 
@@ -314,30 +440,22 @@
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPass').value;
-            const inputHash = btoa(pass);
-
-            const user = usersDB.find(u => u.email === email && u.passHash === inputHash);
-            
-            if(user) {
-                authorizeUser(user);
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
+            const user = usersDB.find(u => u.email === email && u.passHash === btoa(pass));
+            if(user) authorizeUser(user);
+            else document.getElementById('loginError').style.display = 'block';
         }
 
         function authorizeUser(user) {
             currentUser = user;
             isAdmin = (user.role === 'admin');
-            
             document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('app-layout').style.display = 'block';
             document.getElementById('currentUserEmail').innerText = user.email;
 
-            if(isAdmin) {
-                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
-            } else {
-                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-            }
+            document.querySelectorAll('.admin-only').forEach(el => {
+                el.style.display = isAdmin ? 'inline-flex' : 'none';
+            });
+
+            renderEraTabsUI();
             renderAll();
         }
 
@@ -345,49 +463,34 @@
             currentUser = null;
             isAdmin = false;
             document.getElementById('auth-screen').style.display = 'flex';
-            document.getElementById('app-layout').style.display = 'none';
-            
-            // Формаларды тазарту
-            document.getElementById('loginForm').reset();
-            document.getElementById('registerForm').reset();
-            document.getElementById('loginError').style.display = 'none';
-            document.getElementById('regError').style.display = 'none';
         }
 
-        // --- 2. Контент логикасы (Материалдар) ---
-        const erasMap = { 'ancient': 'Ежелгі заман', 'medieval': 'Орта ғасырлар', 'modern': 'Жаңа заман', 'contemporary': 'Қазіргі заман' };
-
-        let contentDB = JSON.parse(localStorage.getItem('adilet_content_db')) || {
-            checklists: [], analyses: [], books: []
-        };
-
-        function saveContent() {
-            localStorage.setItem('adilet_content_db', JSON.stringify(contentDB));
-        }
-
-        // Navigation
         function switchTab(tabId) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             event.currentTarget.classList.add('active');
             document.getElementById(`${tabId}-view`).classList.add('active');
+            
+            // Auto close mobile sidebar after click
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('active-mobile');
+            }
             renderAll();
         }
 
-        let currentFilters = { checklists: 'all', analyses: 'all' };
         function filterEra(type, era) {
             currentFilters[type] = era;
-            const container = document.getElementById(`${type}-view`);
-            container.querySelectorAll('.era-tab').forEach(el => el.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            renderEraTabsUI();
             renderCategory(type);
         }
 
         function getYouTubeId(url) {
+            if(!url) return null;
             const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
+        // --- Render Functions ---
         function renderAll() {
             renderCategory('checklists');
             renderCategory('analyses');
@@ -403,11 +506,12 @@
             }
             container.innerHTML = contentDB.checklists.slice(0, 3).map(item => `
                 <div class="card">
+                    <img src="${item.coverUrl || defaultImages[item.era] || defaultImages.ancient}" class="card-preview">
                     <div class="card-body">
-                        <span class="badge">${erasMap[item.era]}</span>
+                        <span class="badge">${erasMap[item.era] || 'Дүниежүзі тарихы'}</span>
                         <div class="card-title">${item.title}</div>
                         <div class="card-meta">Чеклист • Файл</div>
-                        <a href="${item.fileUrl}" download="${item.fileName || 'file'}" class="btn btn-outline">Жүктеп алу</a>
+                        <a href="${item.fileUrl}" download class="btn btn-outline">Жүктеп алу</a>
                     </div>
                 </div>
             `).join('');
@@ -419,57 +523,54 @@
             const items = contentDB[type].filter(item => filter === 'all' || item.era === filter);
 
             if(items.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Бұл бөлімде материал жоқ.</p>`;
+                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Бұл бөлімде материалдар әлі жоқ.</p>`;
                 return;
             }
 
             container.innerHTML = items.map(item => {
-                if (type === 'analyses') {
-                    const ytId = getYouTubeId(item.url);
-                    const thumb = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : 'https://via.placeholder.com/300x160?text=Video';
-                    return `
-                        <div class="card">
-                            <img src="${thumb}" class="card-preview">
-                            <div class="card-body">
-                                <span class="badge">${erasMap[item.era]}</span>
-                                <div class="card-title">${item.title}</div>
-                                <div class="card-actions">
-                                    <a href="${item.url}" target="_blank" class="btn btn-outline">Көру</a>
-                                    ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('${type}', ${item.id})">Өшіру</button>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    return `
-                        <div class="card">
-                            <div class="card-body">
-                                <span class="badge">${erasMap[item.era]}</span>
-                                <div class="card-title">${item.title}</div>
-                                <div class="card-actions">
-                                    <a href="${item.fileUrl}" download="${item.fileName || 'file'}" class="btn btn-outline">Жүктеу</a>
-                                    ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('${type}', ${item.id})">Өшіру</button>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                let imgCover = item.coverUrl;
+                if(!imgCover) {
+                    if (type === 'analyses') {
+                        const ytId = getYouTubeId(item.url);
+                        imgCover = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : defaultImages.modern;
+                    } else {
+                        imgCover = defaultImages[item.era] || defaultImages.ancient;
+                    }
                 }
+
+                return `
+                    <div class="card">
+                        <img src="${imgCover}" class="card-preview" alt="Preview">
+                        <div class="card-body">
+                            <span class="badge">${erasMap[item.era] || 'Материал'}</span>
+                            <div class="card-title">${item.title}</div>
+                            <div class="card-actions">
+                                ${type === 'analyses' 
+                                    ? `<a href="${item.url}" target="_blank" class="btn btn-outline">Көру</a>` 
+                                    : `<a href="${item.fileUrl}" download class="btn btn-outline">Жүктеу</a>`
+                                }
+                                ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('${type}', ${item.id})">Өшіру</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
             }).join('');
         }
 
         function renderBooks() {
             const container = document.getElementById('books-grid');
             if(contentDB.books.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Кітаптар әлі қосылмаған.</p>`;
+                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Кітаптар жоқ.</p>`;
                 return;
             }
             container.innerHTML = contentDB.books.map(item => `
                 <div class="card">
+                    <img src="${item.coverUrl || defaultImages.book}" class="card-preview">
                     <div class="card-body">
+                        <span class="badge">Ресми оқулық</span>
                         <div class="card-title">${item.title}</div>
-                        <div class="card-meta">Оқулық</div>
                         <div class="card-actions">
-                            <a href="${item.fileUrl}" download="${item.fileName || 'book'}" class="btn btn-outline">Жүктеу</a>
+                            <a href="${item.fileUrl}" download class="btn btn-outline">Жүктеу</a>
                             ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('books', ${item.id})">Өшіру</button>` : ''}
                         </div>
                     </div>
@@ -477,11 +578,33 @@
             `).join('');
         }
 
-        // --- Admin Controls ---
+        // --- Add Content Modal and Preview Handling ---
         function openAddModal(type) {
             document.getElementById('addType').value = type;
             document.getElementById('eraSelectGroup').style.display = type === 'books' ? 'none' : 'block';
+            document.getElementById('modalImagePreview').innerHTML = '<span style="color: var(--text-muted); font-size: 13px;">Сурет превьюі осында көрінеді</span>';
+            customPreviewData = '';
             document.getElementById('addModal').style.display = 'flex';
+        }
+
+        function updateModalPreview() {
+            const url = document.getElementById('addImageUrl').value;
+            const box = document.getElementById('modalImagePreview');
+            if(url) {
+                box.innerHTML = `<img src="${url}" onerror="this.src='https://via.placeholder.com/300x160?text=Қате+Сілтеме'">`;
+                customPreviewData = url;
+            }
+        }
+
+        function previewSelectedFile(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    customPreviewData = e.target.result;
+                    document.getElementById('modalImagePreview').innerHTML = `<img src="${customPreviewData}">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         function toggleSourceInput() {
@@ -497,17 +620,16 @@
             const era = document.getElementById('addEra').value;
             const sourceType = document.getElementById('addSourceType').value;
 
-            const newItem = { id: Date.now(), title: title, era: era };
+            const newItem = { 
+                id: Date.now(), 
+                title: title, 
+                era: era, 
+                coverUrl: customPreviewData || defaultImages[era] || defaultImages.ancient 
+            };
 
             if (sourceType === 'file') {
                 const fileInput = document.getElementById('addFile');
-                if (fileInput.files.length > 0) {
-                    const file = fileInput.files[0];
-                    newItem.fileUrl = URL.createObjectURL(file);
-                    newItem.fileName = file.name;
-                } else {
-                    newItem.fileUrl = '#';
-                }
+                newItem.fileUrl = fileInput.files.length > 0 ? URL.createObjectURL(fileInput.files[0]) : '#';
             } else {
                 const link = document.getElementById('addLink').value;
                 newItem.url = link;
@@ -515,16 +637,16 @@
             }
 
             contentDB[sectionType].push(newItem);
-            saveContent();
+            localStorage.setItem('adilet_content_db', JSON.stringify(contentDB));
             renderAll();
             closeModal('addModal');
-            e.target.reset(); // Форманы тазалау
+            e.target.reset();
         }
 
         function deleteItem(type, id) {
-            if(confirm("Бұл материалды өшіруге сенімдісіз бе?")) {
+            if(confirm("Материалды өшіруге сенімдісіз бе?")) {
                 contentDB[type] = contentDB[type].filter(item => item.id !== id);
-                saveContent();
+                localStorage.setItem('adilet_content_db', JSON.stringify(contentDB));
                 renderAll();
             }
         }
