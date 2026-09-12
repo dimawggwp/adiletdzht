@@ -45,7 +45,7 @@
         }
         .floating-toggle-btn:hover { background: var(--primary-light); color: var(--primary); }
 
-        /* Initial data-loading overlay (shown while shared data is fetched) */
+        /* Initial data-loading overlay */
         #loading-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #fdf6ee 0%, #cbd5e0 100%);
@@ -122,7 +122,7 @@
         .header { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
         .header h1 { font-size: 28px; font-weight: 800; }
 
-        /* Hero banner (replaces the plain evolution image) */
+        /* Hero banner */
         .hero-banner {
             position: relative;
             width: 100%;
@@ -165,11 +165,17 @@
         .image-preview-box { width: 100%; height: 140px; border-radius: 10px; border: 2px dashed var(--border); margin-top: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f7fafc; }
         .image-preview-box img { width: 100%; height: 100%; object-fit: cover; }
 
+        .era-tabs-container { margin-bottom: 24px; display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; align-items: center; }
+        .era-tabs { display: flex; gap: 8px; }
+        .era-tab { padding: 8px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; color: var(--text-muted); }
+        .era-tab:hover { background: var(--bg); }
+        .era-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-add-era { background: var(--surface); border: 1px dashed var(--primary); color: var(--primary); width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: 0.2s; }
+        .btn-add-era:hover { background: var(--primary-light); }
+
         .view-section { display: none; }
         .view-section.active { display: block; }
         .badge { display: inline-block; padding: 4px 10px; background: var(--primary-light); color: var(--primary); border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 10px; align-self: flex-start; }
-
-        .sync-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 8px; }
 
         @media (max-width: 868px) {
             .registration-banner { flex-direction: column; text-align: center; justify-content: center; }
@@ -256,7 +262,7 @@
     <main class="main-content" id="mainContent">
         <section id="home-view" class="view-section active">
 
-            <!-- Hero banner: evolution photo + gradient overlay + title/description -->
+            <!-- Hero banner -->
             <div class="hero-banner">
                 <div class="hero-overlay-text">
                     <h1>Adilet agai-дан дүниежүзі тарихы</h1>
@@ -367,19 +373,11 @@
         </div>
     </div>
 
-    <!-- Firebase (Firestore) — ортақ дерекқор, барлық қолданушыларға синхрондалады -->
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
     <script>
-        /*
-           ЕСКЕРТУ: Еразалар (дәуірлер), контент базасы (checklists/analyses/books)
-           және пайдаланушылар енді Firebase Firestore-де сақталады. Осы файлды
-           қай құрылғыдан/доменнен ашсаңыз да, барлық адамдар бірдей деректерді
-           көреді. Админ панельде бір нәрсе қосылса/өшірілсе, ол өзгеріс барлық
-           қолданушыларға автоматты түрде (шамамен 20 секунд сайын) синхрондалады.
-        */
-
         const firebaseConfig = {
             apiKey: "AIzaSyCyyTVbCwXAaJy9IG8g5Rmb9H7n78EMF8U",
             authDomain: "adiletagai-fd104.firebaseapp.com",
@@ -443,7 +441,6 @@
         let syncTimer = null;
 
         // ---------- Shared storage helpers (Firestore) ----------
-
         async function fetchShared(key, fallback) {
             try {
                 const snap = await db.collection(SHARED_COLLECTION).doc(key).get();
@@ -453,7 +450,6 @@
                 }
                 return fallback;
             } catch (e) {
-                // Doc doesn't exist yet, or a network error — fall back to defaults
                 console.error('Firestore read error for', key, e);
                 return fallback;
             }
@@ -495,8 +491,6 @@
             await ensureAdminAccount();
         }
 
-        // Pulls the latest eras/content from shared storage and re-renders,
-        // so changes an admin makes on another device show up here too.
         async function syncFromServer() {
             erasMap = await fetchShared(STORAGE_KEYS.eras, erasMap);
             contentDB = await fetchShared(STORAGE_KEYS.content, contentDB);
@@ -509,7 +503,7 @@
             syncTimer = setInterval(syncFromServer, 20000);
         }
 
-        // ---------- UI ----------
+        // ---------- UI and Logic Functions (Completed) ----------
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -526,6 +520,7 @@
         function renderEraTabsUI() {
             ['checklists', 'analyses'].forEach(type => {
                 const container = document.getElementById(`${type}-era-tabs`);
+                if (!container) return;
                 let html = `<div class="era-tab ${currentFilters[type] === 'all' ? 'active' : ''}" onclick="filterEra('${type}', 'all')">Барлығы</div>`;
                 
                 for(let key in erasMap) {
@@ -535,10 +530,18 @@
             });
 
             const select = document.getElementById('addEra');
-            select.innerHTML = '';
-            for(let key in erasMap) {
-                select.innerHTML += `<option value="${key}">${erasMap[key]}</option>`;
+            if(select) {
+                select.innerHTML = '';
+                for(let key in erasMap) {
+                    select.innerHTML += `<option value="${key}">${erasMap[key]}</option>`;
+                }
             }
+        }
+
+        function filterEra(type, eraKey) {
+            currentFilters[type] = eraKey;
+            renderEraTabsUI();
+            renderAll();
         }
 
         async function promptNewEra() {
@@ -570,7 +573,6 @@
             const email = document.getElementById('regEmail').value;
             const pass = document.getElementById('regPass').value;
 
-            // Re-check against the latest shared user list before registering
             usersDB = await fetchShared(STORAGE_KEYS.users, usersDB);
             if(usersDB.find(u => u.email === email)) {
                 document.getElementById('regError').style.display = 'block';
@@ -588,7 +590,6 @@
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPass').value;
 
-            // Pull the latest shared user list so logins work from any device
             usersDB = await fetchShared(STORAGE_KEYS.users, usersDB);
             const user = usersDB.find(u => u.email === email && u.passHash === btoa(pass));
             if(user) authorizeUser(user);
@@ -605,10 +606,7 @@
                 el.style.display = isAdmin ? 'inline-flex' : 'none';
             });
 
-            // Grab the freshest content/eras right at login too
             await syncFromServer();
-            renderEraTabsUI();
-            renderAll();
             startBackgroundSync();
         }
 
@@ -617,141 +615,128 @@
             isAdmin = false;
             if (syncTimer) clearInterval(syncTimer);
             document.getElementById('loginForm').reset();
+            document.getElementById('registerForm').reset();
             document.getElementById('auth-screen').style.display = 'flex';
         }
 
+        // Үзілген тұстан бастап жалғастырылған код:
         function switchTab(tabId, event) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            
-            if(event) {
+            if (event && event.currentTarget) {
                 event.currentTarget.classList.add('active');
-            } else {
-                document.querySelector(`.nav-item[onclick*="${tabId}"]`).classList.add('active');
             }
-            
-            document.getElementById(`${tabId}-view`).classList.add('active');
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId + '-view').classList.add('active');
             
             if (window.innerWidth <= 868) {
-                document.getElementById('sidebar').classList.remove('mobile-open');
+                toggleSidebar();
             }
-            
-            renderAll();
-        }
-
-        function filterEra(type, era) {
-            currentFilters[type] = era;
-            renderEraTabsUI();
-            renderCategory(type);
-        }
-
-        function getYouTubeId(url) {
-            if(!url) return null;
-            const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
-            return (match && match[2].length === 11) ? match[2] : null;
         }
 
         function renderAll() {
-            renderCategory('checklists');
-            renderCategory('analyses');
-            renderBooks();
             renderHomePreview();
+            renderGrid('checklists', 'checklists-grid');
+            renderGrid('analyses', 'analyses-grid');
+            renderGrid('books', 'books-grid');
         }
 
         function renderHomePreview() {
             const container = document.getElementById('home-checklists-preview');
-            if(contentDB.checklists.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted);">Материалдар әлі қосылмаған.</p>`;
-                return;
-            }
-            container.innerHTML = contentDB.checklists.slice(0, 3).map(item => `
-                <div class="card">
-                    <img src="${item.coverUrl || defaultImages[item.era] || defaultImages.ancient}" class="card-preview">
-                    <div class="card-body">
-                        <span class="badge">${erasMap[item.era] || 'Дүниежүзі тарихы'}</span>
-                        <div class="card-title">${item.title}</div>
-                        <div class="card-meta">Чеклист • Файл</div>
-                        <a href="${item.fileUrl}" download class="btn btn-outline">Жүктеп алу</a>
-                    </div>
-                </div>
-            `).join('');
+            if(!container) return;
+            const items = [...(contentDB.checklists || [])].reverse().slice(0, 3);
+            container.innerHTML = items.map(item => createCardHTML('checklists', item)).join('');
         }
 
-        function renderCategory(type) {
-            const container = document.getElementById(`${type}-grid`);
-            const filter = currentFilters[type];
-            const items = contentDB[type].filter(item => filter === 'all' || item.era === filter);
-
-            if(items.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Бұл бөлімде материалдар әлі жоқ.</p>`;
-                return;
+        function renderGrid(type, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            let items = contentDB[type] || [];
+            
+            if (type !== 'books' && currentFilters[type] !== 'all') {
+                items = items.filter(i => i.era === currentFilters[type]);
             }
-
-            container.innerHTML = items.map(item => {
-                let imgCover = item.coverUrl;
-                if(!imgCover) {
-                    if (type === 'analyses') {
-                        const ytId = getYouTubeId(item.url);
-                        imgCover = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : defaultImages.modern;
-                    } else {
-                        imgCover = defaultImages[item.era] || defaultImages.ancient;
-                    }
-                }
-
-                return `
-                    <div class="card">
-                        <img src="${imgCover}" class="card-preview" alt="Preview">
-                        <div class="card-body">
-                            <span class="badge">${erasMap[item.era] || 'Материал'}</span>
-                            <div class="card-title">${item.title}</div>
-                            <div class="card-actions">
-                                ${type === 'analyses' 
-                                    ? `<a href="${item.url}" target="_blank" class="btn btn-outline">Көру</a>` 
-                                    : `<a href="${item.fileUrl}" download class="btn btn-outline">Жүктеу</a>`
-                                }
-                                ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('${type}', ${item.id})">Өшіру</button>` : ''}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            container.innerHTML = items.map(item => createCardHTML(type, item)).reverse().join('');
         }
 
-        function renderBooks() {
-            const container = document.getElementById('books-grid');
-            if(contentDB.books.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Кітаптар жоқ.</p>`;
-                return;
+        function createCardHTML(type, item) {
+            const eraName = erasMap[item.era] || item.era || 'Жалпы';
+            const deleteBtn = isAdmin ? `<button class="btn btn-danger" style="padding: 6px; font-size: 12px; margin-left: auto;" onclick="deleteItem('${type}', ${item.id})">Өшіру</button>` : '';
+
+            let actionBtn = '';
+            if (type === 'analyses') {
+                actionBtn = `<a href="${item.url}" target="_blank" class="btn btn-primary" style="flex:1">Көру</a>`;
+            } else {
+                actionBtn = `<a href="${item.fileUrl || item.url || '#'}" target="_blank" class="btn btn-primary" style="flex:1">Ашу / Жүктеу</a>`;
             }
-            container.innerHTML = contentDB.books.map(item => `
-                <div class="card">
-                    <img src="${item.coverUrl || defaultImages.book}" class="card-preview">
-                    <div class="card-body">
-                        <span class="badge">Ресми оқулық</span>
-                        <div class="card-title">${item.title}</div>
-                        <div class="card-actions">
-                            <a href="${item.fileUrl}" download class="btn btn-outline">Жүктеу</a>
-                            ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('books', ${item.id})">Өшіру</button>` : ''}
-                        </div>
+
+            return `
+            <div class="card">
+                <img src="${item.coverUrl || defaultImages[item.era] || defaultImages[type] || defaultImages.ancient}" class="card-preview" alt="preview">
+                <div class="card-body">
+                    ${type !== 'books' ? `<span class="badge">${eraName}</span>` : ''}
+                    <div class="card-title">${item.title}</div>
+                    <div class="card-actions">
+                        ${actionBtn}
+                        ${deleteBtn}
                     </div>
                 </div>
-            `).join('');
+            </div>`;
+        }
+
+        async function deleteItem(type, id) {
+            if(!confirm('Бұл материалды өшіруге сенімдісіз бе?')) return;
+            contentDB[type] = contentDB[type].filter(item => item.id !== id);
+            const ok = await saveContent();
+            if(ok) renderAll();
         }
 
         function openAddModal(type) {
             document.getElementById('addType').value = type;
-            document.getElementById('eraSelectGroup').style.display = type === 'books' ? 'none' : 'block';
+            document.getElementById('addTitle').value = '';
+            document.getElementById('addImageUrl').value = '';
+            document.getElementById('addImageFile').value = '';
             document.getElementById('modalImagePreview').innerHTML = '<span style="color: var(--text-muted); font-size: 13px;">Сурет превьюі осында көрінеді</span>';
             customPreviewData = '';
+            
+            document.getElementById('addSourceType').value = 'file';
+            document.getElementById('addFile').value = '';
+            document.getElementById('addLink').value = '';
+
+            const eraGroup = document.getElementById('eraSelectGroup');
+            if(type === 'books') {
+                eraGroup.style.display = 'none';
+            } else {
+                eraGroup.style.display = 'block';
+            }
+            
+            toggleSourceInput();
             document.getElementById('addModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function toggleSourceInput() {
+            const type = document.getElementById('addSourceType').value;
+            if(type === 'file') {
+                document.getElementById('fileInputWrapper').style.display = 'block';
+                document.getElementById('linkInputWrapper').style.display = 'none';
+            } else {
+                document.getElementById('fileInputWrapper').style.display = 'none';
+                document.getElementById('linkInputWrapper').style.display = 'block';
+            }
         }
 
         function updateModalPreview() {
             const url = document.getElementById('addImageUrl').value;
-            const box = document.getElementById('modalImagePreview');
+            const preview = document.getElementById('modalImagePreview');
             if(url) {
-                box.innerHTML = `<img src="${url}" onerror="this.src='https://via.placeholder.com/300x160?text=Қате+Сілтеме'">`;
+                preview.innerHTML = `<img src="${url}" alt="preview">`;
                 customPreviewData = url;
+            } else {
+                preview.innerHTML = '<span style="color: var(--text-muted); font-size: 13px;">Сурет превьюі осында көрінеді</span>';
+                customPreviewData = '';
             }
         }
 
@@ -759,78 +744,57 @@
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    const preview = document.getElementById('modalImagePreview');
+                    preview.innerHTML = `<img src="${e.target.result}" alt="preview">`;
                     customPreviewData = e.target.result;
-                    document.getElementById('modalImagePreview').innerHTML = `<img src="${customPreviewData}">`;
-                }
+                };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        function toggleSourceInput() {
-            const type = document.getElementById('addSourceType').value;
-            document.getElementById('fileInputWrapper').style.display = type === 'file' ? 'block' : 'none';
-            document.getElementById('linkInputWrapper').style.display = type === 'link' ? 'block' : 'none';
-        }
-
-        async function handleContentAdd(e) {
-            e.preventDefault();
-            const sectionType = document.getElementById('addType').value;
+        async function handleContentAdd(event) {
+            event.preventDefault();
+            const type = document.getElementById('addType').value;
             const title = document.getElementById('addTitle').value;
             const era = document.getElementById('addEra').value;
             const sourceType = document.getElementById('addSourceType').value;
 
-            const newItem = { 
-                id: Date.now(), 
-                title: title, 
-                era: era, 
-                coverUrl: customPreviewData || defaultImages[era] || defaultImages.ancient 
+            let finalUrl = '';
+            if (sourceType === 'link') {
+                finalUrl = document.getElementById('addLink').value;
+            } else {
+                const fileInput = document.getElementById('addFile');
+                if (fileInput.files && fileInput.files[0]) {
+                    finalUrl = URL.createObjectURL(fileInput.files[0]); // Уақытша сілтеме
+                }
+            }
+
+            const newItem = {
+                id: Date.now(),
+                title: title,
+                era: type !== 'books' ? era : null,
+                coverUrl: customPreviewData || defaultImages[era] || defaultImages.book,
+                fileUrl: finalUrl,
+                url: finalUrl
             };
 
-            if (sourceType === 'file') {
-                const fileInput = document.getElementById('addFile');
-                // Note: object URLs only work in this browser/session. For a file
-                // that every visitor can open, use the "Сілтеме" option instead.
-                newItem.fileUrl = fileInput.files.length > 0 ? URL.createObjectURL(fileInput.files[0]) : '#';
-            } else {
-                const link = document.getElementById('addLink').value;
-                newItem.url = link;
-                newItem.fileUrl = link;
-            }
-
-            // Merge against the freshest shared content before pushing, so two
-            // admins editing at once don't clobber each other's additions.
-            contentDB = await fetchShared(STORAGE_KEYS.content, contentDB);
-            contentDB[sectionType].push(newItem);
+            if (!contentDB[type]) contentDB[type] = [];
+            contentDB[type].push(newItem);
+            
             const ok = await saveContent();
-            if (!ok) {
-                contentDB[sectionType] = contentDB[sectionType].filter(i => i.id !== newItem.id);
-            }
-            renderAll();
-            closeModal('addModal');
-            e.target.reset();
-        }
-
-        async function deleteItem(type, id) {
-            if(confirm("Материалды өшіруге сенімдісіз бе?")) {
-                const backup = contentDB[type];
-                contentDB[type] = contentDB[type].filter(item => item.id !== id);
-                const ok = await saveContent();
-                if (!ok) contentDB[type] = backup;
+            if(ok) {
                 renderAll();
+                closeModal('addModal');
             }
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        // ---------- Bootstrap ----------
-
-        (async function init() {
+        // Жүктеуді бастау
+        window.onload = async () => {
             await loadAllSharedData();
             document.getElementById('loading-screen').style.display = 'none';
             document.getElementById('auth-screen').style.display = 'flex';
-        })();
+        };
+
     </script>
 </body>
 </html>
