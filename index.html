@@ -112,14 +112,6 @@
         .era-tab.active { background: var(--primary); color: white; }
         .btn-add-era { background: var(--surface); border: 1px dashed var(--primary); color: var(--primary); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
 
-        /* Hero Banner */
-        .hero {
-            background: linear-gradient(135deg, #BD6D18 0%, #4A2402 100%);
-            color: white; padding: 48px 40px; border-radius: 24px; margin-bottom: 24px;
-        }
-        .hero-text h2 { font-size: 32px; font-weight: 800; margin-bottom: 12px; line-height: 1.2; }
-        .hero-text p { font-size: 16px; opacity: 0.9; line-height: 1.6; max-width: 700px; }
-
         .registration-banner {
             background: var(--surface); border: 2px solid #25D366; border-radius: 20px;
             padding: 24px 32px; margin-bottom: 36px; display: flex; align-items: center; justify-content: space-between;
@@ -222,12 +214,9 @@
 
     <main class="main-content" id="mainContent">
         <section id="home-view" class="view-section active">
-            <div class="hero">
-                <div class="hero-text">
-                    <h2>Adilet agai-дан дүниежүзі тарихы</h2>
-                    <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы. Қажетті чеклисттерді жүктеп алыңыз немесе видео нұсқа талдауларды қараңыз.</p>
-                </div>
-            </div>
+            
+            <!-- Басты блоктың орнына қойылған сурет -->
+            <img src="image_800140.jpg" alt="Дүниежүзі тарихы - Эволюция" style="width: 100%; height: auto; max-height: 350px; border-radius: 24px; margin-bottom: 24px; object-fit: cover; object-position: center;">
 
             <div class="registration-banner">
                 <div>
@@ -332,6 +321,12 @@
     </div>
 
     <script>
+        /* 
+           НАЗАР АУДАРЫҢЫЗ: Деректер барлық қолданушыларға көрінуі үшін (Синхронизация),
+           төмендегі localStorage жүйесін Firebase немесе өз серверіңіздің API-іне 
+           ауыстыруыңыз қажет. Әзірше сайтты тексеру үшін браузер жадында жұмыс істейді.
+        */
+
         const ADMIN_EMAIL = "zhtkrgnadlt3245@gmail.com";
         const ADMIN_PASS = "dimashbratandyuvazhayiu";
         const ADMIN_HASH = btoa(ADMIN_PASS);
