@@ -73,8 +73,6 @@
         .btn-whatsapp:hover { background: #20ba5a; transform: translateY(-1px); }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
         .btn-outline:hover { background: #EDF2F7; }
-        .btn-admin-quick { background: #FFFBEB; border: 1px dashed var(--primary); color: var(--primary); margin-top: 14px; }
-        .btn-admin-quick:hover { background: var(--primary-light); }
         .btn-danger { background: #FFF5F5; color: var(--danger); border: 1px solid #FEB2B2; }
         .btn-danger:hover { background: var(--danger); color: white; }
 
@@ -82,8 +80,10 @@
             width: var(--sidebar-width); background: var(--surface); border-right: 1px solid var(--border);
             padding: 24px; display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0;
             z-index: 1000; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(0); /* Desktop default */
         }
         .sidebar.collapsed { transform: translateX(-100%); }
+        
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
         
         .sidebar-close-btn {
@@ -122,11 +122,11 @@
         .hero-text h2 { font-size: 32px; font-weight: 800; margin-bottom: 12px; line-height: 1.2; }
         .hero-text p { font-size: 15px; opacity: 0.9; line-height: 1.6; max-width: 560px; }
 
-        /* Hero Photo (Seamless & No Glowing Square) */
+        /* Hero Photo */
         .hero-photo-wrapper {
             position: relative;
             width: 220px;
-            height: 230px;
+            height: 250px; /* Суреттің пропорциясына сәйкес ұзартылды */
             border-radius: 20px;
             overflow: hidden;
             flex-shrink: 0;
@@ -137,6 +137,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: top center; /* Адамның беті кесілмеуі үшін */
             border-radius: 20px;
             opacity: 0.95;
             filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
@@ -169,11 +170,21 @@
         .view-section.active { display: block; }
         .badge { display: inline-block; padding: 4px 10px; background: var(--primary-light); color: var(--primary); border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 10px; align-self: flex-start; }
 
+        /* Мобильді бейімделу (Responsive) */
         @media (max-width: 868px) {
             .hero { flex-direction: column-reverse; text-align: center; }
             .hero-text p { margin: 0 auto; }
             .registration-banner { flex-direction: column; text-align: center; justify-content: center; }
-            .sidebar { transform: translateX(-100%); }
+            
+            /* Sidebar-ты мобильді құрылғыға реттеу */
+            .sidebar { 
+                transform: translateX(-100%); /* Жабық тұрады */
+                box-shadow: 10px 0 30px rgba(0,0,0,0.1); 
+            }
+            .sidebar.mobile-open { 
+                transform: translateX(0); /* Ашылған кезде */
+            }
+            
             .main-content { margin-left: 0; width: 100%; padding: 20px; padding-top: 70px; }
         }
     </style>
@@ -215,8 +226,6 @@
                 <p id="regError" style="color: var(--danger); font-size: 13px; margin-bottom: 10px; display: none;">Бұл email тіркелген!</p>
                 <button type="submit" class="btn btn-primary">Тіркелу</button>
             </form>
-
-            <button type="button" class="btn btn-admin-quick" onclick="fillAdminCredentials()">🔑 Админ деректерін толтыру</button>
         </div>
     </div>
 
@@ -226,10 +235,10 @@
             <button class="sidebar-close-btn" onclick="toggleSidebar()" title="Панельді жабу">‹</button>
         </div>
         <ul class="nav-list">
-            <li class="nav-item active" onclick="switchTab('home')">Басты бет</li>
-            <li class="nav-item" onclick="switchTab('checklists')">Чеклисттер</li>
-            <li class="nav-item" onclick="switchTab('analyses')">Нұсқа талдаулар</li>
-            <li class="nav-item" onclick="switchTab('books')">Кітаптар</li>
+            <li class="nav-item active" onclick="switchTab('home', event)">Басты бет</li>
+            <li class="nav-item" onclick="switchTab('checklists', event)">Чеклисттер</li>
+            <li class="nav-item" onclick="switchTab('analyses', event)">Нұсқа талдаулар</li>
+            <li class="nav-item" onclick="switchTab('books', event)">Кітаптар</li>
             <a href="https://zetix.kz" target="_blank" class="nav-item">Zetix.kz ↗</a>
         </ul>
         <div class="user-controls">
@@ -246,7 +255,8 @@
                     <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы. Қажетті чеклисттерді жүктеп алыңыз немесе видео нұсқа талдауларды қараңыз.</p>
                 </div>
                 <div class="hero-photo-wrapper">
-                    <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=800&q=80" alt="Жеткерген Әділет" id="heroTeacherImg">
+                    <!-- Пайдаланушы жіберген сурет орнатылды -->
+                    <img src="92b915bd-ffca-4fdd-b2af-7a445ec41d36.jpeg" alt="Жеткерген Әділет" id="heroTeacherImg">
                 </div>
             </div>
 
@@ -399,11 +409,17 @@
         }
         localStorage.setItem('adilet_users', JSON.stringify(usersDB));
 
+        // Мобильді мәзірді ашу/жабу функциясы жаңартылды
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
+            
+            if (window.innerWidth <= 868) {
+                sidebar.classList.toggle('mobile-open');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            }
         }
 
         function saveEras() {
@@ -451,12 +467,6 @@
             }
         }
 
-        // Fills credentials into inputs without auto-submitting immediately
-        function fillAdminCredentials() {
-            document.getElementById('loginEmail').value = ADMIN_EMAIL;
-            document.getElementById('loginPass').value = ADMIN_PASS;
-        }
-
         function handleRegister(e) {
             e.preventDefault();
             const email = document.getElementById('regEmail').value;
@@ -497,14 +507,27 @@
         function logout() {
             currentUser = null;
             isAdmin = false;
+            document.getElementById('loginForm').reset();
             document.getElementById('auth-screen').style.display = 'flex';
         }
 
-        function switchTab(tabId) {
+        function switchTab(tabId, event) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            
+            if(event) {
+                event.currentTarget.classList.add('active');
+            } else {
+                document.querySelector(`.nav-item[onclick*="${tabId}"]`).classList.add('active');
+            }
+            
             document.getElementById(`${tabId}-view`).classList.add('active');
+            
+            // Мобильді құрылғыда мәзірден бірдеңе таңдаған соң мәзірді жабу
+            if (window.innerWidth <= 868) {
+                document.getElementById('sidebar').classList.remove('mobile-open');
+            }
+            
             renderAll();
         }
 
