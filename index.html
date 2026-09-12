@@ -115,38 +115,10 @@
         /* Hero Banner */
         .hero {
             background: linear-gradient(135deg, #BD6D18 0%, #4A2402 100%);
-            color: white; padding: 40px; border-radius: 24px; margin-bottom: 24px;
-            display: flex; align-items: center; justify-content: space-between; gap: 32px; overflow: hidden;
+            color: white; padding: 48px 40px; border-radius: 24px; margin-bottom: 24px;
         }
-        .hero-text { flex: 1; }
         .hero-text h2 { font-size: 32px; font-weight: 800; margin-bottom: 12px; line-height: 1.2; }
-        .hero-text p { font-size: 15px; opacity: 0.9; line-height: 1.6; max-width: 560px; }
-
-        /* Hero Photo */
-        .hero-photo-wrapper {
-            position: relative;
-            width: 220px;
-            height: 250px;
-            border-radius: 20px;
-            overflow: hidden;
-            flex-shrink: 0;
-            background: transparent;
-        }
-
-        .hero-photo-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top center;
-            border-radius: 20px;
-            opacity: 0.95;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
-            transition: transform 0.2s;
-        }
-        .hero-photo-wrapper img.editable:hover {
-            transform: scale(1.03);
-            filter: brightness(1.05) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
-        }
+        .hero-text p { font-size: 16px; opacity: 0.9; line-height: 1.6; max-width: 700px; }
 
         .registration-banner {
             background: var(--surface); border: 2px solid #25D366; border-radius: 20px;
@@ -176,8 +148,6 @@
         .badge { display: inline-block; padding: 4px 10px; background: var(--primary-light); color: var(--primary); border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 10px; align-self: flex-start; }
 
         @media (max-width: 868px) {
-            .hero { flex-direction: column-reverse; text-align: center; }
-            .hero-text p { margin: 0 auto; }
             .registration-banner { flex-direction: column; text-align: center; justify-content: center; }
             
             .sidebar { 
@@ -232,9 +202,6 @@
         </div>
     </div>
 
-    <!-- Жасырын файл таңдағыш (Админ басты беттегі фотоны ауыстыруы үшін) -->
-    <input type="file" id="heroPhotoInput" style="display: none;" accept="image/*" onchange="handleHeroPhotoUpload(this)">
-
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="brand-logo">adi<span>.</span></div>
@@ -259,10 +226,6 @@
                 <div class="hero-text">
                     <h2>Adilet agai-дан дүниежүзі тарихы</h2>
                     <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы. Қажетті чеклисттерді жүктеп алыңыз немесе видео нұсқа талдауларды қараңыз.</p>
-                </div>
-                <div class="hero-photo-wrapper">
-                    <!-- Басты беттегі сурет динаимкалық жүктеледі -->
-                    <img id="heroTeacherImg" alt="Жеткерген Әділет">
                 </div>
             </div>
 
@@ -415,42 +378,6 @@
         }
         localStorage.setItem('adilet_users', JSON.stringify(usersDB));
 
-        // Басты беттегі суретті жүктеу/көрсету логикасы
-        function updateHeroPhotoDisplay() {
-            const imgEl = document.getElementById('heroTeacherImg');
-            const savedHeroPhoto = localStorage.getItem('adilet_hero_photo');
-            
-            if (savedHeroPhoto) {
-                imgEl.src = savedHeroPhoto;
-            } else {
-                // Бастапқы әдепкі сапалы портрет сурет (немесе қаласаңыз өзіңіздікіне ауыстыра аласыз)
-                imgEl.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80';
-            }
-
-            if (isAdmin) {
-                imgEl.classList.add('editable');
-                imgEl.title = "Суретті ауыстыру үшін басыңыз";
-                imgEl.onclick = function() {
-                    document.getElementById('heroPhotoInput').click();
-                };
-            } else {
-                imgEl.classList.remove('editable');
-                imgEl.title = "";
-                imgEl.onclick = null;
-            }
-        }
-
-        function handleHeroPhotoUpload(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    localStorage.setItem('adilet_hero_photo', e.target.result);
-                    updateHeroPhotoDisplay();
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');
@@ -541,7 +468,6 @@
                 el.style.display = isAdmin ? 'inline-flex' : 'none';
             });
 
-            updateHeroPhotoDisplay();
             renderEraTabsUI();
             renderAll();
         }
@@ -551,7 +477,6 @@
             isAdmin = false;
             document.getElementById('loginForm').reset();
             document.getElementById('auth-screen').style.display = 'flex';
-            updateHeroPhotoDisplay();
         }
 
         function switchTab(tabId, event) {
@@ -747,11 +672,6 @@
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
-
-        // Бет жүктелгенде басты беттегі фотоны орнату
-        window.onload = function() {
-            updateHeroPhotoDisplay();
-        };
     </script>
 </body>
 </html>
