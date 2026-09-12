@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adilet agai - Дүниежүзі тарихы</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>adi. - Дүниежүзі тарихы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #BD6D18;
@@ -12,149 +12,201 @@
             --primary-light: #fdf6ee;
             --bg: #F8F9FA;
             --surface: #FFFFFF;
-            --text: #2D3748;
+            --text: #1A202C;
             --text-muted: #718096;
             --border: #E2E8F0;
             --danger: #E53E3E;
             --whatsapp: #25D366;
-            --radius: 14px;
+            --radius: 16px;
             --sidebar-width: 280px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg); color: var(--text); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* --- Mobile Toggle & Header --- */
-        .top-bar {
-            display: none;
-            position: fixed; top: 0; left: 0; right: 0; height: 60px;
-            background: var(--surface); border-bottom: 1px solid var(--border);
-            align-items: center; justify-content: space-between; padding: 0 16px; z-index: 900;
+        /* --- Stylish Logo --- */
+        .brand-logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #BD6D18 0%, #F59E0B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1.5px;
+            cursor: pointer;
+            user-select: none;
         }
-        .toggle-btn {
-            background: transparent; border: 1px solid var(--border);
-            padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 18px;
-            display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--text);
+        .brand-logo span { color: #BD6D18; -webkit-text-fill-color: #BD6D18; }
+
+        /* --- Floating Toggle Button (When Sidebar Collapsed) --- */
+        .floating-toggle-btn {
+            position: fixed; top: 16px; left: 16px; z-index: 850;
+            background: var(--surface); border: 1px solid var(--border);
+            width: 44px; height: 44px; border-radius: 12px; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: var(--text); transition: all 0.2s;
         }
+        .floating-toggle-btn:hover { background: var(--primary-light); color: var(--primary); }
 
         /* --- Auth Screen Styling --- */
         #auth-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #fdf6ee 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, #fdf6ee 0%, #cbd5e0 100%);
             display: flex; justify-content: center; align-items: center; z-index: 2000;
         }
         .auth-box {
-            background: var(--surface); padding: 40px; border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 90%; max-width: 400px; text-align: center;
+            background: var(--surface); padding: 40px; border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08); width: 90%; max-width: 420px; text-align: center;
         }
-        .auth-box h2 { color: var(--primary); margin-bottom: 24px; font-size: 24px; }
+        .auth-box h2 { margin-bottom: 24px; }
         .auth-tabs { display: flex; margin-bottom: 24px; border-bottom: 2px solid var(--border); }
         .auth-tab {
-            flex: 1; padding: 12px; cursor: pointer; font-weight: 600; color: var(--text-muted); transition: all 0.3s;
+            flex: 1; padding: 12px; cursor: pointer; font-weight: 700; color: var(--text-muted); transition: all 0.3s;
         }
         .auth-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); margin-bottom: -2px; }
         
         .form-group { margin-bottom: 16px; text-align: left; }
-        .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
-        .form-control { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; outline: none; }
-        .form-control:focus { border-color: var(--primary); }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+        .form-control { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; outline: none; transition: 0.2s; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(189, 109, 24, 0.1); }
         
-        .btn { width: 100%; padding: 12px; border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+        .btn { width: 100%; padding: 12px 18px; border: none; border-radius: var(--radius); font-weight: 700; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-size: 14px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-hover); }
-        .btn-whatsapp { background: var(--whatsapp); color: white; }
-        .btn-whatsapp:hover { background: #20ba5a; }
+        .btn-whatsapp { background: var(--whatsapp); color: white; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3); }
+        .btn-whatsapp:hover { background: #20ba5a; transform: translateY(-1px); }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
         .btn-outline:hover { background: #EDF2F7; }
+        .btn-admin-quick { background: #FFFBEB; border: 1px dashed var(--primary); color: var(--primary); margin-top: 14px; }
+        .btn-admin-quick:hover { background: var(--primary-light); }
         .btn-danger { background: #FFF5F5; color: var(--danger); border: 1px solid #FEB2B2; }
         .btn-danger:hover { background: var(--danger); color: white; }
 
-        /* --- Sidebar Navigation --- */
+        /* --- Sidebar --- */
         .sidebar {
             width: var(--sidebar-width); background: var(--surface); border-right: 1px solid var(--border);
             padding: 24px; display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0;
-            z-index: 1000; transition: transform 0.3s ease;
+            z-index: 1000; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .sidebar.collapsed { transform: translateX(-100%); }
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-        .brand { font-size: 20px; font-weight: 700; color: var(--primary); }
+        
+        /* Button inside panel (top right edge) */
+        .sidebar-close-btn {
+            background: var(--bg); border: 1px solid var(--border);
+            width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-muted); transition: 0.2s;
+        }
+        .sidebar-close-btn:hover { background: var(--primary-light); color: var(--primary); }
+
         .nav-list { list-style: none; display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
-        .nav-item { padding: 12px 16px; border-radius: var(--radius); color: var(--text-muted); font-weight: 500; cursor: pointer; transition: all 0.2s; display: flex; justify-content: space-between; text-decoration: none; }
-        .nav-item:hover, .nav-item.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+        .nav-item { padding: 12px 16px; border-radius: var(--radius); color: var(--text-muted); font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; justify-content: space-between; text-decoration: none; }
+        .nav-item:hover, .nav-item.active { background: var(--primary-light); color: var(--primary); }
         
         .user-controls { padding-top: 16px; border-top: 1px solid var(--border); }
-        .user-email { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; text-align: center; word-break: break-all; }
+        .user-email { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; text-align: center; word-break: break-all; font-weight: 500; }
 
-        /* --- Main Layout --- */
-        .main-content { margin-left: var(--sidebar-width); flex-grow: 1; padding: 40px; transition: margin-left 0.3s ease; width: calc(100% - var(--sidebar-width)); }
+        /* --- Main Content Layout --- */
+        .main-content { margin-left: var(--sidebar-width); flex-grow: 1; padding: 40px; transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: calc(100% - var(--sidebar-width)); }
         .main-content.expanded { margin-left: 0; width: 100%; }
 
         .header { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-        .header h1 { font-size: 28px; font-weight: 700; }
+        .header h1 { font-size: 28px; font-weight: 800; }
         
-        /* Era Tabs with '+' button */
+        /* Era Tabs */
         .era-tabs-container { display: flex; align-items: center; gap: 8px; overflow-x: auto; margin-bottom: 28px; padding-bottom: 4px; }
         .era-tabs { display: flex; gap: 8px; background: var(--surface); padding: 6px; border-radius: var(--radius); border: 1px solid var(--border); }
-        .era-tab { padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: 500; font-size: 14px; color: var(--text-muted); transition: all 0.2s; white-space: nowrap; }
+        .era-tab { padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--text-muted); transition: all 0.2s; white-space: nowrap; }
         .era-tab.active { background: var(--primary); color: white; }
-        .btn-add-era { background: var(--surface); border: 1px dashed var(--primary); color: var(--primary); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .btn-add-era:hover { background: var(--primary-light); }
+        .btn-add-era { background: var(--surface); border: 1px dashed var(--primary); color: var(--primary); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
 
-        /* Cards & Grid */
+        /* --- Hero Banner & Photo Shimmer Effect --- */
+        .hero {
+            background: linear-gradient(135deg, #BD6D18 0%, #4A2402 100%);
+            color: white; padding: 40px; border-radius: 24px; margin-bottom: 24px;
+            display: flex; align-items: center; justify-content: space-between; gap: 32px; overflow: hidden;
+            box-shadow: 0 12px 30px rgba(189, 109, 24, 0.2);
+        }
+        .hero-text { flex: 1; }
+        .hero-text h2 { font-size: 32px; font-weight: 800; margin-bottom: 12px; line-height: 1.2; }
+        .hero-text p { font-size: 15px; opacity: 0.9; line-height: 1.6; max-width: 560px; }
+
+        /* Photo Wrapper with Crop & Aura Shimmer Animation */
+        .hero-photo-wrapper {
+            position: relative; width: 210px; height: 230px; border-radius: 20px;
+            overflow: hidden; flex-shrink: 0; border: 3px solid rgba(255, 255, 255, 0.4);
+            animation: auraShimmer 3.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes auraShimmer {
+            0% {
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.3);
+                border-color: rgba(255, 255, 255, 0.6);
+            }
+            100% {
+                box-shadow: 0 0 35px rgba(255, 215, 0, 0.9), 0 0 60px rgba(189, 109, 24, 0.6);
+                border-color: rgba(255, 215, 0, 0.95);
+            }
+        }
+
+        /* Pure CSS crop to eliminate bottom orange banner text from photo */
+        .hero-photo-wrapper img {
+            width: 100%; height: 138%; object-fit: cover; object-position: top center;
+        }
+
+        /* --- Standalone Registration Banner --- */
+        .registration-banner {
+            background: var(--surface); border: 2px solid #25D366; border-radius: 20px;
+            padding: 24px 32px; margin-bottom: 36px; display: flex; align-items: center; justify-content: space-between;
+            gap: 20px; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.12); flex-wrap: wrap;
+        }
+        .reg-banner-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+        .reg-banner-desc { font-size: 14px; color: var(--text-muted); }
+
+        /* Grid & Cards */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
         .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
         .card-preview { width: 100%; height: 170px; object-fit: cover; background: #edf2f7; }
         .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
         .card-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
         .card-actions { display: flex; gap: 8px; align-items: center; }
 
-        /* Hero Banner */
-        .hero { background: linear-gradient(135deg, #BD6D18, #6d3a05); color: white; padding: 40px; border-radius: 20px; margin-bottom: 40px; display: flex; flex-direction: column; gap: 20px; }
-        .hero h2 { font-size: 32px; line-height: 1.2; }
-        .hero p { font-size: 16px; opacity: 0.9; max-width: 600px; }
-        .hero-btn-group { display: flex; gap: 12px; flex-wrap: wrap; }
-
         /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 3000; }
-        .modal { background: var(--surface); padding: 32px; border-radius: 20px; width: 90%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+        .modal { background: var(--surface); padding: 32px; border-radius: 24px; width: 90%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
         .modal h3 { margin-bottom: 20px; font-size: 20px; }
         .image-preview-box { width: 100%; height: 140px; border-radius: 10px; border: 2px dashed var(--border); margin-top: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f7fafc; }
         .image-preview-box img { width: 100%; height: 100%; object-fit: cover; }
 
         .view-section { display: none; }
         .view-section.active { display: block; }
-        .badge { display: inline-block; padding: 4px 10px; background: var(--primary-light); color: var(--primary); border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 10px; align-self: flex-start; }
+        .badge { display: inline-block; padding: 4px 10px; background: var(--primary-light); color: var(--primary); border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 10px; align-self: flex-start; }
 
-        /* Responsive Breakpoints */
-        @media (max-width: 768px) {
-            .top-bar { display: flex; }
-            .sidebar { transform: translateX(-100%); top: 60px; height: calc(100vh - 60px); }
-            .sidebar.active-mobile { transform: translateX(0); }
-            .main-content { margin-left: 0; width: 100%; padding: 20px; padding-top: 80px; }
+        @media (max-width: 868px) {
+            .hero { flex-direction: column-reverse; text-align: center; }
+            .hero-text p { margin: 0 auto; }
+            .registration-banner { flex-direction: column; text-align: center; justify-content: center; }
+            .sidebar { transform: translateX(-100%); }
+            .main-content { margin-left: 0; width: 100%; padding: 20px; padding-top: 70px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Mobile Header -->
-    <header class="top-bar">
-        <button class="toggle-btn" onclick="toggleSidebar()">
-            <span>☰</span> Мәзір
-        </button>
-        <div class="brand" style="font-size: 16px;">📚 Adilet agai</div>
-    </header>
+    <!-- Floating Toggle Button for Sidebar -->
+    <button class="floating-toggle-btn" id="floatingToggle" onclick="toggleSidebar()" title="Мәзірді ашу/жабу">☰</button>
 
     <!-- 1. Auth Screen -->
     <div id="auth-screen">
         <div class="auth-box">
-            <h2>Adilet agai</h2>
+            <div class="brand-logo" style="margin-bottom: 16px;">adi<span>.</span></div>
             <div class="auth-tabs">
                 <div class="auth-tab active" onclick="toggleAuthTab('login')">Кіру</div>
                 <div class="auth-tab" onclick="toggleAuthTab('register')">Тіркелу</div>
             </div>
 
+            <!-- Login Form -->
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label>Email</label>
@@ -168,6 +220,7 @@
                 <button type="submit" class="btn btn-primary">Жүйеге кіру</button>
             </form>
 
+            <!-- Register Form -->
             <form id="registerForm" style="display: none;" onsubmit="handleRegister(event)">
                 <div class="form-group">
                     <label>Email</label>
@@ -180,14 +233,18 @@
                 <p id="regError" style="color: var(--danger); font-size: 13px; margin-bottom: 10px; display: none;">Бұл email тіркелген!</p>
                 <button type="submit" class="btn btn-primary">Тіркелу</button>
             </form>
+
+            <!-- Quick Admin Login Button -->
+            <button type="button" class="btn btn-admin-quick" onclick="quickAdminLogin()">🔑 Админ ретінде кіру</button>
         </div>
     </div>
 
-    <!-- 2. Main Platform -->
+    <!-- 2. Sidebar Navigation -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="brand">📚 Adilet agai</div>
-            <button class="toggle-btn" style="border:none;" onclick="toggleSidebar()">✕</button>
+            <div class="brand-logo">adi<span>.</span></div>
+            <!-- Toggle button inside top right edge of panel -->
+            <button class="sidebar-close-btn" onclick="toggleSidebar()" title="Панельді жабу">‹</button>
         </div>
         <ul class="nav-list">
             <li class="nav-item active" onclick="switchTab('home')">Басты бет</li>
@@ -202,27 +259,34 @@
         </div>
     </aside>
 
+    <!-- 3. Main Workspace -->
     <main class="main-content" id="mainContent">
         <!-- Home View -->
         <section id="home-view" class="view-section active">
-            <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-                <button class="toggle-btn" onclick="toggleSidebar()" title="Сайдбарды жасу/ашу">
-                    <span>☰</span> Панельді жасыру/ашу
-                </button>
-            </div>
+            <!-- Hero Section -->
             <div class="hero">
-                <div>
+                <div class="hero-text">
                     <h2>Adilet agai-дан дүниежүзі тарихы</h2>
-                    <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы. Қажетті чеклисттерді жүктеп алыңыз немесе видео нұсқа талдауларды қараңыз.</p>
+                    <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы. Қажетті чеклисттерді жүктеп алыңыз немесе видео нұсқа талдауларын қараңыз.</p>
                 </div>
-                <div class="hero-btn-group">
-                    <!-- WhatsApp тіркелу батырмасы -->
-                    <a href="https://wa.me/77471401404?text=Саламатсыз%20ба!%20Дүниежүзі%20тарихы%20курсына%20тіркелу%20туралы%20білгім%20келеді." target="_blank" class="btn btn-whatsapp" style="width: auto; padding: 14px 24px;">
-                        💬 Курсқа тіркелу (WhatsApp)
-                    </a>
+                <!-- Photo with Shimmer Effect & Text Cropped Out -->
+                <div class="hero-photo-wrapper">
+                    <img src="https://i.ibb.co/3sX8qfS/PHOTO-2026-09-12-19-38-44.jpg" alt="Жеткерген Әділет" id="heroTeacherImg">
                 </div>
             </div>
-            <h3 style="margin-bottom: 20px;">Соңғы қосылған чеклисттер</h3>
+
+            <!-- Standalone WhatsApp Registration Banner -->
+            <div class="registration-banner">
+                <div>
+                    <div class="reg-banner-title">🚀 ҰБТ Дүниежүзі тарихы онлайн курсына тіркелу</div>
+                    <div class="reg-banner-desc">Жеткерген Әділетпен бірге жеке дайындық жоспарын құрып, жоғары балл жинаңыз.</div>
+                </div>
+                <a href="https://wa.me/77471401404?text=Саламатсыз%20ба!%20Дүниежүзі%20тарихы%20курсына%20тіркелу%20туралы%20білгім%20келеді." target="_blank" class="btn btn-whatsapp" style="width: auto; padding: 14px 28px;">
+                    💬 WhatsApp арқылы тіркелу
+                </a>
+            </div>
+
+            <h3 style="margin-bottom: 20px; font-weight: 800;">Соңғы қосылған чеклисттер</h3>
             <div id="home-checklists-preview" class="grid"></div>
         </section>
 
@@ -320,7 +384,12 @@
     </div>
 
     <script>
-        // --- Dynamic Eras Storage ---
+        // Updated Admin Credentials
+        const ADMIN_EMAIL = "zhtkrgnadlt3245@gmail.com";
+        const ADMIN_PASS = "dimashbratandyuvazhayiu";
+        const ADMIN_HASH = btoa(ADMIN_PASS);
+
+        // Dynamic Eras
         let erasMap = JSON.parse(localStorage.getItem('adilet_eras')) || {
             'ancient': 'Ежелгі заман',
             'medieval': 'Орта ғасырлар',
@@ -336,11 +405,10 @@
             book: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&q=80'
         };
 
-        // --- Initial Content DB ---
         let contentDB = JSON.parse(localStorage.getItem('adilet_content_db')) || {
             checklists: [
                 { id: 1, title: 'Ежелгі Египет пен Месопотамия', era: 'ancient', fileUrl: '#', coverUrl: defaultImages.ancient },
-                { id: 2, title: 'Орта ғасырлардағы Еуропа', era: 'medieval', fileUrl: '#', coverUrl: defaultImages.medieval }
+                { id: 2, title: 'Орта ғасырлардағы Еуропа мемлекеттері', era: 'medieval', fileUrl: '#', coverUrl: defaultImages.medieval }
             ],
             analyses: [
                 { id: 101, title: 'ҰБТ Дүниежүзі тарихы нұсқа талдау #1', era: 'ancient', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', coverUrl: '' }
@@ -355,26 +423,25 @@
         let currentFilters = { checklists: 'all', analyses: 'all' };
         let customPreviewData = '';
 
-        // --- Local Auth ---
+        // Initialize User Storage
         let usersDB = JSON.parse(localStorage.getItem('adilet_users')) || [];
-        if(usersDB.length === 0) {
-            usersDB.push({ email: 'admin@adilet.kz', passHash: 'YWRtaW4xMjM=', role: 'admin' });
-            localStorage.setItem('adilet_users', JSON.stringify(usersDB));
+        // Ensure standard admin user is configured
+        const adminIndex = usersDB.findIndex(u => u.role === 'admin');
+        if (adminIndex !== -1) {
+            usersDB[adminIndex] = { email: ADMIN_EMAIL, passHash: ADMIN_HASH, role: 'admin' };
+        } else {
+            usersDB.push({ email: ADMIN_EMAIL, passHash: ADMIN_HASH, role: 'admin' });
         }
+        localStorage.setItem('adilet_users', JSON.stringify(usersDB));
 
         // --- Sidebar Collapsing Logic ---
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');
-            if (window.innerWidth <= 768) {
-                sidebar.classList.toggle('active-mobile');
-            } else {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('expanded');
-            }
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
         }
 
-        // --- Dynamic Era Management ---
         function saveEras() {
             localStorage.setItem('adilet_eras', JSON.stringify(erasMap));
         }
@@ -390,7 +457,6 @@
                 container.innerHTML = html;
             });
 
-            // Update Add Modal Era Dropdown
             const select = document.getElementById('addEra');
             select.innerHTML = '';
             for(let key in erasMap) {
@@ -408,7 +474,7 @@
             }
         }
 
-        // --- Auth UI Logics ---
+        // --- Auth Logics ---
         function toggleAuthTab(tab) {
             document.querySelectorAll('.auth-tab').forEach(el => el.classList.remove('active'));
             if(tab === 'login') {
@@ -420,6 +486,13 @@
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('registerForm').style.display = 'block';
             }
+        }
+
+        function quickAdminLogin() {
+            document.getElementById('loginEmail').value = ADMIN_EMAIL;
+            document.getElementById('loginPass').value = ADMIN_PASS;
+            const user = usersDB.find(u => u.email === ADMIN_EMAIL && u.passHash === ADMIN_HASH);
+            if(user) authorizeUser(user);
         }
 
         function handleRegister(e) {
@@ -470,11 +543,6 @@
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             event.currentTarget.classList.add('active');
             document.getElementById(`${tabId}-view`).classList.add('active');
-            
-            // Auto close mobile sidebar after click
-            if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').classList.remove('active-mobile');
-            }
             renderAll();
         }
 
@@ -490,7 +558,7 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // --- Render Functions ---
+        // --- Render Content ---
         function renderAll() {
             renderCategory('checklists');
             renderCategory('analyses');
@@ -578,7 +646,7 @@
             `).join('');
         }
 
-        // --- Add Content Modal and Preview Handling ---
+        // --- Modal & Photo Preview Handlers ---
         function openAddModal(type) {
             document.getElementById('addType').value = type;
             document.getElementById('eraSelectGroup').style.display = type === 'books' ? 'none' : 'block';
