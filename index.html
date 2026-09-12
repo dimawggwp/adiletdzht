@@ -1,3 +1,6 @@
+GitHub-та бірден кедергісіз істеуі үшін суретті тікелей онлайн сілтемемен және үстіндегі мәтінімен толық дайын код ретінде жинап бердім:
+
+```html
 <!DOCTYPE html>
 <html lang="kk">
 <head>
@@ -141,15 +144,8 @@
 
         @media (max-width: 868px) {
             .registration-banner { flex-direction: column; text-align: center; justify-content: center; }
-            
-            .sidebar { 
-                transform: translateX(-100%);
-                box-shadow: 10px 0 30px rgba(0,0,0,0.1); 
-            }
-            .sidebar.mobile-open { 
-                transform: translateX(0);
-            }
-            
+            .sidebar { transform: translateX(-100%); box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
+            .sidebar.mobile-open { transform: translateX(0); }
             .main-content { margin-left: 0; width: 100%; padding: 20px; padding-top: 70px; }
         }
     </style>
@@ -215,8 +211,22 @@
     <main class="main-content" id="mainContent">
         <section id="home-view" class="view-section active">
             
-            <!-- Басты блоктың орнына қойылған сурет -->
-            <img src="image_800140.jpg" alt="Дүниежүзі тарихы - Эволюция" style="width: 100%; height: auto; max-height: 350px; border-radius: 24px; margin-bottom: 24px; object-fit: cover; object-position: center;">
+            <!-- Сурет пен Мәтін біріктірілген Басты Блок -->
+            <div style="
+                background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)), url('https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200&q=80') center/cover no-repeat, #BD6D18;
+                border-radius: 24px;
+                padding: 48px 32px;
+                color: white;
+                margin-bottom: 24px;
+                min-height: 220px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            ">
+                <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 8px; color: #ffffff;">Дүниежүзі тарихы - Эволюция</h1>
+                <p style="font-size: 16px; opacity: 0.95; color: #f7fafc; max-width: 650px; line-height: 1.5;">ҰБТ-ға тиімді дайындалуға арналған толық материалдар, чеклисттер мен видео талдаулар базасы.</p>
+            </div>
 
             <div class="registration-banner">
                 <div>
@@ -321,12 +331,6 @@
     </div>
 
     <script>
-        /* 
-           НАЗАР АУДАРЫҢЫЗ: Деректер барлық қолданушыларға көрінуі үшін (Синхронизация),
-           төмендегі localStorage жүйесін Firebase немесе өз серверіңіздің API-іне 
-           ауыстыруыңыз қажет. Әзірше сайтты тексеру үшін браузер жадында жұмыс істейді.
-        */
-
         const ADMIN_EMAIL = "zhtkrgnadlt3245@gmail.com";
         const ADMIN_PASS = "dimashbratandyuvazhayiu";
         const ADMIN_HASH = btoa(ADMIN_PASS);
@@ -670,3 +674,5 @@
     </script>
 </body>
 </html>
+
+```
