@@ -80,7 +80,7 @@
             width: var(--sidebar-width); background: var(--surface); border-right: 1px solid var(--border);
             padding: 24px; display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0;
             z-index: 1000; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateX(0); /* Desktop default */
+            transform: translateX(0);
         }
         .sidebar.collapsed { transform: translateX(-100%); }
         
@@ -126,7 +126,7 @@
         .hero-photo-wrapper {
             position: relative;
             width: 220px;
-            height: 250px; /* Суреттің пропорциясына сәйкес ұзартылды */
+            height: 250px;
             border-radius: 20px;
             overflow: hidden;
             flex-shrink: 0;
@@ -137,10 +137,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: top center; /* Адамның беті кесілмеуі үшін */
+            object-position: top center;
             border-radius: 20px;
             opacity: 0.95;
             filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+            transition: transform 0.2s;
+        }
+        .hero-photo-wrapper img.editable:hover {
+            transform: scale(1.03);
+            filter: brightness(1.05) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
         }
 
         .registration-banner {
@@ -170,19 +175,17 @@
         .view-section.active { display: block; }
         .badge { display: inline-block; padding: 4px 10px; background: var(--primary-light); color: var(--primary); border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 10px; align-self: flex-start; }
 
-        /* Мобильді бейімделу (Responsive) */
         @media (max-width: 868px) {
             .hero { flex-direction: column-reverse; text-align: center; }
             .hero-text p { margin: 0 auto; }
             .registration-banner { flex-direction: column; text-align: center; justify-content: center; }
             
-            /* Sidebar-ты мобильді құрылғыға реттеу */
             .sidebar { 
-                transform: translateX(-100%); /* Жабық тұрады */
+                transform: translateX(-100%);
                 box-shadow: 10px 0 30px rgba(0,0,0,0.1); 
             }
             .sidebar.mobile-open { 
-                transform: translateX(0); /* Ашылған кезде */
+                transform: translateX(0);
             }
             
             .main-content { margin-left: 0; width: 100%; padding: 20px; padding-top: 70px; }
@@ -229,6 +232,9 @@
         </div>
     </div>
 
+    <!-- Жасырын файл таңдағыш (Админ басты беттегі фотоны ауыстыруы үшін) -->
+    <input type="file" id="heroPhotoInput" style="display: none;" accept="image/*" onchange="handleHeroPhotoUpload(this)">
+
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="brand-logo">adi<span>.</span></div>
@@ -255,8 +261,8 @@
                     <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы. Қажетті чеклисттерді жүктеп алыңыз немесе видео нұсқа талдауларды қараңыз.</p>
                 </div>
                 <div class="hero-photo-wrapper">
-                    <!-- Пайдаланушы жіберген сурет орнатылды -->
-                    <img src="92b915bd-ffca-4fdd-b2af-7a445ec41d36.jpeg" alt="Жеткерген Әділет" id="heroTeacherImg">
+                    <!-- Басты беттегі сурет динаимкалық жүктеледі -->
+                    <img id="heroTeacherImg" alt="Жеткерген Әділет">
                 </div>
             </div>
 
@@ -409,7 +415,42 @@
         }
         localStorage.setItem('adilet_users', JSON.stringify(usersDB));
 
-        // Мобильді мәзірді ашу/жабу функциясы жаңартылды
+        // Басты беттегі суретті жүктеу/көрсету логикасы
+        function updateHeroPhotoDisplay() {
+            const imgEl = document.getElementById('heroTeacherImg');
+            const savedHeroPhoto = localStorage.getItem('adilet_hero_photo');
+            
+            if (savedHeroPhoto) {
+                imgEl.src = savedHeroPhoto;
+            } else {
+                // Бастапқы әдепкі сапалы портрет сурет (немесе қаласаңыз өзіңіздікіне ауыстыра аласыз)
+                imgEl.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80';
+            }
+
+            if (isAdmin) {
+                imgEl.classList.add('editable');
+                imgEl.title = "Суретті ауыстыру үшін басыңыз";
+                imgEl.onclick = function() {
+                    document.getElementById('heroPhotoInput').click();
+                };
+            } else {
+                imgEl.classList.remove('editable');
+                imgEl.title = "";
+                imgEl.onclick = null;
+            }
+        }
+
+        function handleHeroPhotoUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    localStorage.setItem('adilet_hero_photo', e.target.result);
+                    updateHeroPhotoDisplay();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');
@@ -500,6 +541,7 @@
                 el.style.display = isAdmin ? 'inline-flex' : 'none';
             });
 
+            updateHeroPhotoDisplay();
             renderEraTabsUI();
             renderAll();
         }
@@ -509,6 +551,7 @@
             isAdmin = false;
             document.getElementById('loginForm').reset();
             document.getElementById('auth-screen').style.display = 'flex';
+            updateHeroPhotoDisplay();
         }
 
         function switchTab(tabId, event) {
@@ -523,7 +566,6 @@
             
             document.getElementById(`${tabId}-view`).classList.add('active');
             
-            // Мобильді құрылғыда мәзірден бірдеңе таңдаған соң мәзірді жабу
             if (window.innerWidth <= 868) {
                 document.getElementById('sidebar').classList.remove('mobile-open');
             }
@@ -705,6 +747,11 @@
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
+
+        // Бет жүктелгенде басты беттегі фотоны орнату
+        window.onload = function() {
+            updateHeroPhotoDisplay();
+        };
     </script>
 </body>
 </html>
