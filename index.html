@@ -45,10 +45,25 @@
         }
         .floating-toggle-btn:hover { background: var(--primary-light); color: var(--primary); }
 
+        /* Initial data-loading overlay (shown while shared data is fetched) */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #fdf6ee 0%, #cbd5e0 100%);
+            display: flex; justify-content: center; align-items: center; z-index: 2500;
+        }
+        .loading-box { text-align: center; }
+        .loading-spinner {
+            width: 44px; height: 44px; border-radius: 50%;
+            border: 4px solid rgba(189,109,24,0.2); border-top-color: var(--primary);
+            margin: 0 auto 16px; animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-box p { color: var(--text-muted); font-weight: 600; font-size: 14px; }
+
         #auth-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #fdf6ee 0%, #cbd5e0 100%);
-            display: flex; justify-content: center; align-items: center; z-index: 2000;
+            display: none; justify-content: center; align-items: center; z-index: 2000;
         }
         .auth-box {
             background: var(--surface); padding: 40px; border-radius: 24px;
@@ -69,6 +84,7 @@
         .btn { width: 100%; padding: 12px 18px; border: none; border-radius: var(--radius); font-weight: 700; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-size: 14px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-hover); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
         .btn-whatsapp { background: var(--whatsapp); color: white; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3); }
         .btn-whatsapp:hover { background: #20ba5a; transform: translateY(-1px); }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
@@ -105,12 +121,26 @@
 
         .header { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
         .header h1 { font-size: 28px; font-weight: 800; }
-        
-        .era-tabs-container { display: flex; align-items: center; gap: 8px; overflow-x: auto; margin-bottom: 28px; padding-bottom: 4px; }
-        .era-tabs { display: flex; gap: 8px; background: var(--surface); padding: 6px; border-radius: var(--radius); border: 1px solid var(--border); }
-        .era-tab { padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--text-muted); transition: all 0.2s; white-space: nowrap; }
-        .era-tab.active { background: var(--primary); color: white; }
-        .btn-add-era { background: var(--surface); border: 1px dashed var(--primary); color: var(--primary); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+
+        /* Hero banner (replaces the plain evolution image) */
+        .hero-banner {
+            position: relative;
+            width: 100%;
+            min-height: 220px;
+            border-radius: 24px;
+            margin-bottom: 24px;
+            overflow: hidden;
+            background-image: linear-gradient(135deg, rgba(189,109,24,0.90) 0%, rgba(58,33,8,0.90) 100%), url('image_800140.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            padding: 40px 44px;
+        }
+        .hero-overlay-text { max-width: 640px; }
+        .hero-overlay-text h1 { color: #fff; font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 12px; }
+        .hero-overlay-text p { color: rgba(255,255,255,0.92); font-size: 15px; line-height: 1.6; }
 
         .registration-banner {
             background: var(--surface); border: 2px solid #25D366; border-radius: 20px;
@@ -139,9 +169,13 @@
         .view-section.active { display: block; }
         .badge { display: inline-block; padding: 4px 10px; background: var(--primary-light); color: var(--primary); border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 10px; align-self: flex-start; }
 
+        .sync-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 8px; }
+
         @media (max-width: 868px) {
             .registration-banner { flex-direction: column; text-align: center; justify-content: center; }
-            
+            .hero-banner { padding: 24px; min-height: 180px; }
+            .hero-overlay-text h1 { font-size: 20px; }
+
             .sidebar { 
                 transform: translateX(-100%);
                 box-shadow: 10px 0 30px rgba(0,0,0,0.1); 
@@ -157,6 +191,13 @@
 <body>
 
     <button class="floating-toggle-btn" id="floatingToggle" onclick="toggleSidebar()" title="Мәзірді ашу/жабу">☰</button>
+
+    <div id="loading-screen">
+        <div class="loading-box">
+            <div class="loading-spinner"></div>
+            <p>Деректер жүктелуде...</p>
+        </div>
+    </div>
 
     <div id="auth-screen">
         <div class="auth-box">
@@ -214,9 +255,14 @@
 
     <main class="main-content" id="mainContent">
         <section id="home-view" class="view-section active">
-            
-            <!-- Басты блоктың орнына қойылған сурет -->
-            <img src="image_800140.jpg" alt="Дүниежүзі тарихы - Эволюция" style="width: 100%; height: auto; max-height: 350px; border-radius: 24px; margin-bottom: 24px; object-fit: cover; object-position: center;">
+
+            <!-- Hero banner: evolution photo + gradient overlay + title/description -->
+            <div class="hero-banner">
+                <div class="hero-overlay-text">
+                    <h1>Adilet agai-дан дүниежүзі тарихы</h1>
+                    <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы. Қажетті чеклисттерді жүктеп алыңыз немесе видео нұсқа талдауларды қараңыз.</p>
+                </div>
+            </div>
 
             <div class="registration-banner">
                 <div>
@@ -312,6 +358,7 @@
                     <label>Сілтеме енгізіңіз</label>
                     <input type="url" id="addLink" class="form-control">
                 </div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Ескерту: файл ретінде жүктелген құжаттар тек осы құрылғыда/сессияда ашылады. Барлық қолданушыларға көрінетін файл үшін "Сілтеме" опциясын пайдаланып, дайын жүктеу сілтемесін (Google Drive, т.б.) қойыңыз.</p>
                 <div style="display: flex; gap: 8px; margin-top: 24px;">
                     <button type="button" class="btn btn-outline" onclick="closeModal('addModal')">Бас тарту</button>
                     <button type="submit" class="btn btn-primary">Қосу</button>
@@ -321,17 +368,27 @@
     </div>
 
     <script>
-        /* 
-           НАЗАР АУДАРЫҢЫЗ: Деректер барлық қолданушыларға көрінуі үшін (Синхронизация),
-           төмендегі localStorage жүйесін Firebase немесе өз серверіңіздің API-іне 
-           ауыстыруыңыз қажет. Әзірше сайтты тексеру үшін браузер жадында жұмыс істейді.
+        /*
+           ЕСКЕРТУ: Бұрын деректер localStorage-те сақталатын, яғни әр қолданушының
+           өз браузерінде ғана көрінетін. Енді еразалар (дәуірлер), контент базасы
+           (checklists/analyses/books) және пайдаланушылар window.storage арқылы
+           "shared" (ортақ) жадта сақталады — осы файлды қандай құрылғыдан ашсаңыз да,
+           барлық адамдар бірдей деректерді көреді. Админ панельде бір нәрсе
+           қосылса/өшірілсе, ол өзгеріс барлық қолданушыларға автоматты түрде
+           (шамамен 20 секунд сайын) синхрондалады.
         */
 
         const ADMIN_EMAIL = "zhtkrgnadlt3245@gmail.com";
         const ADMIN_PASS = "dimashbratandyuvazhayiu";
         const ADMIN_HASH = btoa(ADMIN_PASS);
 
-        let erasMap = JSON.parse(localStorage.getItem('adilet_eras')) || {
+        const STORAGE_KEYS = {
+            eras: 'adilet:eras',
+            content: 'adilet:content_db',
+            users: 'adilet:users'
+        };
+
+        const defaultEras = {
             'ancient': 'Ежелгі заман',
             'medieval': 'Орта ғасырлар',
             'modern': 'Жаңа заман',
@@ -346,7 +403,7 @@
             book: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=800&q=80'
         };
 
-        let contentDB = JSON.parse(localStorage.getItem('adilet_content_db')) || {
+        const defaultContentDB = {
             checklists: [
                 { id: 1, title: 'Ежелгі Египет пен Месопотамия', era: 'ancient', fileUrl: '#', coverUrl: defaultImages.ancient },
                 { id: 2, title: 'Орта ғасырлардағы Еуропа мемлекеттері', era: 'medieval', fileUrl: '#', coverUrl: defaultImages.medieval }
@@ -359,19 +416,77 @@
             ]
         };
 
+        let erasMap = {};
+        let contentDB = { checklists: [], analyses: [], books: [] };
+        let usersDB = [];
+
         let currentUser = null;
         let isAdmin = false;
         let currentFilters = { checklists: 'all', analyses: 'all' };
         let customPreviewData = '';
+        let syncTimer = null;
 
-        let usersDB = JSON.parse(localStorage.getItem('adilet_users')) || [];
-        const adminIndex = usersDB.findIndex(u => u.role === 'admin');
-        if (adminIndex !== -1) {
-            usersDB[adminIndex] = { email: ADMIN_EMAIL, passHash: ADMIN_HASH, role: 'admin' };
-        } else {
-            usersDB.push({ email: ADMIN_EMAIL, passHash: ADMIN_HASH, role: 'admin' });
+        // ---------- Shared storage helpers ----------
+
+        async function fetchShared(key, fallback) {
+            try {
+                const res = await window.storage.get(key, true);
+                return res ? JSON.parse(res.value) : fallback;
+            } catch (e) {
+                // Key doesn't exist yet, or a network error — fall back to defaults
+                return fallback;
+            }
         }
-        localStorage.setItem('adilet_users', JSON.stringify(usersDB));
+
+        async function saveShared(key, value) {
+            try {
+                const res = await window.storage.set(key, JSON.stringify(value), true);
+                if (!res) console.error('Storage set returned no result for', key);
+                return !!res;
+            } catch (e) {
+                console.error('Storage error while saving', key, e);
+                alert('Деректерді сақтау кезінде қате шықты. Интернет байланысын тексеріп, қайталап көріңіз.');
+                return false;
+            }
+        }
+
+        async function saveEras() { await saveShared(STORAGE_KEYS.eras, erasMap); }
+        async function saveContent() { await saveShared(STORAGE_KEYS.content, contentDB); }
+        async function saveUsers() { await saveShared(STORAGE_KEYS.users, usersDB); }
+
+        async function ensureAdminAccount() {
+            const idx = usersDB.findIndex(u => u.role === 'admin');
+            if (idx === -1) {
+                usersDB.push({ email: ADMIN_EMAIL, passHash: ADMIN_HASH, role: 'admin' });
+                await saveUsers();
+            } else if (usersDB[idx].email !== ADMIN_EMAIL || usersDB[idx].passHash !== ADMIN_HASH) {
+                usersDB[idx] = { email: ADMIN_EMAIL, passHash: ADMIN_HASH, role: 'admin' };
+                await saveUsers();
+            }
+        }
+
+        async function loadAllSharedData() {
+            erasMap = await fetchShared(STORAGE_KEYS.eras, { ...defaultEras });
+            contentDB = await fetchShared(STORAGE_KEYS.content, JSON.parse(JSON.stringify(defaultContentDB)));
+            usersDB = await fetchShared(STORAGE_KEYS.users, []);
+            await ensureAdminAccount();
+        }
+
+        // Pulls the latest eras/content from shared storage and re-renders,
+        // so changes an admin makes on another device show up here too.
+        async function syncFromServer() {
+            erasMap = await fetchShared(STORAGE_KEYS.eras, erasMap);
+            contentDB = await fetchShared(STORAGE_KEYS.content, contentDB);
+            renderEraTabsUI();
+            renderAll();
+        }
+
+        function startBackgroundSync() {
+            if (syncTimer) clearInterval(syncTimer);
+            syncTimer = setInterval(syncFromServer, 20000);
+        }
+
+        // ---------- UI ----------
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -383,10 +498,6 @@
                 sidebar.classList.toggle('collapsed');
                 mainContent.classList.toggle('expanded');
             }
-        }
-
-        function saveEras() {
-            localStorage.setItem('adilet_eras', JSON.stringify(erasMap));
         }
 
         function renderEraTabsUI() {
@@ -407,12 +518,13 @@
             }
         }
 
-        function promptNewEra() {
+        async function promptNewEra() {
             const eraName = prompt("Жаңа дәуір/санат атауын енгізіңіз (мыс: Қайта өрлеу дәуірі):");
             if(eraName && eraName.trim() !== "") {
                 const key = 'era_' + Date.now();
                 erasMap[key] = eraName.trim();
-                saveEras();
+                const ok = await saveEras();
+                if (!ok) delete erasMap[key];
                 renderEraTabsUI();
             }
         }
@@ -430,30 +542,37 @@
             }
         }
 
-        function handleRegister(e) {
+        async function handleRegister(e) {
             e.preventDefault();
             const email = document.getElementById('regEmail').value;
             const pass = document.getElementById('regPass').value;
+
+            // Re-check against the latest shared user list before registering
+            usersDB = await fetchShared(STORAGE_KEYS.users, usersDB);
             if(usersDB.find(u => u.email === email)) {
                 document.getElementById('regError').style.display = 'block';
                 return;
             }
             const newUser = { email: email, passHash: btoa(pass), role: 'student' };
             usersDB.push(newUser);
-            localStorage.setItem('adilet_users', JSON.stringify(usersDB));
+            const ok = await saveUsers();
+            if (!ok) { usersDB.pop(); return; }
             authorizeUser(newUser);
         }
 
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPass').value;
+
+            // Pull the latest shared user list so logins work from any device
+            usersDB = await fetchShared(STORAGE_KEYS.users, usersDB);
             const user = usersDB.find(u => u.email === email && u.passHash === btoa(pass));
             if(user) authorizeUser(user);
             else document.getElementById('loginError').style.display = 'block';
         }
 
-        function authorizeUser(user) {
+        async function authorizeUser(user) {
             currentUser = user;
             isAdmin = (user.role === 'admin');
             document.getElementById('auth-screen').style.display = 'none';
@@ -463,13 +582,17 @@
                 el.style.display = isAdmin ? 'inline-flex' : 'none';
             });
 
+            // Grab the freshest content/eras right at login too
+            await syncFromServer();
             renderEraTabsUI();
             renderAll();
+            startBackgroundSync();
         }
 
         function logout() {
             currentUser = null;
             isAdmin = false;
+            if (syncTimer) clearInterval(syncTimer);
             document.getElementById('loginForm').reset();
             document.getElementById('auth-screen').style.display = 'flex';
         }
@@ -626,7 +749,7 @@
             document.getElementById('linkInputWrapper').style.display = type === 'link' ? 'block' : 'none';
         }
 
-        function handleContentAdd(e) {
+        async function handleContentAdd(e) {
             e.preventDefault();
             const sectionType = document.getElementById('addType').value;
             const title = document.getElementById('addTitle').value;
@@ -642,6 +765,8 @@
 
             if (sourceType === 'file') {
                 const fileInput = document.getElementById('addFile');
+                // Note: object URLs only work in this browser/session. For a file
+                // that every visitor can open, use the "Сілтеме" option instead.
                 newItem.fileUrl = fileInput.files.length > 0 ? URL.createObjectURL(fileInput.files[0]) : '#';
             } else {
                 const link = document.getElementById('addLink').value;
@@ -649,17 +774,25 @@
                 newItem.fileUrl = link;
             }
 
+            // Merge against the freshest shared content before pushing, so two
+            // admins editing at once don't clobber each other's additions.
+            contentDB = await fetchShared(STORAGE_KEYS.content, contentDB);
             contentDB[sectionType].push(newItem);
-            localStorage.setItem('adilet_content_db', JSON.stringify(contentDB));
+            const ok = await saveContent();
+            if (!ok) {
+                contentDB[sectionType] = contentDB[sectionType].filter(i => i.id !== newItem.id);
+            }
             renderAll();
             closeModal('addModal');
             e.target.reset();
         }
 
-        function deleteItem(type, id) {
+        async function deleteItem(type, id) {
             if(confirm("Материалды өшіруге сенімдісіз бе?")) {
+                const backup = contentDB[type];
                 contentDB[type] = contentDB[type].filter(item => item.id !== id);
-                localStorage.setItem('adilet_content_db', JSON.stringify(contentDB));
+                const ok = await saveContent();
+                if (!ok) contentDB[type] = backup;
                 renderAll();
             }
         }
@@ -667,6 +800,14 @@
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
+
+        // ---------- Bootstrap ----------
+
+        (async function init() {
+            await loadAllSharedData();
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('auth-screen').style.display = 'flex';
+        })();
     </script>
 </body>
 </html>
