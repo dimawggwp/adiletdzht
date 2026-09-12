@@ -1,387 +1,733 @@
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Дүниежүзі тарихы — Adilet agai</title>
-<style>
-  :root{
-    --main:#BD6D18;
-    --accent:#F07436;
-    --bg:#ffffff;
-    --soft:#fff7f1;
-    --gray:#f4f4f5;
-    --text:#1c1917;
-    --muted:#78716c;
-    --border:#eee5dd;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;}
-  body{background:var(--bg);color:var(--text);line-height:1.6;}
-  a{text-decoration:none;color:inherit;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adilet agai-дан дүниежүзі тарихы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #BD6D18;
+            --primary-hover: #a05a13;
+            --primary-light: #fdf6ee;
+            --bg: #F8F9FA;
+            --surface: #FFFFFF;
+            --text: #2D3748;
+            --text-muted: #718096;
+            --border: #E2E8F0;
+            --danger: #E53E3E;
+            --radius: 14px;
+        }
 
-  /* HEADER */
-  header{
-    position:sticky;top:0;z-index:100;
-    background:rgba(255,255,255,.9);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);
-    padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
-  }
-  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;color:var(--main);}
-  .logo-badge{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--main),var(--accent));
-    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;}
-  nav{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
-  nav button{
-    background:none;border:none;padding:9px 16px;border-radius:10px;cursor:pointer;
-    font-size:15px;font-weight:600;color:var(--muted);transition:.2s;
-  }
-  nav button:hover{background:var(--soft);color:var(--main);}
-  nav button.active{background:var(--main);color:#fff;}
-  .zetix-link{padding:9px 16px;border-radius:10px;font-weight:700;color:var(--accent);border:1.5px solid var(--accent);transition:.2s;}
-  .zetix-link:hover{background:var(--accent);color:#fff;}
-  .admin-btn{padding:9px 14px;border-radius:10px;background:var(--gray);border:none;cursor:pointer;font-weight:600;font-size:14px;color:var(--text);}
-  .admin-btn:hover{background:#e7e5e4;}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
 
-  /* HERO */
-  .hero{text-align:center;padding:70px 24px 50px;background:linear-gradient(180deg,var(--soft),#fff);}
-  .hero h1{font-size:clamp(28px,5vw,48px);font-weight:900;color:var(--text);letter-spacing:-1px;}
-  .hero h1 span{background:linear-gradient(135deg,var(--main),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .hero p{margin-top:14px;color:var(--muted);font-size:18px;}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+        }
 
-  /* CONTAINER */
-  main{max-width:1100px;margin:0 auto;padding:30px 24px 80px;}
-  .section-title{font-size:26px;font-weight:800;margin-bottom:6px;}
-  .section-sub{color:var(--muted);margin-bottom:26px;}
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
 
-  /* PANELS GRID */
-  .panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
-  .panel-card{
-    border:1px solid var(--border);border-radius:18px;padding:26px 22px;cursor:pointer;
-    background:#fff;transition:.25s;position:relative;overflow:hidden;
-  }
-  .panel-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(189,109,24,.12);border-color:var(--accent);}
-  .panel-card .num{font-size:13px;font-weight:800;color:var(--accent);letter-spacing:1px;}
-  .panel-card h3{font-size:20px;margin:8px 0 6px;font-weight:800;}
-  .panel-card .cnt{color:var(--muted);font-size:14px;}
-  .panel-card .bar{position:absolute;left:0;top:0;height:100%;width:5px;background:linear-gradient(var(--main),var(--accent));}
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-  /* MATERIALS */
-  .back-btn{background:none;border:none;color:var(--main);font-weight:700;cursor:pointer;font-size:15px;margin-bottom:18px;padding:6px 0;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
-  .mat-card{border:1px solid var(--border);border-radius:16px;overflow:hidden;background:#fff;transition:.2s;}
-  .mat-card:hover{box-shadow:0 10px 24px rgba(0,0,0,.08);}
-  .mat-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--gray);display:block;}
-  .mat-thumb.file{display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--main);background:var(--soft);}
-  .mat-body{padding:14px 16px;}
-  .mat-body h4{font-size:16px;font-weight:700;margin-bottom:4px;}
-  .mat-body p{font-size:13px;color:var(--muted);word-break:break-all;}
-  .mat-actions{display:flex;gap:8px;padding:0 16px 14px;}
-  .mat-open{flex:1;text-align:center;background:var(--main);color:#fff;padding:8px;border-radius:9px;font-weight:600;font-size:14px;}
-  .mat-open:hover{background:var(--accent);}
-  .mat-del{background:#fee2e2;color:#dc2626;border:none;padding:8px 12px;border-radius:9px;cursor:pointer;font-weight:600;}
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
 
-  .empty{text-align:center;padding:50px;color:var(--muted);}
+        .nav-item {
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+        }
 
-  /* MODAL */
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;}
-  .overlay.show{display:flex;}
-  .modal{background:#fff;border-radius:20px;padding:28px;width:100%;max-width:440px;max-height:90vh;overflow:auto;}
-  .modal h2{font-size:22px;margin-bottom:18px;color:var(--main);}
-  .modal label{display:block;font-weight:600;font-size:14px;margin:12px 0 5px;}
-  .modal input,.modal select,.modal textarea{
-    width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:11px;font-size:15px;background:var(--soft);
-  }
-  .modal input:focus,.modal select:focus,.modal textarea:focus{outline:none;border-color:var(--accent);}
-  .btn-primary{width:100%;margin-top:18px;background:linear-gradient(135deg,var(--main),var(--accent));color:#fff;border:none;padding:13px;border-radius:12px;font-weight:700;font-size:16px;cursor:pointer;}
-  .btn-primary:hover{opacity:.92;}
-  .btn-ghost{width:100%;margin-top:8px;background:var(--gray);border:none;padding:11px;border-radius:12px;font-weight:600;cursor:pointer;}
-  .err{color:#dc2626;font-size:14px;margin-top:8px;display:none;}
+        .nav-item:hover, .nav-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
 
-  /* ADMIN BAR */
-  .admin-panel{background:var(--soft);border:1px dashed var(--accent);border-radius:16px;padding:18px;margin-bottom:26px;}
-  .admin-panel .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-  .admin-panel h3{color:var(--main);margin-bottom:12px;}
-  .add-btn{background:var(--accent);color:#fff;border:none;padding:10px 18px;border-radius:11px;font-weight:700;cursor:pointer;}
-  .badge{display:inline-block;background:var(--main);color:#fff;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:700;margin-left:8px;vertical-align:middle;}
+        .admin-controls {
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
 
-  /* CUSTOM TABS list in admin */
-  .tab-manage{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
-  .tab-chip{background:#fff;border:1px solid var(--border);padding:6px 10px;border-radius:20px;font-size:13px;display:flex;align-items:center;gap:6px;}
-  .tab-chip button{background:none;border:none;color:#dc2626;cursor:pointer;font-weight:700;}
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
-  footer{text-align:center;padding:30px;color:var(--muted);font-size:14px;border-top:1px solid var(--border);}
-  @media(max-width:600px){.hero{padding:45px 18px 35px;}nav{width:100%;justify-content:flex-start;overflow-x:auto;}}
-</style>
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            background: #EDF2F7;
+        }
+
+        .btn-danger {
+            background: #FFF5F5;
+            color: var(--danger);
+            border: 1px solid #FEB2B2;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 40px;
+        }
+
+        .header {
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        /* Era Filter Tabs */
+        .era-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 28px;
+            background: var(--surface);
+            padding: 6px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            width: fit-content;
+        }
+
+        .era-tab {
+            padding: 8px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .era-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Grid & Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+        }
+
+        .card-preview {
+            width: 100%;
+            height: 160px;
+            background: #edf2f7;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .card-actions a {
+            text-decoration: none;
+            flex-grow: 1;
+        }
+
+        /* Hero Banner for Home */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), #8F4C09);
+            color: white;
+            padding: 48px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: var(--surface);
+            padding: 32px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .modal h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+        }
+
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-badge">A</div>
-    <span>Adilet agai</span>
-  </div>
-  <nav id="nav"></nav>
-  <button class="admin-btn" id="adminToggle">🔐 Админ</button>
-</header>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="brand">
+            <span>📚 Adilet agai</span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item active" onclick="switchTab('home')">Басты бет</li>
+            <li class="nav-item" onclick="switchTab('checklists')">Чеклисттер</li>
+            <li class="nav-item" onclick="switchTab('analyses')">Нұсқа талдаулар</li>
+            <li class="nav-item" onclick="switchTab('books')">Кітаптар</li>
+            <a href="https://zetix.kz" target="_blank" class="nav-item">
+                Zetix.kz ↗
+            </a>
+        </ul>
 
-<div class="hero">
-  <h1>Дүниежүзі <span>тарихы</span></h1>
-  <p>Adilet agai-мен бірге тарихты меңгер</p>
-</div>
+        <div class="admin-controls">
+            <button id="adminBtn" class="btn btn-outline" onclick="openAdminModal()">Админ панель</button>
+            <button id="logoutBtn" class="btn btn-danger" style="display: none;" onclick="adminLogout()">Шығу</button>
+        </div>
+    </aside>
 
-<main id="content"></main>
+    <!-- Main Content Area -->
+    <main class="main-content">
+        
+        <!-- Section: Home -->
+        <section id="home-view" class="view-section active">
+            <div class="hero">
+                <h2>Adilet agai-дан дүниежүзі тарихы</h2>
+                <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы. Қажетті чеклисттерді жүктеп алыңыз, видео-нұсқа талдауларын қараңыз.</p>
+            </div>
 
-<footer>© <span id="year"></span> Adilet agai · Дүниежүзі тарихы платформасы</footer>
+            <h3 style="margin-bottom: 20px;">Соңғы қосылған чеклисттер</h3>
+            <div id="home-checklists-preview" class="grid"></div>
+        </section>
 
-<!-- LOGIN MODAL -->
-<div class="overlay" id="loginModal">
-  <div class="modal">
-    <h2>Админ панеліне кіру</h2>
-    <label>Email</label>
-    <input type="email" id="loginEmail" placeholder="admin@adilet.kz">
-    <label>Құпия сөз</label>
-    <input type="password" id="loginPass" placeholder="••••••••">
-    <div class="err" id="loginErr">Email немесе құпия сөз қате</div>
-    <button class="btn-primary" onclick="doLogin()">Кіру</button>
-    <button class="btn-ghost" onclick="closeModal('loginModal')">Жабу</button>
-  </div>
-</div>
+        <!-- Section: Checklists -->
+        <section id="checklists-view" class="view-section">
+            <div class="header">
+                <div>
+                    <h1>Чеклисттер</h1>
+                    <p style="color: var(--text-muted); margin-top: 4px;">Пән бойынша барлық қысқаша конспектілер мен материалдар</p>
+                </div>
+                <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('checklists')">+ Қосу</button>
+            </div>
 
-<!-- ADD MATERIAL MODAL -->
-<div class="overlay" id="matModal">
-  <div class="modal">
-    <h2>Материал қосу</h2>
-    <label>Атауы</label>
-    <input type="text" id="matTitle" placeholder="Мысалы: 1-нұсқа талдау">
-    <label>Түрі</label>
-    <select id="matType">
-      <option value="link">🔗 Сілтеме (YouTube / веб)</option>
-      <option value="file">📄 Файл сілтемесі (PDF, т.б.)</option>
-    </select>
-    <label>Сілтеме (URL)</label>
-    <input type="text" id="matUrl" placeholder="https://...">
-    <div class="err" id="matErr">Барлық өрісті толтырыңыз</div>
-    <button class="btn-primary" onclick="saveMaterial()">Қосу</button>
-    <button class="btn-ghost" onclick="closeModal('matModal')">Болдырмау</button>
-  </div>
-</div>
+            <div class="era-tabs">
+                <div class="era-tab active" onclick="filterEra('checklists', 'all')">Барлығы</div>
+                <div class="era-tab" onclick="filterEra('checklists', 'ancient')">Ежелгі заман</div>
+                <div class="era-tab" onclick="filterEra('checklists', 'medieval')">Орта ғасырлар</div>
+                <div class="era-tab" onclick="filterEra('checklists', 'modern')">Жаңа заман</div>
+                <div class="era-tab" onclick="filterEra('checklists', 'contemporary')">Қазіргі заман</div>
+            </div>
 
-<!-- ADD TAB MODAL -->
-<div class="overlay" id="tabModal">
-  <div class="modal">
-    <h2>Жаңа бөлім қосу</h2>
-    <label>Бөлім атауы</label>
-    <input type="text" id="tabName" placeholder="Мысалы: Видеосабақтар">
-    <label>Ішінде панельдер болсын ба?</label>
-    <select id="tabHasPanels">
-      <option value="yes">Иә (4 дәуір панелі)</option>
-      <option value="no">Жоқ (тікелей материалдар)</option>
-    </select>
-    <div class="err" id="tabErr">Атауын енгізіңіз</div>
-    <button class="btn-primary" onclick="saveTab()">Қосу</button>
-    <button class="btn-ghost" onclick="closeModal('tabModal')">Болдырмау</button>
-  </div>
-</div>
+            <div id="checklists-grid" class="grid"></div>
+        </section>
 
-<script>
-/* ================= КОНФИГ ================= */
-const ADMIN_EMAIL = "admin@adilet.kz";
-const ADMIN_PASS  = "adilet123";
-const DEFAULT_PANELS = ["Ежелгі заман","Орта ғасырлар","Жаңа заман","Қазіргі заман"];
+        <!-- Section: Video Analyses -->
+        <section id="analyses-view" class="view-section">
+            <div class="header">
+                <div>
+                    <h1>Нұсқа талдаулар</h1>
+                    <p style="color: var(--text-muted); margin-top: 4px;">Тақырыптық және ҰБТ нұсқаларының видео талдаулары</p>
+                </div>
+                <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('analyses')">+ Қосу</button>
+            </div>
 
-/* ================ БАСТАПҚЫ ДЕРЕКТЕР ================ */
-function defaultData(){
-  return {
-    tabs:[
-      {id:"checklist", name:"Чеклисттер", panels:true, custom:false},
-      {id:"analysis",  name:"Нұсқа талдаулар", panels:true, custom:false},
-      {id:"books",     name:"Кітаптар", panels:false, custom:false}
-    ],
-    materials:{} // key: tabId or tabId::panelIndex  -> [ {id,title,type,url} ]
-  };
-}
+            <div class="era-tabs">
+                <div class="era-tab active" onclick="filterEra('analyses', 'all')">Барлығы</div>
+                <div class="era-tab" onclick="filterEra('analyses', 'ancient')">Ежелгі заман</div>
+                <div class="era-tab" onclick="filterEra('analyses', 'medieval')">Орта ғасырлар</div>
+                <div class="era-tab" onclick="filterEra('analyses', 'modern')">Жаңа заман</div>
+                <div class="era-tab" onclick="filterEra('analyses', 'contemporary')">Қазіргі заман</div>
+            </div>
 
-let data = JSON.parse(localStorage.getItem("adiletData")) || defaultData();
-let isAdmin = sessionStorage.getItem("adiletAdmin")==="1";
-let currentTab = data.tabs[0].id;
-let currentPanel = null; // index or null
-let pendingMatKey = null;
+            <div id="analyses-grid" class="grid"></div>
+        </section>
 
-function save(){ localStorage.setItem("adiletData", JSON.stringify(data)); }
+        <!-- Section: Books -->
+        <section id="books-view" class="view-section">
+            <div class="header">
+                <div>
+                    <h1>Кітаптар</h1>
+                    <p style="color: var(--text-muted); margin-top: 4px;">Дүниежүзі тарихы бойынша ресми оқулықтар базасы</p>
+                </div>
+                <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('books')">+ Кітап қосу</button>
+            </div>
 
-/* ================ КӨМЕКШІЛЕР ================ */
-function getYouTubeId(url){
-  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-  return m ? m[1] : null;
-}
-function key(tabId, panel){ return panel===null||panel===undefined ? tabId : tabId+"::"+panel; }
+            <div id="books-grid" class="grid"></div>
+        </section>
 
-/* ================ НАВИГАЦИЯ ================ */
-function renderNav(){
-  const nav = document.getElementById("nav");
-  nav.innerHTML = "";
-  data.tabs.forEach(t=>{
-    const b=document.createElement("button");
-    b.textContent=t.name;
-    b.className = t.id===currentTab ? "active":"";
-    b.onclick=()=>{currentTab=t.id;currentPanel=null;render();};
-    nav.appendChild(b);
-  });
-  const z=document.createElement("a");
-  z.href="https://Zetix.kz";z.target="_blank";z.className="zetix-link";z.textContent="Zetix";
-  nav.appendChild(z);
-}
+    </main>
 
-/* ================ БАСТЫ РЕНДЕР ================ */
-function render(){
-  renderNav();
-  document.getElementById("adminToggle").textContent = isAdmin ? "🚪 Шығу" : "🔐 Админ";
-  const tab = data.tabs.find(t=>t.id===currentTab);
-  const c = document.getElementById("content");
-  c.innerHTML="";
+    <!-- Admin Login Modal -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal">
+            <h3>Админ панеліне кіру</h3>
+            <form onsubmit="handleAdminLogin(event)">
+                <div class="form-group">
+                    <label>Электрондық пошта</label>
+                    <input type="email" id="loginEmail" class="form-control" placeholder="admin@domain.kz" required>
+                </div>
+                <div class="form-group">
+                    <label>Құпия сөз</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
+                </div>
+                <div style="display: flex; gap: 8px; margin-top: 24px;">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('loginModal')">Бас тарту</button>
+                    <button type="submit" class="btn btn-primary">Кіру</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-  // Админ: бөлім басқару
-  if(isAdmin){
-    const ap=document.createElement("div");
-    ap.className="admin-panel";
-    let chips = data.tabs.map(t=>`<span class="tab-chip">${t.name}${t.custom?`<button onclick="deleteTab('${t.id}')">✕</button>`:""}</span>`).join("");
-    ap.innerHTML=`<h3>⚙️ Админ басқару</h3>
-      <div class="row">
-        <button class="add-btn" onclick="openModal('tabModal')">+ Жаңа бөлім</button>
-      </div>
-      <div class="tab-manage">${chips}</div>`;
-    c.appendChild(ap);
-  }
+    <!-- Add Content Modal -->
+    <div id="addModal" class="modal-overlay">
+        <div class="modal">
+            <h3>Жаңа материал қосу</h3>
+            <form onsubmit="handleContentAdd(event)">
+                <input type="hidden" id="addType">
+                
+                <div class="form-group">
+                    <label>Атауы</label>
+                    <input type="text" id="addTitle" class="form-control" placeholder="Материал атын енгізіңіз" required>
+                </div>
 
-  if(!tab) return;
+                <div class="form-group" id="eraSelectGroup">
+                    <label>Дәуірді таңдаңыз</label>
+                    <select id="addEra" class="form-control">
+                        <option value="ancient">Ежелгі заман</option>
+                        <option value="medieval">Орта ғасырлар</option>
+                        <option value="modern">Жаңа заман</option>
+                        <option value="contemporary">Қазіргі заман</option>
+                    </select>
+                </div>
 
-  // Панельдер бар бөлім
-  if(tab.panels && currentPanel===null){
-    const h=document.createElement("div");
-    h.innerHTML=`<div class="section-title">${tab.name}</div><div class="section-sub">Дәуірді таңдаңыз</div>`;
-    c.appendChild(h);
-    const g=document.createElement("div");g.className="panels";
-    DEFAULT_PANELS.forEach((p,i)=>{
-      const cnt=(data.materials[key(tab.id,i)]||[]).length;
-      const card=document.createElement("div");card.className="panel-card";
-      card.innerHTML=`<div class="bar"></div><div class="num">${i+1}-БӨЛІМ</div><h3>${p}</h3><div class="cnt">${cnt} материал</div>`;
-      card.onclick=()=>{currentPanel=i;render();};
-      g.appendChild(card);
-    });
-    c.appendChild(g);
-  } else {
-    // Материалдар тізімі
-    const k = key(tab.id, tab.panels?currentPanel:null);
-    const title = tab.panels ? DEFAULT_PANELS[currentPanel] : tab.name;
+                <div class="form-group">
+                    <label>Материал түрі</label>
+                    <select id="addSourceType" class="form-control" onchange="toggleSourceInput()">
+                        <option value="file">Файл жүктеу (Компьютерден)</option>
+                        <option value="link">Сілтеме / YouTube URL</option>
+                    </select>
+                </div>
 
-    if(tab.panels){
-      const back=document.createElement("button");
-      back.className="back-btn";back.textContent="← Артқа";
-      back.onclick=()=>{currentPanel=null;render();};
-      c.appendChild(back);
-    }
-    const h=document.createElement("div");
-    h.innerHTML=`<div class="section-title">${title}</div><div class="section-sub">Материалдар</div>`;
-    c.appendChild(h);
+                <div class="form-group" id="fileInputWrapper">
+                    <label>Файлды таңдаңыз</label>
+                    <input type="file" id="addFile" class="form-control">
+                </div>
 
-    if(isAdmin){
-      const addb=document.createElement("button");
-      addb.className="add-btn";addb.style.marginBottom="20px";
-      addb.textContent="+ Материал қосу";
-      addb.onclick=()=>{pendingMatKey=k;openModal('matModal');};
-      c.appendChild(addb);
-    }
+                <div class="form-group" id="linkInputWrapper" style="display: none;">
+                    <label>Сілтеме енгізіңіз (YouTube немесе веб-сайт)</label>
+                    <input type="url" id="addLink" class="form-control" placeholder="https://youtube.com/watch?v=...">
+                </div>
 
-    const list = data.materials[k]||[];
-    if(list.length===0){
-      const e=document.createElement("div");e.className="empty";
-      e.textContent="Әзірге материал жоқ";
-      c.appendChild(e);
-    } else {
-      const g=document.createElement("div");g.className="grid";
-      list.forEach(m=>{
-        const card=document.createElement("div");card.className="mat-card";
-        let thumb;
-        const yt=getYouTubeId(m.url);
-        if(m.type==="link" && yt){
-          thumb=`<img class="mat-thumb" src="https://img.youtube.com/vi/${yt}/hqdefault.jpg" alt="">`;
-        } else if(m.type==="file"){
-          thumb=`<div class="mat-thumb file">📄</div>`;
-        } else {
-          thumb=`<div class="mat-thumb file">🔗</div>`;
+                <div style="display: flex; gap: 8px; margin-top: 24px;">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('addModal')">Бас тарту</button>
+                    <button type="submit" class="btn btn-primary">Қосу</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Data Store
+        let isAdmin = false;
+
+        const erasMap = {
+            'ancient': 'Ежелгі заман',
+            'medieval': 'Орта ғасырлар',
+            'modern': 'Жаңа заман',
+            'contemporary': 'Қазіргі заман'
+        };
+
+        let db = JSON.parse(localStorage.getItem('adilet_history_db')) || {
+            checklists: [
+                { id: 1, title: 'Ежелгі Египет пен Месопотамия', era: 'ancient', fileUrl: '#', fileName: 'Egypt_Notes.pdf' },
+                { id: 2, title: 'Орта ғасырлардағы Еуропа', era: 'medieval', fileUrl: '#', fileName: 'Medieval_Europe.pdf' }
+            ],
+            analyses: [
+                { id: 1, title: 'ҰБТ 2026 нұсқа талдау 1', era: 'contemporary', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }
+            ],
+            books: [
+                { id: 1, title: 'Дүниежүзі тарихы 9-сынып', fileUrl: '#', fileName: 'History_9_Class.pdf' }
+            ]
+        };
+
+        function saveData() {
+            localStorage.setItem('adilet_history_db', JSON.stringify(db));
         }
-        card.innerHTML=`${thumb}
-          <div class="mat-body"><h4>${m.title}</h4><p>${m.url}</p></div>
-          <div class="mat-actions">
-            <a class="mat-open" href="${m.url}" target="_blank">Ашу</a>
-            ${isAdmin?`<button class="mat-del" onclick="deleteMaterial('${k}','${m.id}')">Жою</button>`:""}
-          </div>`;
-        g.appendChild(card);
-      });
-      c.appendChild(g);
-    }
-  }
-}
 
-/* ================ МОДАЛ ================ */
-function openModal(id){document.getElementById(id).classList.add("show");}
-function closeModal(id){document.getElementById(id).classList.remove("show");
-  document.querySelectorAll(".err").forEach(e=>e.style.display="none");}
+        // Navigation Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
 
-/* ================ АДМИН КІРУ ================ */
-document.getElementById("adminToggle").onclick=()=>{
-  if(isAdmin){ isAdmin=false; sessionStorage.removeItem("adiletAdmin"); currentPanel=null; render(); }
-  else openModal('loginModal');
-};
-function doLogin(){
-  const e=document.getElementById("loginEmail").value.trim();
-  const p=document.getElementById("loginPass").value;
-  if(e===ADMIN_EMAIL && p===ADMIN_PASS){
-    isAdmin=true; sessionStorage.setItem("adiletAdmin","1");
-    closeModal('loginModal'); render();
-  } else { document.getElementById("loginErr").style.display="block"; }
-}
+            event.currentTarget.classList.add('active');
+            document.getElementById(`${tabId}-view`).classList.add('active');
 
-/* ================ МАТЕРИАЛ ================ */
-function saveMaterial(){
-  const t=document.getElementById("matTitle").value.trim();
-  const type=document.getElementById("matType").value;
-  const url=document.getElementById("matUrl").value.trim();
-  if(!t||!url){document.getElementById("matErr").style.display="block";return;}
-  if(!data.materials[pendingMatKey]) data.materials[pendingMatKey]=[];
-  data.materials[pendingMatKey].push({id:Date.now()+"", title:t, type, url});
-  save();
-  document.getElementById("matTitle").value="";
-  document.getElementById("matUrl").value="";
-  closeModal('matModal'); render();
-}
-function deleteMaterial(k,id){
-  if(!confirm("Материалды жоясыз ба?"))return;
-  data.materials[k]=data.materials[k].filter(m=>m.id!==id);
-  save(); render();
-}
+            renderAll();
+        }
 
-/* ================ БӨЛІМ (TAB) ================ */
-function saveTab(){
-  const n=document.getElementById("tabName").value.trim();
-  const panels=document.getElementById("tabHasPanels").value==="yes";
-  if(!n){document.getElementById("tabErr").style.display="block";return;}
-  const id="tab"+Date.now();
-  data.tabs.push({id,name:n,panels,custom:true});
-  save();
-  document.getElementById("tabName").value="";
-  closeModal('tabModal'); render();
-}
-function deleteTab(id){
-  if(!confirm("Бөлімді жоясыз ба?"))return;
-  data.tabs=data.tabs.filter(t=>t.id!==id);
-  Object.keys(data.materials).forEach(k=>{if(k===id||k.startsWith(id+"::"))delete data.materials[k];});
-  if(currentTab===id){currentTab=data.tabs[0]?.id;currentPanel=null;}
-  save(); render();
-}
+        // Filter Eras
+        let currentFilters = { checklists: 'all', analyses: 'all' };
+        function filterEra(type, era) {
+            currentFilters[type] = era;
+            const container = document.getElementById(`${type}-view`);
+            container.querySelectorAll('.era-tab').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            renderCategory(type);
+        }
 
-/* ================ START ================ */
-document.getElementById("year").textContent=new Date().getFullYear();
-render();
-</script>
+        // Helper: Extract YouTube ID
+        function getYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // Render Cards
+        function renderAll() {
+            renderCategory('checklists');
+            renderCategory('analyses');
+            renderBooks();
+            renderHomePreview();
+        }
+
+        function renderHomePreview() {
+            const container = document.getElementById('home-checklists-preview');
+            container.innerHTML = db.checklists.slice(0, 3).map(item => `
+                <div class="card">
+                    <div class="card-body">
+                        <span class="badge">${erasMap[item.era]}</span>
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-meta">Чеклист • PDF</div>
+                        <a href="${item.fileUrl}" download="${item.fileName || 'file'}" class="btn btn-primary">Жүктеп алу</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCategory(type) {
+            const container = document.getElementById(`${type}-grid`);
+            const filter = currentFilters[type];
+            const items = db[type].filter(item => filter === 'all' || item.era === filter);
+
+            if(items.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Материалдар әлі қосылмаған.</p>`;
+                return;
+            }
+
+            container.innerHTML = items.map(item => {
+                if (type === 'analyses') {
+                    const ytId = getYouTubeId(item.url);
+                    const thumb = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : 'https://via.placeholder.com/300x160?text=Video';
+                    return `
+                        <div class="card">
+                            <img src="${thumb}" class="card-preview" alt="Preview">
+                            <div class="card-body">
+                                <span class="badge">${erasMap[item.era]}</span>
+                                <div class="card-title">${item.title}</div>
+                                <div class="card-actions">
+                                    <a href="${item.url}" target="_blank" class="btn btn-primary">Көру</a>
+                                    ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('${type}', ${item.id})">Өшіру</button>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="card">
+                            <div class="card-body">
+                                <span class="badge">${erasMap[item.era]}</span>
+                                <div class="card-title">${item.title}</div>
+                                <div class="card-meta">Файл</div>
+                                <div class="card-actions">
+                                    <a href="${item.fileUrl}" download="${item.fileName || 'file'}" class="btn btn-primary">Жүктеу</a>
+                                    ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('${type}', ${item.id})">Өшіру</button>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        function renderBooks() {
+            const container = document.getElementById('books-grid');
+            if(db.books.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Кітаптар әлі қосылмаған.</p>`;
+                return;
+            }
+
+            container.innerHTML = db.books.map(item => `
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-meta">Ресми оқулық</div>
+                        <div class="card-actions">
+                            <a href="${item.fileUrl}" download="${item.fileName || 'book'}" class="btn btn-primary">Жүктеп алу</a>
+                            ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('books', ${item.id})">Өшіру</button>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Admin Auth
+        function openAdminModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPassword').value;
+
+            if (email && pass) {
+                isAdmin = true;
+                document.getElementById('adminBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'block';
+                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
+                closeModal('loginModal');
+                renderAll();
+            }
+        }
+
+        function adminLogout() {
+            isAdmin = false;
+            document.getElementById('adminBtn').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+            renderAll();
+        }
+
+        // Add Content Handlers
+        function openAddModal(type) {
+            document.getElementById('addType').value = type;
+            document.getElementById('eraSelectGroup').style.display = type === 'books' ? 'none' : 'block';
+            document.getElementById('addModal').style.display = 'flex';
+        }
+
+        function toggleSourceInput() {
+            const type = document.getElementById('addSourceType').value;
+            document.getElementById('fileInputWrapper').style.display = type === 'file' ? 'block' : 'none';
+            document.getElementById('linkInputWrapper').style.display = type === 'link' ? 'block' : 'none';
+        }
+
+        function handleContentAdd(e) {
+            e.preventDefault();
+            const sectionType = document.getElementById('addType').value;
+            const title = document.getElementById('addTitle').value;
+            const era = document.getElementById('addEra').value;
+            const sourceType = document.getElementById('addSourceType').value;
+
+            const newItem = {
+                id: Date.now(),
+                title: title,
+                era: era
+            };
+
+            if (sourceType === 'file') {
+                const fileInput = document.getElementById('addFile');
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    newItem.fileUrl = URL.createObjectURL(file);
+                    newItem.fileName = file.name;
+                } else {
+                    newItem.fileUrl = '#';
+                }
+            } else {
+                const link = document.getElementById('addLink').value;
+                newItem.url = link;
+                newItem.fileUrl = link;
+            }
+
+            db[sectionType].push(newItem);
+            saveData();
+            renderAll();
+            closeModal('addModal');
+        }
+
+        function deleteItem(type, id) {
+            db[type] = db[type].filter(item => item.id !== id);
+            saveData();
+            renderAll();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Initial Load
+        renderAll();
+    </script>
 </body>
 </html>
