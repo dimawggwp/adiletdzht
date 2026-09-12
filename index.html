@@ -19,448 +19,216 @@
             --radius: 14px;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar Styling */
-        .sidebar {
-            width: 280px;
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
+        /* --- Auth Screen Styling --- */
+        #auth-screen {
             position: fixed;
-            height: 100vh;
-            left: 0;
-            top: 0;
-            z-index: 100;
-        }
-
-        .brand {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 32px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex-grow: 1;
-        }
-
-        .nav-item {
-            padding: 12px 16px;
-            border-radius: var(--radius);
-            color: var(--text-muted);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-decoration: none;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: var(--primary-light);
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .admin-controls {
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: var(--radius);
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-hover);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-
-        .btn-outline:hover {
-            background: #EDF2F7;
-        }
-
-        .btn-danger {
-            background: #FFF5F5;
-            color: var(--danger);
-            border: 1px solid #FEB2B2;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-        }
-
-        .btn-danger:hover {
-            background: var(--danger);
-            color: white;
-        }
-
-        /* Main Content Styling */
-        .main-content {
-            margin-left: 280px;
-            flex-grow: 1;
-            padding: 40px;
-        }
-
-        .header {
-            margin-bottom: 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        /* Era Filter Tabs */
-        .era-tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 28px;
-            background: var(--surface);
-            padding: 6px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            width: fit-content;
-        }
-
-        .era-tab {
-            padding: 8px 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-            color: var(--text-muted);
-            transition: all 0.2s ease;
-        }
-
-        .era-tab.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Grid & Cards */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-        }
-
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.04);
-        }
-
-        .card-preview {
-            width: 100%;
-            height: 160px;
-            background: #edf2f7;
-            object-fit: cover;
-        }
-
-        .card-body {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .card-meta {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .card-actions a {
-            text-decoration: none;
-            flex-grow: 1;
-        }
-
-        /* Hero Banner for Home */
-        .hero {
-            background: linear-gradient(135deg, var(--primary), #8F4C09);
-            color: white;
-            padding: 48px;
-            border-radius: 20px;
-            margin-bottom: 40px;
-        }
-
-        .hero h2 {
-            font-size: 32px;
-            margin-bottom: 12px;
-        }
-
-        .hero p {
-            font-size: 16px;
-            opacity: 0.9;
-            max-width: 600px;
-        }
-
-        /* Modals */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #fdf6ee 0%, #e2e8f0 100%);
+            display: flex; justify-content: center; align-items: center;
             z-index: 1000;
         }
-
-        .modal {
-            background: var(--surface);
-            padding: 32px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 480px;
+        .auth-box {
+            background: var(--surface); padding: 40px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 400px;
+            text-align: center;
         }
-
-        .modal h3 {
-            margin-bottom: 20px;
-            font-size: 20px;
+        .auth-box h2 { color: var(--primary); margin-bottom: 24px; font-size: 24px; }
+        .auth-tabs { display: flex; margin-bottom: 24px; border-bottom: 2px solid var(--border); }
+        .auth-tab {
+            flex: 1; padding: 12px; cursor: pointer; font-weight: 600; color: var(--text-muted);
+            transition: all 0.3s;
         }
+        .auth-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); margin-bottom: -2px; }
+        
+        .form-group { margin-bottom: 16px; text-align: left; }
+        .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+        .form-control { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; outline: none; }
+        .form-control:focus { border-color: var(--primary); }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-outline:hover { background: #EDF2F7; }
+        .btn-danger { background: #FFF5F5; color: var(--danger); border: 1px solid #FEB2B2; }
+        .btn-danger:hover { background: var(--danger); color: white; }
+        
+        /* --- Main App Layout --- */
+        #app-layout { display: none; width: 100%; }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
+        .sidebar { width: 280px; background: var(--surface); border-right: 1px solid var(--border); padding: 24px; display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0; }
+        .brand { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 32px; display: flex; align-items: center; gap: 10px; }
+        .nav-list { list-style: none; display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
+        .nav-item { padding: 12px 16px; border-radius: var(--radius); color: var(--text-muted); font-weight: 500; cursor: pointer; transition: all 0.2s; display: flex; justify-content: space-between; text-decoration: none; }
+        .nav-item:hover, .nav-item.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+        
+        .user-controls { padding-top: 16px; border-top: 1px solid var(--border); }
+        .user-email { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; text-align: center; word-break: break-all; }
 
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
+        .main-content { margin-left: 280px; flex-grow: 1; padding: 40px; }
+        .header { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 28px; font-weight: 700; }
+        
+        .era-tabs { display: flex; gap: 12px; margin-bottom: 28px; background: var(--surface); padding: 6px; border-radius: var(--radius); border: 1px solid var(--border); width: fit-content; }
+        .era-tab { padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: 500; font-size: 14px; color: var(--text-muted); transition: all 0.2s ease; }
+        .era-tab.active { background: var(--primary); color: white; }
 
-        .form-control {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-size: 14px;
-            outline: none;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.04); }
+        .card-preview { width: 100%; height: 160px; background: #edf2f7; object-fit: cover; }
+        .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+        .card-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+        .card-actions { display: flex; gap: 8px; align-items: center; }
+        .card-actions a, .card-actions button { flex-grow: 1; text-align: center; font-size: 14px; padding: 10px;}
 
-        .form-control:focus {
-            border-color: var(--primary);
-        }
+        .hero { background: linear-gradient(135deg, var(--primary), #8F4C09); color: white; padding: 48px; border-radius: 20px; margin-bottom: 40px; }
+        .hero h2 { font-size: 32px; margin-bottom: 12px; }
+        .hero p { font-size: 16px; opacity: 0.9; max-width: 600px; }
 
-        .view-section {
-            display: none;
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .modal { background: var(--surface); padding: 32px; border-radius: 20px; width: 100%; max-width: 480px; }
+        .modal h3 { margin-bottom: 20px; font-size: 20px; }
 
-        .view-section.active {
-            display: block;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 8px;
-            background: var(--primary-light);
-            color: var(--primary);
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+        .badge { display: inline-block; padding: 4px 8px; background: var(--primary-light); color: var(--primary); border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 8px; }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="brand">
-            <span>📚 Adilet agai</span>
-        </div>
-        <ul class="nav-list">
-            <li class="nav-item active" onclick="switchTab('home')">Басты бет</li>
-            <li class="nav-item" onclick="switchTab('checklists')">Чеклисттер</li>
-            <li class="nav-item" onclick="switchTab('analyses')">Нұсқа талдаулар</li>
-            <li class="nav-item" onclick="switchTab('books')">Кітаптар</li>
-            <a href="https://zetix.kz" target="_blank" class="nav-item">
-                Zetix.kz ↗
-            </a>
-        </ul>
-
-        <div class="admin-controls">
-            <button id="adminBtn" class="btn btn-outline" onclick="openAdminModal()">Админ панель</button>
-            <button id="logoutBtn" class="btn btn-danger" style="display: none;" onclick="adminLogout()">Шығу</button>
-        </div>
-    </aside>
-
-    <!-- Main Content Area -->
-    <main class="main-content">
-        
-        <!-- Section: Home -->
-        <section id="home-view" class="view-section active">
-            <div class="hero">
-                <h2>Adilet agai-дан дүниежүзі тарихы</h2>
-                <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы. Қажетті чеклисттерді жүктеп алыңыз, видео-нұсқа талдауларын қараңыз.</p>
+    <!-- 1. Тіркелу / Кіру терезесі (Auth Screen) -->
+    <div id="auth-screen">
+        <div class="auth-box">
+            <h2>Adilet agai</h2>
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="toggleAuthTab('login')">Кіру</div>
+                <div class="auth-tab" onclick="toggleAuthTab('register')">Тіркелу</div>
             </div>
 
-            <h3 style="margin-bottom: 20px;">Соңғы қосылған чеклисттер</h3>
-            <div id="home-checklists-preview" class="grid"></div>
-        </section>
-
-        <!-- Section: Checklists -->
-        <section id="checklists-view" class="view-section">
-            <div class="header">
-                <div>
-                    <h1>Чеклисттер</h1>
-                    <p style="color: var(--text-muted); margin-top: 4px;">Пән бойынша барлық қысқаша конспектілер мен материалдар</p>
-                </div>
-                <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('checklists')">+ Қосу</button>
-            </div>
-
-            <div class="era-tabs">
-                <div class="era-tab active" onclick="filterEra('checklists', 'all')">Барлығы</div>
-                <div class="era-tab" onclick="filterEra('checklists', 'ancient')">Ежелгі заман</div>
-                <div class="era-tab" onclick="filterEra('checklists', 'medieval')">Орта ғасырлар</div>
-                <div class="era-tab" onclick="filterEra('checklists', 'modern')">Жаңа заман</div>
-                <div class="era-tab" onclick="filterEra('checklists', 'contemporary')">Қазіргі заман</div>
-            </div>
-
-            <div id="checklists-grid" class="grid"></div>
-        </section>
-
-        <!-- Section: Video Analyses -->
-        <section id="analyses-view" class="view-section">
-            <div class="header">
-                <div>
-                    <h1>Нұсқа талдаулар</h1>
-                    <p style="color: var(--text-muted); margin-top: 4px;">Тақырыптық және ҰБТ нұсқаларының видео талдаулары</p>
-                </div>
-                <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('analyses')">+ Қосу</button>
-            </div>
-
-            <div class="era-tabs">
-                <div class="era-tab active" onclick="filterEra('analyses', 'all')">Барлығы</div>
-                <div class="era-tab" onclick="filterEra('analyses', 'ancient')">Ежелгі заман</div>
-                <div class="era-tab" onclick="filterEra('analyses', 'medieval')">Орта ғасырлар</div>
-                <div class="era-tab" onclick="filterEra('analyses', 'modern')">Жаңа заман</div>
-                <div class="era-tab" onclick="filterEra('analyses', 'contemporary')">Қазіргі заман</div>
-            </div>
-
-            <div id="analyses-grid" class="grid"></div>
-        </section>
-
-        <!-- Section: Books -->
-        <section id="books-view" class="view-section">
-            <div class="header">
-                <div>
-                    <h1>Кітаптар</h1>
-                    <p style="color: var(--text-muted); margin-top: 4px;">Дүниежүзі тарихы бойынша ресми оқулықтар базасы</p>
-                </div>
-                <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('books')">+ Кітап қосу</button>
-            </div>
-
-            <div id="books-grid" class="grid"></div>
-        </section>
-
-    </main>
-
-    <!-- Admin Login Modal -->
-    <div id="loginModal" class="modal-overlay">
-        <div class="modal">
-            <h3>Админ панеліне кіру</h3>
-            <form onsubmit="handleAdminLogin(event)">
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
-                    <label>Электрондық пошта</label>
-                    <input type="email" id="loginEmail" class="form-control" placeholder="admin@domain.kz" required>
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label>Құпия сөз</label>
-                    <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
+                    <input type="password" id="loginPass" class="form-control" required>
                 </div>
-                <div style="display: flex; gap: 8px; margin-top: 24px;">
-                    <button type="button" class="btn btn-outline" onclick="closeModal('loginModal')">Бас тарту</button>
-                    <button type="submit" class="btn btn-primary">Кіру</button>
+                <p id="loginError" style="color: var(--danger); font-size: 13px; margin-bottom: 10px; display: none;">Мәліметтер қате!</p>
+                <button type="submit" class="btn btn-primary">Жүйеге кіру</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" style="display: none;" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" class="form-control" required>
                 </div>
+                <div class="form-group">
+                    <label>Құпия сөз</label>
+                    <input type="password" id="regPass" class="form-control" required minlength="6">
+                </div>
+                <p id="regError" style="color: var(--danger); font-size: 13px; margin-bottom: 10px; display: none;">Бұл email тіркелген!</p>
+                <button type="submit" class="btn btn-primary">Тіркелу</button>
             </form>
         </div>
     </div>
 
-    <!-- Add Content Modal -->
+    <!-- 2. Негізгі Платформа (Main Layout) -->
+    <div id="app-layout">
+        <aside class="sidebar">
+            <div class="brand">📚 Adilet agai</div>
+            <ul class="nav-list">
+                <li class="nav-item active" onclick="switchTab('home')">Басты бет</li>
+                <li class="nav-item" onclick="switchTab('checklists')">Чеклисттер</li>
+                <li class="nav-item" onclick="switchTab('analyses')">Нұсқа талдаулар</li>
+                <li class="nav-item" onclick="switchTab('books')">Кітаптар</li>
+                <a href="https://zetix.kz" target="_blank" class="nav-item">Zetix.kz ↗</a>
+            </ul>
+            <div class="user-controls">
+                <div class="user-email" id="currentUserEmail"></div>
+                <button class="btn btn-outline" onclick="logout()">Шығу</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <!-- Home -->
+            <section id="home-view" class="view-section active">
+                <div class="hero">
+                    <h2>Adilet agai-дан дүниежүзі тарихы</h2>
+                    <p>Дүниежүзі тарихын тиімді әрі жүйелі меңгеруге арналған білім беру платформасы.</p>
+                </div>
+                <h3 style="margin-bottom: 20px;">Соңғы қосылған чеклисттер</h3>
+                <div id="home-checklists-preview" class="grid"></div>
+            </section>
+
+            <!-- Checklists -->
+            <section id="checklists-view" class="view-section">
+                <div class="header">
+                    <div>
+                        <h1>Чеклисттер</h1>
+                        <p class="text-muted">Пән бойынша барлық қысқаша конспектілер</p>
+                    </div>
+                    <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('checklists')">+ Қосу</button>
+                </div>
+                <div class="era-tabs">
+                    <div class="era-tab active" onclick="filterEra('checklists', 'all')">Барлығы</div>
+                    <div class="era-tab" onclick="filterEra('checklists', 'ancient')">Ежелгі заман</div>
+                    <div class="era-tab" onclick="filterEra('checklists', 'medieval')">Орта ғасырлар</div>
+                    <div class="era-tab" onclick="filterEra('checklists', 'modern')">Жаңа заман</div>
+                    <div class="era-tab" onclick="filterEra('checklists', 'contemporary')">Қазіргі заман</div>
+                </div>
+                <div id="checklists-grid" class="grid"></div>
+            </section>
+
+            <!-- Analyses -->
+            <section id="analyses-view" class="view-section">
+                <div class="header">
+                    <div>
+                        <h1>Нұсқа талдаулар</h1>
+                        <p class="text-muted">Тақырыптық және ҰБТ нұсқаларының видео талдаулары</p>
+                    </div>
+                    <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('analyses')">+ Қосу</button>
+                </div>
+                <div class="era-tabs">
+                    <div class="era-tab active" onclick="filterEra('analyses', 'all')">Барлығы</div>
+                    <div class="era-tab" onclick="filterEra('analyses', 'ancient')">Ежелгі заман</div>
+                    <div class="era-tab" onclick="filterEra('analyses', 'medieval')">Орта ғасырлар</div>
+                    <div class="era-tab" onclick="filterEra('analyses', 'modern')">Жаңа заман</div>
+                    <div class="era-tab" onclick="filterEra('analyses', 'contemporary')">Қазіргі заман</div>
+                </div>
+                <div id="analyses-grid" class="grid"></div>
+            </section>
+
+            <!-- Books -->
+            <section id="books-view" class="view-section">
+                <div class="header">
+                    <div>
+                        <h1>Кітаптар</h1>
+                        <p class="text-muted">Дүниежүзі тарихы бойынша ресми оқулықтар базасы</p>
+                    </div>
+                    <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="openAddModal('books')">+ Кітап қосу</button>
+                </div>
+                <div id="books-grid" class="grid"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Admin Add Modal -->
     <div id="addModal" class="modal-overlay">
         <div class="modal">
             <h3>Жаңа материал қосу</h3>
             <form onsubmit="handleContentAdd(event)">
                 <input type="hidden" id="addType">
-                
                 <div class="form-group">
                     <label>Атауы</label>
-                    <input type="text" id="addTitle" class="form-control" placeholder="Материал атын енгізіңіз" required>
+                    <input type="text" id="addTitle" class="form-control" required>
                 </div>
-
                 <div class="form-group" id="eraSelectGroup">
                     <label>Дәуірді таңдаңыз</label>
                     <select id="addEra" class="form-control">
@@ -470,7 +238,6 @@
                         <option value="contemporary">Қазіргі заман</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label>Материал түрі</label>
                     <select id="addSourceType" class="form-control" onchange="toggleSourceInput()">
@@ -478,17 +245,14 @@
                         <option value="link">Сілтеме / YouTube URL</option>
                     </select>
                 </div>
-
                 <div class="form-group" id="fileInputWrapper">
                     <label>Файлды таңдаңыз</label>
                     <input type="file" id="addFile" class="form-control">
                 </div>
-
                 <div class="form-group" id="linkInputWrapper" style="display: none;">
-                    <label>Сілтеме енгізіңіз (YouTube немесе веб-сайт)</label>
-                    <input type="url" id="addLink" class="form-control" placeholder="https://youtube.com/watch?v=...">
+                    <label>Сілтеме енгізіңіз</label>
+                    <input type="url" id="addLink" class="form-control">
                 </div>
-
                 <div style="display: flex; gap: 8px; margin-top: 24px;">
                     <button type="button" class="btn btn-outline" onclick="closeModal('addModal')">Бас тарту</button>
                     <button type="submit" class="btn btn-primary">Қосу</button>
@@ -498,45 +262,118 @@
     </div>
 
     <script>
-        // Data Store
+        // --- 1. Аутентификация және Мәліметтер Базасы (Локалды) ---
+        let currentUser = null;
         let isAdmin = false;
 
-        const erasMap = {
-            'ancient': 'Ежелгі заман',
-            'medieval': 'Орта ғасырлар',
-            'modern': 'Жаңа заман',
-            'contemporary': 'Қазіргі заман'
-        };
-
-        let db = JSON.parse(localStorage.getItem('adilet_history_db')) || {
-            checklists: [
-                { id: 1, title: 'Ежелгі Египет пен Месопотамия', era: 'ancient', fileUrl: '#', fileName: 'Egypt_Notes.pdf' },
-                { id: 2, title: 'Орта ғасырлардағы Еуропа', era: 'medieval', fileUrl: '#', fileName: 'Medieval_Europe.pdf' }
-            ],
-            analyses: [
-                { id: 1, title: 'ҰБТ 2026 нұсқа талдау 1', era: 'contemporary', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }
-            ],
-            books: [
-                { id: 1, title: 'Дүниежүзі тарихы 9-сынып', fileUrl: '#', fileName: 'History_9_Class.pdf' }
-            ]
-        };
-
-        function saveData() {
-            localStorage.setItem('adilet_history_db', JSON.stringify(db));
+        // Базаны инициализациялау
+        let usersDB = JSON.parse(localStorage.getItem('adilet_users')) || [];
+        
+        // Код ішінде құпия сөзді ашық жазбау үшін Админді базаға алдын ала 암(шифрлап) салып қоямыз
+        if(usersDB.length === 0) {
+            // btoa('admin123') = YWRtaW4xMjM= (Бұл қарапайым жасыру тәсілі)
+            usersDB.push({ email: 'admin@adilet.kz', passHash: 'YWRtaW4xMjM=', role: 'admin' });
+            localStorage.setItem('adilet_users', JSON.stringify(usersDB));
         }
 
-        // Navigation Switcher
-        function switchTab(tabId) {
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        // --- Auth UI логикасы ---
+        function toggleAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(el => el.classList.remove('active'));
+            if(tab === 'login') {
+                document.querySelector('.auth-tab:nth-child(1)').classList.add('active');
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+            } else {
+                document.querySelector('.auth-tab:nth-child(2)').classList.add('active');
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('registerForm').style.display = 'block';
+            }
+        }
 
-            event.currentTarget.classList.add('active');
-            document.getElementById(`${tabId}-view`).classList.add('active');
+        function handleRegister(e) {
+            e.preventDefault();
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPass').value;
+            
+            const exists = usersDB.find(u => u.email === email);
+            if(exists) {
+                document.getElementById('regError').style.display = 'block';
+                return;
+            }
 
+            // Жаңа оқушыны сақтау
+            const newUser = { email: email, passHash: btoa(pass), role: 'student' };
+            usersDB.push(newUser);
+            localStorage.setItem('adilet_users', JSON.stringify(usersDB));
+            
+            // Автоматты кіру
+            authorizeUser(newUser);
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPass').value;
+            const inputHash = btoa(pass);
+
+            const user = usersDB.find(u => u.email === email && u.passHash === inputHash);
+            
+            if(user) {
+                authorizeUser(user);
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function authorizeUser(user) {
+            currentUser = user;
+            isAdmin = (user.role === 'admin');
+            
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('app-layout').style.display = 'block';
+            document.getElementById('currentUserEmail').innerText = user.email;
+
+            if(isAdmin) {
+                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
+            } else {
+                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+            }
             renderAll();
         }
 
-        // Filter Eras
+        function logout() {
+            currentUser = null;
+            isAdmin = false;
+            document.getElementById('auth-screen').style.display = 'flex';
+            document.getElementById('app-layout').style.display = 'none';
+            
+            // Формаларды тазарту
+            document.getElementById('loginForm').reset();
+            document.getElementById('registerForm').reset();
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('regError').style.display = 'none';
+        }
+
+        // --- 2. Контент логикасы (Материалдар) ---
+        const erasMap = { 'ancient': 'Ежелгі заман', 'medieval': 'Орта ғасырлар', 'modern': 'Жаңа заман', 'contemporary': 'Қазіргі заман' };
+
+        let contentDB = JSON.parse(localStorage.getItem('adilet_content_db')) || {
+            checklists: [], analyses: [], books: []
+        };
+
+        function saveContent() {
+            localStorage.setItem('adilet_content_db', JSON.stringify(contentDB));
+        }
+
+        // Navigation
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById(`${tabId}-view`).classList.add('active');
+            renderAll();
+        }
+
         let currentFilters = { checklists: 'all', analyses: 'all' };
         function filterEra(type, era) {
             currentFilters[type] = era;
@@ -546,14 +383,11 @@
             renderCategory(type);
         }
 
-        // Helper: Extract YouTube ID
         function getYouTubeId(url) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
+            const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // Render Cards
         function renderAll() {
             renderCategory('checklists');
             renderCategory('analyses');
@@ -563,13 +397,17 @@
 
         function renderHomePreview() {
             const container = document.getElementById('home-checklists-preview');
-            container.innerHTML = db.checklists.slice(0, 3).map(item => `
+            if(contentDB.checklists.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted);">Материалдар әлі қосылмаған.</p>`;
+                return;
+            }
+            container.innerHTML = contentDB.checklists.slice(0, 3).map(item => `
                 <div class="card">
                     <div class="card-body">
                         <span class="badge">${erasMap[item.era]}</span>
                         <div class="card-title">${item.title}</div>
-                        <div class="card-meta">Чеклист • PDF</div>
-                        <a href="${item.fileUrl}" download="${item.fileName || 'file'}" class="btn btn-primary">Жүктеп алу</a>
+                        <div class="card-meta">Чеклист • Файл</div>
+                        <a href="${item.fileUrl}" download="${item.fileName || 'file'}" class="btn btn-outline">Жүктеп алу</a>
                     </div>
                 </div>
             `).join('');
@@ -578,10 +416,10 @@
         function renderCategory(type) {
             const container = document.getElementById(`${type}-grid`);
             const filter = currentFilters[type];
-            const items = db[type].filter(item => filter === 'all' || item.era === filter);
+            const items = contentDB[type].filter(item => filter === 'all' || item.era === filter);
 
             if(items.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Материалдар әлі қосылмаған.</p>`;
+                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Бұл бөлімде материал жоқ.</p>`;
                 return;
             }
 
@@ -591,12 +429,12 @@
                     const thumb = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : 'https://via.placeholder.com/300x160?text=Video';
                     return `
                         <div class="card">
-                            <img src="${thumb}" class="card-preview" alt="Preview">
+                            <img src="${thumb}" class="card-preview">
                             <div class="card-body">
                                 <span class="badge">${erasMap[item.era]}</span>
                                 <div class="card-title">${item.title}</div>
                                 <div class="card-actions">
-                                    <a href="${item.url}" target="_blank" class="btn btn-primary">Көру</a>
+                                    <a href="${item.url}" target="_blank" class="btn btn-outline">Көру</a>
                                     ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('${type}', ${item.id})">Өшіру</button>` : ''}
                                 </div>
                             </div>
@@ -608,9 +446,8 @@
                             <div class="card-body">
                                 <span class="badge">${erasMap[item.era]}</span>
                                 <div class="card-title">${item.title}</div>
-                                <div class="card-meta">Файл</div>
                                 <div class="card-actions">
-                                    <a href="${item.fileUrl}" download="${item.fileName || 'file'}" class="btn btn-primary">Жүктеу</a>
+                                    <a href="${item.fileUrl}" download="${item.fileName || 'file'}" class="btn btn-outline">Жүктеу</a>
                                     ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('${type}', ${item.id})">Өшіру</button>` : ''}
                                 </div>
                             </div>
@@ -622,18 +459,17 @@
 
         function renderBooks() {
             const container = document.getElementById('books-grid');
-            if(db.books.length === 0) {
+            if(contentDB.books.length === 0) {
                 container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Кітаптар әлі қосылмаған.</p>`;
                 return;
             }
-
-            container.innerHTML = db.books.map(item => `
+            container.innerHTML = contentDB.books.map(item => `
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">${item.title}</div>
-                        <div class="card-meta">Ресми оқулық</div>
+                        <div class="card-meta">Оқулық</div>
                         <div class="card-actions">
-                            <a href="${item.fileUrl}" download="${item.fileName || 'book'}" class="btn btn-primary">Жүктеп алу</a>
+                            <a href="${item.fileUrl}" download="${item.fileName || 'book'}" class="btn btn-outline">Жүктеу</a>
                             ${isAdmin ? `<button class="btn btn-danger" onclick="deleteItem('books', ${item.id})">Өшіру</button>` : ''}
                         </div>
                     </div>
@@ -641,35 +477,7 @@
             `).join('');
         }
 
-        // Admin Auth
-        function openAdminModal() {
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const pass = document.getElementById('loginPassword').value;
-
-            if (email && pass) {
-                isAdmin = true;
-                document.getElementById('adminBtn').style.display = 'none';
-                document.getElementById('logoutBtn').style.display = 'block';
-                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
-                closeModal('loginModal');
-                renderAll();
-            }
-        }
-
-        function adminLogout() {
-            isAdmin = false;
-            document.getElementById('adminBtn').style.display = 'block';
-            document.getElementById('logoutBtn').style.display = 'none';
-            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-            renderAll();
-        }
-
-        // Add Content Handlers
+        // --- Admin Controls ---
         function openAddModal(type) {
             document.getElementById('addType').value = type;
             document.getElementById('eraSelectGroup').style.display = type === 'books' ? 'none' : 'block';
@@ -689,11 +497,7 @@
             const era = document.getElementById('addEra').value;
             const sourceType = document.getElementById('addSourceType').value;
 
-            const newItem = {
-                id: Date.now(),
-                title: title,
-                era: era
-            };
+            const newItem = { id: Date.now(), title: title, era: era };
 
             if (sourceType === 'file') {
                 const fileInput = document.getElementById('addFile');
@@ -710,24 +514,24 @@
                 newItem.fileUrl = link;
             }
 
-            db[sectionType].push(newItem);
-            saveData();
+            contentDB[sectionType].push(newItem);
+            saveContent();
             renderAll();
             closeModal('addModal');
+            e.target.reset(); // Форманы тазалау
         }
 
         function deleteItem(type, id) {
-            db[type] = db[type].filter(item => item.id !== id);
-            saveData();
-            renderAll();
+            if(confirm("Бұл материалды өшіруге сенімдісіз бе?")) {
+                contentDB[type] = contentDB[type].filter(item => item.id !== id);
+                saveContent();
+                renderAll();
+            }
         }
 
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
-
-        // Initial Load
-        renderAll();
     </script>
 </body>
 </html>
