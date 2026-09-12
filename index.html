@@ -367,16 +367,32 @@
         </div>
     </div>
 
+    <!-- Firebase (Firestore) — ортақ дерекқор, барлық қолданушыларға синхрондалады -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
     <script>
         /*
-           ЕСКЕРТУ: Бұрын деректер localStorage-те сақталатын, яғни әр қолданушының
-           өз браузерінде ғана көрінетін. Енді еразалар (дәуірлер), контент базасы
-           (checklists/analyses/books) және пайдаланушылар window.storage арқылы
-           "shared" (ортақ) жадта сақталады — осы файлды қандай құрылғыдан ашсаңыз да,
-           барлық адамдар бірдей деректерді көреді. Админ панельде бір нәрсе
-           қосылса/өшірілсе, ол өзгеріс барлық қолданушыларға автоматты түрде
-           (шамамен 20 секунд сайын) синхрондалады.
+           ЕСКЕРТУ: Еразалар (дәуірлер), контент базасы (checklists/analyses/books)
+           және пайдаланушылар енді Firebase Firestore-де сақталады. Осы файлды
+           қай құрылғыдан/доменнен ашсаңыз да, барлық адамдар бірдей деректерді
+           көреді. Админ панельде бір нәрсе қосылса/өшірілсе, ол өзгеріс барлық
+           қолданушыларға автоматты түрде (шамамен 20 секунд сайын) синхрондалады.
         */
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCyyTVbCwXAaJy9IG8g5Rmb9H7n78EMF8U",
+            authDomain: "adiletagai-fd104.firebaseapp.com",
+            projectId: "adiletagai-fd104",
+            storageBucket: "adiletagai-fd104.firebasestorage.app",
+            messagingSenderId: "310157792577",
+            appId: "1:310157792577:web:35c8816935e43d8eedbdc0",
+            measurementId: "G-C6559HVR7R"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const SHARED_COLLECTION = 'adilet_shared';
 
         const ADMIN_EMAIL = "zhtkrgnadlt3245@gmail.com";
         const ADMIN_PASS = "dimashbratandyuvazhayiu";
@@ -426,25 +442,32 @@
         let customPreviewData = '';
         let syncTimer = null;
 
-        // ---------- Shared storage helpers ----------
+        // ---------- Shared storage helpers (Firestore) ----------
 
         async function fetchShared(key, fallback) {
             try {
-                const res = await window.storage.get(key, true);
-                return res ? JSON.parse(res.value) : fallback;
+                const snap = await db.collection(SHARED_COLLECTION).doc(key).get();
+                if (snap.exists) {
+                    const data = snap.data();
+                    return data && data.value !== undefined ? JSON.parse(data.value) : fallback;
+                }
+                return fallback;
             } catch (e) {
-                // Key doesn't exist yet, or a network error — fall back to defaults
+                // Doc doesn't exist yet, or a network error — fall back to defaults
+                console.error('Firestore read error for', key, e);
                 return fallback;
             }
         }
 
         async function saveShared(key, value) {
             try {
-                const res = await window.storage.set(key, JSON.stringify(value), true);
-                if (!res) console.error('Storage set returned no result for', key);
-                return !!res;
+                await db.collection(SHARED_COLLECTION).doc(key).set({
+                    value: JSON.stringify(value),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                return true;
             } catch (e) {
-                console.error('Storage error while saving', key, e);
+                console.error('Firestore write error while saving', key, e);
                 alert('Деректерді сақтау кезінде қате шықты. Интернет байланысын тексеріп, қайталап көріңіз.');
                 return false;
             }
