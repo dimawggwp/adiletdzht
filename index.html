@@ -68,6 +68,7 @@
         
         .btn { width: 100%; padding: 12px 18px; border: none; border-radius: var(--radius); font-weight: 700; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-size: 14px; }
         .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
         .btn-primary:hover { background: var(--primary-hover); }
         .btn-whatsapp { background: var(--whatsapp); color: white; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3); }
         .btn-whatsapp:hover { background: #20ba5a; transform: translateY(-1px); }
@@ -315,20 +316,46 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Сурет / Превью (URL)</label>
+                    <label>Сурет / Превью (URL немесе Файл)</label>
                     <input type="text" id="addImageUrl" class="form-control" placeholder="https://... (сурет сілтемесі)">
+                    <div style="display:flex; align-items:center; gap:10px; margin-top:8px;">
+                        <label for="addImageFile" class="btn btn-outline" style="width:auto; cursor:pointer; padding:8px 14px; font-size:13px; display:inline-flex;">Файл таңдау</label>
+                        <input type="file" id="addImageFile" accept="image/*" style="display:none;">
+                        <span id="addImageFileName" style="font-size:13px; color:var(--text-muted); word-break:break-all;">Файл таңдалмады</span>
+                    </div>
                     <div class="image-preview-box" id="modalImagePreview">
                         <span style="color: var(--text-muted); font-size: 13px;">Сурет превьюі осында көрінеді</span>
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label>Материал түрі</label>
+                    <select id="materialType" class="form-control" onchange="window.toggleMaterialType(this.value)">
+                        <option value="link">Сілтеме / YouTube URL</option>
+                        <option value="file">Файл жүктеу (Компьютерден)</option>
+                    </select>
+                </div>
+
                 <div class="form-group" id="linkInputWrapper">
-                    <label>Сілтеме / Файл URL / YouTube URL</label>
+                    <label>Сілтеме / YouTube URL</label>
                     <input type="url" id="addLink" class="form-control" required>
                 </div>
+
+                <div class="form-group" id="fileInputWrapper" style="display:none;">
+                    <label>Құжат / Файлды таңдаңыз</label>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <label for="addDocumentFile" class="btn btn-outline" style="width:auto; cursor:pointer; padding:8px 14px; font-size:13px; display:inline-flex;">Файл таңдау</label>
+                        <input type="file" id="addDocumentFile" style="display:none;">
+                        <span id="addDocumentFileName" style="font-size:13px; color:var(--text-muted); word-break:break-all;">Файл таңдалмады</span>
+                    </div>
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:8px;">Файл Firebase Storage-ке жүктеледі және барлық қолданушыға қолжетімді сілтемеге айналады.</p>
+                </div>
+
+                <div id="uploadStatus" style="display:none; font-size:13px; color:var(--primary); font-weight:600; margin-top:6px;"></div>
+
                 <div style="display: flex; gap: 8px; margin-top: 24px;">
                     <button type="button" class="btn btn-outline" onclick="window.closeModal('addModal')">Бас тарту</button>
-                    <button type="submit" class="btn btn-primary">Қосу</button>
+                    <button type="submit" id="addSubmitBtn" class="btn btn-primary">Қосу</button>
                 </div>
             </form>
         </div>
@@ -341,6 +368,8 @@
         from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, enableIndexedDbPersistence } 
         from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } 
+        from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
         // Сіздің нақты Firebase жобаңыздың конфигурациясы (adiletagai-fd104)
         const firebaseConfig = {
@@ -356,6 +385,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const storage = getStorage(app);
 
         // Локальды кэш қосу: қайта кірген қолданушыға деректер желіні
         // күтпей-ақ, құрылғыдағы кэштен бірден көрсетіледі, сосын
@@ -427,13 +457,34 @@
         window.openAddModal = function(type) {
             document.getElementById('addType').value = type;
             document.getElementById('eraSelectGroup').style.display = type === 'books' ? 'none' : 'block';
+            document.getElementById('materialType').value = 'link';
+            window.toggleMaterialType('link');
             document.getElementById('addModal').style.display = 'flex';
+        }
+
+        // Сілтеме / Файл жүктеу режимдерін ауыстыру
+        window.toggleMaterialType = function(mode) {
+            const linkWrapper = document.getElementById('linkInputWrapper');
+            const fileWrapper = document.getElementById('fileInputWrapper');
+            const linkInput = document.getElementById('addLink');
+            if (mode === 'file') {
+                linkWrapper.style.display = 'none';
+                fileWrapper.style.display = 'block';
+                linkInput.required = false;
+            } else {
+                linkWrapper.style.display = 'block';
+                fileWrapper.style.display = 'none';
+                linkInput.required = true;
+            }
         }
 
         window.closeModal = function(id) {
             document.getElementById(id).style.display = 'none';
             document.getElementById('addContentForm').reset();
             document.getElementById('modalImagePreview').innerHTML = '<span style="color: var(--text-muted); font-size: 13px;">Сурет превьюі осында көрінеді</span>';
+            document.getElementById('addImageFileName').innerText = 'Файл таңдалмады';
+            document.getElementById('addDocumentFileName').innerText = 'Файл таңдалмады';
+            window.toggleMaterialType('link');
         }
 
         window.logout = function() {
@@ -644,26 +695,75 @@
             }
         });
 
+        // Файлды Firebase Storage-ке жүктеп, тұрақты сілтеме алу
+        async function uploadFileToStorage(file, folder) {
+            const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+            const path = `${folder}/${Date.now()}_${safeName}`;
+            const fileRef = storageRef(storage, path);
+            await uploadBytes(fileRef, file);
+            return await getDownloadURL(fileRef);
+        }
+
         // Add Content Form
         document.getElementById('addContentForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            const submitBtn = document.getElementById('addSubmitBtn');
+            const statusEl = document.getElementById('uploadStatus');
             const type = document.getElementById('addType').value;
-            const newData = {
-                title: document.getElementById('addTitle').value,
-                url: document.getElementById('addLink').value,
-                coverUrl: document.getElementById('addImageUrl').value || ''
-            };
-            if(type !== 'books') {
-                newData.era = document.getElementById('addEra').value;
+            const materialType = document.getElementById('materialType').value;
+            const imageFile = document.getElementById('addImageFile').files[0];
+            const documentFile = document.getElementById('addDocumentFile').files[0];
+            const linkValue = document.getElementById('addLink').value;
+
+            if (materialType === 'file' && !documentFile) {
+                alert('Құжат файлын таңдаңыз.');
+                return;
+            }
+            if (materialType === 'link' && !linkValue) {
+                alert('Сілтемені енгізіңіз.');
+                return;
             }
 
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Жүктелуде...';
+            statusEl.style.display = 'block';
+            statusEl.innerText = 'Деректер дайындалуда...';
+
             try {
+                // Мұқаба суретін жүктеу (файл таңдалған болса, URL-дің орнына соны қолданамыз)
+                let coverUrl = document.getElementById('addImageUrl').value || '';
+                if (imageFile) {
+                    statusEl.innerText = 'Сурет жүктелуде...';
+                    coverUrl = await uploadFileToStorage(imageFile, `covers/${type}`);
+                }
+
+                // Негізгі материал: сілтеме немесе жүктелген файл
+                let materialUrl = linkValue;
+                if (materialType === 'file') {
+                    statusEl.innerText = 'Құжат жүктелуде...';
+                    materialUrl = await uploadFileToStorage(documentFile, `materials/${type}`);
+                }
+
+                const newData = {
+                    title: document.getElementById('addTitle').value,
+                    url: materialUrl,
+                    coverUrl: coverUrl
+                };
+                if(type !== 'books') {
+                    newData.era = document.getElementById('addEra').value;
+                }
+
                 await addDoc(collection(db, type), newData);
                 window.closeModal('addModal');
                 fetchData();
             } catch(error) {
                 console.error("Қосу кезінде қате:", error);
-                alert("Қате пайда болды! Рұқсатыңызды тексеріңіз.");
+                alert("Қате пайда болды: " + (error.message || error) + "\n\nStorage рұқсаттарын (Firebase Console → Storage → Rules) тексеріңіз.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Қосу';
+                statusEl.style.display = 'none';
             }
         });
 
@@ -676,6 +776,25 @@
             } else {
                 preview.innerHTML = `<span style="color: var(--text-muted); font-size: 13px;">Сурет превьюі осында көрінеді</span>`;
             }
+        });
+
+        // Мұқаба файлы таңдалғанда алдын-ала көрсету
+        document.getElementById('addImageFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            const nameSpan = document.getElementById('addImageFileName');
+            const preview = document.getElementById('modalImagePreview');
+            if (file) {
+                nameSpan.innerText = file.name;
+                preview.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="Превью">`;
+            } else {
+                nameSpan.innerText = 'Файл таңдалмады';
+            }
+        });
+
+        // Құжат файлы таңдалғанда атын көрсету
+        document.getElementById('addDocumentFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            document.getElementById('addDocumentFileName').innerText = file ? file.name : 'Файл таңдалмады';
         });
 
     </script>
