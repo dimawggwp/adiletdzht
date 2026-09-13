@@ -119,8 +119,10 @@
             border: 1px solid var(--border); 
         }
         .era-tab { 
-            display: inline-block;
-            padding: 8px 18px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 12px 8px 18px; 
             border-radius: 10px; 
             cursor: pointer; 
             font-weight: 600; 
@@ -132,7 +134,25 @@
         }
         .era-tab:hover { background: var(--primary-light); color: var(--primary); }
         .era-tab.active { background: var(--primary); color: white; }
+        .era-tab-delete {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+            font-size: 13px; font-weight: 800; opacity: 0.55; transition: 0.2s;
+        }
+        .era-tab-delete:hover { opacity: 1; background: rgba(229, 62, 62, 0.18); color: var(--danger); }
         .btn-add-era { background: var(--surface); border: 1px dashed var(--primary); color: var(--primary); min-width: 36px; height: 36px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
+
+        .era-checkbox-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .era-checkbox-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px;
+            cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text);
+            transition: 0.2s; user-select: none;
+        }
+        .era-checkbox-pill input { width: auto; margin: 0; accent-color: var(--primary); }
+        .era-checkbox-pill.checked, .era-checkbox-pill:has(input:checked) {
+            border-color: var(--primary); background: var(--primary-light); color: var(--primary);
+        }
 
         .registration-banner {
             background: var(--surface); border: 2px solid #25D366; border-radius: 20px;
@@ -185,9 +205,16 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
+        .fact-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); }
         .fact-icon { font-size: 22px; line-height: 1; }
-        .fact-text { font-size: 14px; line-height: 1.6; color: var(--text); flex-grow: 1; }
+        .fact-text {
+            font-size: 14px; line-height: 1.6; color: var(--text); flex-grow: 1;
+            display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .fact-read-more { font-size: 12px; font-weight: 700; color: var(--primary); }
         .fact-actions { display: flex; gap: 8px; }
         .fact-actions .btn { width: auto; padding: 8px 14px; font-size: 13px; }
         .facts-nav-btn {
@@ -323,7 +350,7 @@
             </div>
             <div class="era-tabs-container">
                 <div class="era-tabs" id="checklists-era-tabs"></div>
-                <button class="btn-add-era admin-only" style="display: none;" onclick="window.promptNewEra()" title="Жаңа дәуір қосу">+</button>
+                <button class="btn-add-era admin-only" style="display: none;" onclick="window.promptNewEra('checklists')" title="Жаңа дәуір қосу">+</button>
             </div>
             <div id="checklists-grid" class="grid"></div>
         </section>
@@ -338,7 +365,7 @@
             </div>
             <div class="era-tabs-container">
                 <div class="era-tabs" id="analyses-era-tabs"></div>
-                <button class="btn-add-era admin-only" style="display: none;" onclick="window.promptNewEra()" title="Жаңа дәуір қосу">+</button>
+                <button class="btn-add-era admin-only" style="display: none;" onclick="window.promptNewEra('analyses')" title="Жаңа дәуір қосу">+</button>
             </div>
             <div id="analyses-grid" class="grid"></div>
         </section>
@@ -350,6 +377,10 @@
                     <p class="text-muted">Дүниежүзі тарихы бойынша ресми оқулықтар базасы</p>
                 </div>
                 <button class="btn btn-primary admin-only" style="display: none; width: auto;" onclick="window.openAddModal('books')">+ Кітап қосу</button>
+            </div>
+            <div class="era-tabs-container">
+                <div class="era-tabs" id="books-era-tabs"></div>
+                <button class="btn-add-era admin-only" style="display: none;" onclick="window.promptNewEra('books')" title="Жаңа дәуір қосу">+</button>
             </div>
             <div id="books-grid" class="grid"></div>
         </section>
@@ -393,18 +424,39 @@
         </div>
     </div>
 
+    <div id="factViewModal" class="modal-overlay">
+        <div class="modal">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:18px;">
+                <div id="factViewIcon" style="font-size:28px; line-height:1;"></div>
+                <h3 style="margin-bottom:0;">Факт</h3>
+            </div>
+            <p id="factViewText" style="font-size:15px; line-height:1.75; white-space:pre-wrap; color: var(--text);"></p>
+            <div id="factViewActions" style="margin-top:20px;"></div>
+            <div style="display: flex; gap: 8px; margin-top: 24px;">
+                <button type="button" class="btn btn-outline" onclick="window.closeFactViewModal()">Жабу</button>
+            </div>
+        </div>
+    </div>
+
     <div id="addModal" class="modal-overlay">
         <div class="modal">
             <h3>Жаңа материал қосу</h3>
             <form id="addContentForm">
-                <input type="hidden" id="addType">
+                <div class="form-group">
+                    <label>Бөлім</label>
+                    <select id="addSection" class="form-control" onchange="window.onSectionChange(this.value)">
+                        <option value="checklists">Чеклист</option>
+                        <option value="analyses">Нұсқа талдау</option>
+                        <option value="books">Кітап</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label>Атауы</label>
                     <input type="text" id="addTitle" class="form-control" required>
                 </div>
                 <div class="form-group" id="eraSelectGroup">
-                    <label>Дәуірді таңдаңыз</label>
-                    <select id="addEra" class="form-control"></select>
+                    <label>Дәуірлерді таңдаңыз (бірнешеуін таңдауға болады)</label>
+                    <div id="addEraCheckboxes" class="era-checkbox-list"></div>
                 </div>
 
                 <div class="form-group">
@@ -460,7 +512,7 @@
         from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, enableIndexedDbPersistence } 
         from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } 
+        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } 
         from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
         // Сіздің нақты Firebase жобаңыздың конфигурациясы (adiletagai-fd104)
@@ -500,9 +552,9 @@
             'contemporary': 'Қазіргі заман'
         };
 
-        let erasMap = { ...defaultEras };
+        let erasMap = { checklists: { ...defaultEras }, analyses: { ...defaultEras }, books: { ...defaultEras } };
         let contentDB = { checklists: [], analyses: [], books: [], facts: [] };
-        let currentFilters = { checklists: 'all', analyses: 'all' };
+        let currentFilters = { checklists: 'all', analyses: 'all', books: 'all' };
         let isAdmin = false;
 
         // UI функцияларын глобалды ету (html ішінен шақыру үшін)
@@ -547,11 +599,17 @@
         }
 
         window.openAddModal = function(type) {
-            document.getElementById('addType').value = type;
-            document.getElementById('eraSelectGroup').style.display = type === 'books' ? 'none' : 'block';
+            document.getElementById('addSection').value = type;
+            window.onSectionChange(type);
             document.getElementById('materialType').value = 'link';
             window.toggleMaterialType('link');
             document.getElementById('addModal').style.display = 'flex';
+        }
+
+        // "Бөлім" таңдауы өзгергенде дәуір чекбокстарын сол бөлімнің
+        // өз тізіміне сай жаңартамыз (әр бөлімнің дәуірлері бөлек)
+        window.onSectionChange = function(type) {
+            renderAddEraCheckboxes(type);
         }
 
         // Факт модалын ашу — әрдайым "Мәтін" түрінен бастаймыз
@@ -576,6 +634,30 @@
             const fileWrapper = document.getElementById('factFileWrapper');
             linkWrapper.style.display = mode === 'link' ? 'block' : 'none';
             fileWrapper.style.display = mode === 'file' ? 'block' : 'none';
+        }
+
+        // Фактіні толық оқу үшін модал ашу (карточканың кез келген жерін басқанда)
+        window.viewFact = function(id) {
+            const item = contentDB.facts.find(f => f.id === id);
+            if (!item) return;
+            const icon = item.type === 'link' ? '🔗' : item.type === 'file' ? '📄' : '💡';
+            document.getElementById('factViewIcon').innerText = icon;
+            document.getElementById('factViewText').innerText = item.text;
+
+            const actionsEl = document.getElementById('factViewActions');
+            if (item.type === 'link' && item.url) {
+                actionsEl.innerHTML = `<a href="${item.url}" target="_blank" class="btn btn-primary" style="width:auto;">Сілтемені ашу</a>`;
+            } else if (item.type === 'file' && item.url) {
+                actionsEl.innerHTML = `<a href="${item.url}" target="_blank" class="btn btn-primary" style="width:auto;">${item.fileName ? 'Файлды ашу — ' + item.fileName : 'Файлды ашу'}</a>`;
+            } else {
+                actionsEl.innerHTML = '';
+            }
+
+            document.getElementById('factViewModal').style.display = 'flex';
+        }
+
+        window.closeFactViewModal = function() {
+            document.getElementById('factViewModal').style.display = 'none';
         }
 
         // Фактілер каруселін бір карточка ені бойынша сырғыту (тиіп-сырғыту да қолдайды)
@@ -609,6 +691,7 @@
             document.getElementById('modalImagePreview').innerHTML = '<span style="color: var(--text-muted); font-size: 13px;">Сурет превьюі осында көрінеді</span>';
             document.getElementById('addImageFileName').innerText = 'Файл таңдалмады';
             document.getElementById('addDocumentFileName').innerText = 'Файл таңдалмады';
+            document.querySelectorAll('#addEraCheckboxes .era-checkbox-pill').forEach(el => el.classList.remove('checked'));
             window.toggleMaterialType('link');
         }
 
@@ -630,19 +713,41 @@
             }
         }
 
-        // Жаңа дәуір/санат қосу — барлық қолданушыға синхрондалатын Firestore-ге сақталады
-        window.promptNewEra = async function() {
+        // Жаңа дәуір/санат қосу — таңдалған бөлімге ғана тиесілі, барлық
+        // қолданушыға синхрондалатын Firestore-ге сақталады
+        window.promptNewEra = async function(type) {
             const eraName = prompt("Жаңа дәуір/санат атауын енгізіңіз (мыс: Қайта өрлеу дәуірі):");
             if (eraName && eraName.trim() !== "") {
                 const key = 'era_' + Date.now();
-                erasMap[key] = eraName.trim();
+                erasMap[type][key] = eraName.trim();
                 try {
-                    await setDoc(doc(db, 'meta', 'eras'), { map: erasMap });
+                    await setDoc(doc(db, 'meta', 'eras'), erasMap);
                 } catch (err) {
                     console.error('Дәуірді сақтау кезінде қате:', err);
                     alert('Дәуірді сақтау кезінде қате шықты. Рұқсатыңызды тексеріңіз.');
-                    delete erasMap[key];
+                    delete erasMap[type][key];
                 }
+                renderEraTabsUI();
+            }
+        }
+
+        // Дәуірді/санатты өшіру — тек сол бөлімнің мета-тізімінен алынады,
+        // соған тиесілі материалдар өшірілмейді (олар "Барлығы" ішінде көрінуін жалғастырады)
+        window.deleteEra = async function(type, key) {
+            const eraName = erasMap[type][key];
+            if (!confirm(`"${eraName}" дәуірін өшіруге сенімдісіз бе?\n\nБұл дәуірге тиесілі материалдар өшірілмейді, тек санат тізімінен алынады.`)) return;
+
+            const backup = JSON.parse(JSON.stringify(erasMap));
+            delete erasMap[type][key];
+            try {
+                await setDoc(doc(db, 'meta', 'eras'), erasMap);
+                if (currentFilters[type] === key) currentFilters[type] = 'all';
+                renderEraTabsUI();
+                renderAll();
+            } catch (err) {
+                console.error('Дәуірді өшіру кезінде қате:', err);
+                alert('Дәуірді өшіру кезінде қате шықты. Рұқсатыңызды тексеріңіз.');
+                erasMap = backup;
                 renderEraTabsUI();
             }
         }
@@ -650,30 +755,64 @@
         async function fetchEras() {
             try {
                 const snap = await getDoc(doc(db, 'meta', 'eras'));
-                erasMap = snap.exists() && snap.data().map ? snap.data().map : { ...defaultEras };
+                const data = snap.exists() ? snap.data() : {};
+                if (data.checklists || data.analyses || data.books) {
+                    // Жаңа құрылым: әр бөлімнің өз дәуірлер тізімі бар
+                    erasMap = {
+                        checklists: data.checklists || { ...defaultEras },
+                        analyses: data.analyses || { ...defaultEras },
+                        books: data.books || { ...defaultEras }
+                    };
+                } else if (data.map) {
+                    // Ескі құрылым: чеклист пен талдау бір ортақ тізімді қолданған —
+                    // соны әр бөлімге бастапқы мән ретінде тарату
+                    erasMap = {
+                        checklists: { ...data.map },
+                        analyses: { ...data.map },
+                        books: { ...defaultEras }
+                    };
+                } else {
+                    erasMap = { checklists: { ...defaultEras }, analyses: { ...defaultEras }, books: { ...defaultEras } };
+                }
             } catch (err) {
                 console.error('Дәуірлерді жүктеу кезінде қате:', err);
-                erasMap = { ...defaultEras };
+                erasMap = { checklists: { ...defaultEras }, analyses: { ...defaultEras }, books: { ...defaultEras } };
             }
         }
 
         function renderEraTabsUI() {
-            ['checklists', 'analyses'].forEach(type => {
+            ['checklists', 'analyses', 'books'].forEach(type => {
                 const container = document.getElementById(`${type}-era-tabs`);
                 if(!container) return;
-                
+
                 let html = `<div class="era-tab ${currentFilters[type] === 'all' ? 'active' : ''}" onclick="window.filterEra('${type}', 'all')">Барлығы</div>`;
-                for(let key in erasMap) {
-                    html += `<div class="era-tab ${currentFilters[type] === key ? 'active' : ''}" onclick="window.filterEra('${type}', '${key}')">${erasMap[key]}</div>`;
+                for(let key in erasMap[type]) {
+                    html += `<div class="era-tab ${currentFilters[type] === key ? 'active' : ''}" onclick="window.filterEra('${type}', '${key}')">
+                        <span>${erasMap[type][key]}</span>
+                        ${isAdmin ? `<span class="era-tab-delete" onclick="event.stopPropagation(); window.deleteEra('${type}', '${key}')" title="Дәуірді өшіру">×</span>` : ''}
+                    </div>`;
                 }
                 container.innerHTML = html;
             });
 
-            const select = document.getElementById('addEra');
-            select.innerHTML = '';
-            for(let key in erasMap) {
-                select.innerHTML += `<option value="${key}">${erasMap[key]}</option>`;
-            }
+            // Материал қосу модалындағы дәуір чекбокстарын ағымдағы таңдалған
+            // бөлімге сай жаңарту (әр бөлімнің дәуірлері бөлек болғандықтан)
+            const sectionSelect = document.getElementById('addSection');
+            renderAddEraCheckboxes(sectionSelect ? sectionSelect.value : 'checklists');
+        }
+
+        // Берілген бөлімнің (checklists/analyses/books) дәуірлерін "pill"
+        // чекбокстар түрінде көрсету — бірнешеуін таңдауға болады
+        function renderAddEraCheckboxes(type) {
+            const checkboxContainer = document.getElementById('addEraCheckboxes');
+            if (!checkboxContainer) return;
+            const eras = erasMap[type] || {};
+            checkboxContainer.innerHTML = Object.keys(eras).map(key => `
+                <label class="era-checkbox-pill">
+                    <input type="checkbox" value="${key}" onchange="this.closest('.era-checkbox-pill').classList.toggle('checked', this.checked)">
+                    ${eras[key]}
+                </label>
+            `).join('');
         }
 
         function getYouTubeId(url) {
@@ -686,28 +825,52 @@
             const container = document.getElementById(`${type}-grid`);
             if(!container) return;
             const filter = currentFilters[type];
-            const items = contentDB[type].filter(item => filter === 'all' || item.era === filter);
+            const items = contentDB[type].filter(item => {
+                if (filter === 'all') return true;
+                if (Array.isArray(item.eras)) return item.eras.includes(filter);
+                return item.era === filter; // ескі (жалғыз дәуірлі) жазбалар үшін
+            });
 
+            const emptyMessages = {
+                checklists: 'Бұл бөлімде материалдар әлі жоқ.',
+                analyses: 'Бұл бөлімде материалдар әлі жоқ.',
+                books: 'Кітаптар жоқ.'
+            };
             if(items.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Бұл бөлімде материалдар әлі жоқ.</p>`;
+                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">${emptyMessages[type] || 'Материалдар әлі жоқ.'}</p>`;
                 return;
             }
 
+            const defaultCovers = {
+                checklists: 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800&q=80',
+                analyses: 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800&q=80',
+                books: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=800&q=80'
+            };
+
             container.innerHTML = items.map(item => {
-                let imgCover = item.coverUrl || 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800&q=80';
+                let imgCover = item.coverUrl || defaultCovers[type] || 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800&q=80';
                 if (type === 'analyses' && !item.coverUrl) {
                     const ytId = getYouTubeId(item.url);
                     imgCover = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : imgCover;
+                }
+
+                // Әр бөлімнің (checklists/analyses/books) дәуірлер тізімі бөлек
+                const sectionEras = erasMap[type] || {};
+                let eraLabel = 'Материал';
+                if (Array.isArray(item.eras) && item.eras.length) {
+                    eraLabel = item.eras.map(e => sectionEras[e] || e).join(', ');
+                } else if (item.era) {
+                    eraLabel = sectionEras[item.era] || 'Материал';
                 }
 
                 return `
                     <div class="card">
                         <img src="${imgCover}" class="card-preview" alt="Preview">
                         <div class="card-body">
-                            <span class="badge">${erasMap[item.era] || 'Материал'}</span>
+                            <span class="badge">${eraLabel}</span>
                             <div class="card-title">${item.title}</div>
                             <div class="card-actions">
-                                <a href="${item.url}" target="_blank" class="btn ${type === 'analyses' ? 'btn-outline' : 'btn-primary'}">${type === 'analyses' ? 'Көру' : 'Жүктеу / Ашу'}</a>
+                                <a href="${item.url}" target="_blank" class="btn ${type === 'analyses' ? 'btn-outline' : 'btn-primary'}">${type === 'analyses' ? 'Көру' : 'Ашу / Жүктеу'}</a>
                                 ${isAdmin ? `<button class="btn btn-danger" onclick="window.deleteItem('${type}', '${item.id}')">Өшіру</button>` : ''}
                             </div>
                         </div>
@@ -716,43 +879,31 @@
             }).join('');
         }
 
-        function renderBooks() {
-            const container = document.getElementById('books-grid');
-            if(contentDB.books.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Кітаптар жоқ.</p>`;
-                return;
-            }
-            container.innerHTML = contentDB.books.map(item => `
-                <div class="card">
-                    <img src="${item.coverUrl || 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=800&q=80'}" class="card-preview">
-                    <div class="card-body">
-                        <span class="badge">Ресми оқулық</span>
-                        <div class="card-title">${item.title}</div>
-                        <div class="card-actions">
-                            <a href="${item.url}" target="_blank" class="btn btn-primary">Ашу / Жүктеу</a>
-                            ${isAdmin ? `<button class="btn btn-danger" onclick="window.deleteItem('books', '${item.id}')">Өшіру</button>` : ''}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
         function renderHomePreview() {
             const container = document.getElementById('home-checklists-preview');
             if(contentDB.checklists.length === 0) {
                 container.innerHTML = `<p style="color: var(--text-muted);">Материалдар әлі қосылмаған.</p>`;
                 return;
             }
-            container.innerHTML = contentDB.checklists.slice(0, 3).map(item => `
+            container.innerHTML = contentDB.checklists.slice(0, 3).map(item => {
+                const sectionEras = erasMap.checklists || {};
+                let eraLabel = 'Дүниежүзі тарихы';
+                if (Array.isArray(item.eras) && item.eras.length) {
+                    eraLabel = item.eras.map(e => sectionEras[e] || e).join(', ');
+                } else if (item.era) {
+                    eraLabel = sectionEras[item.era] || 'Дүниежүзі тарихы';
+                }
+                return `
                 <div class="card">
                     <img src="${item.coverUrl || 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800&q=80'}" class="card-preview">
                     <div class="card-body">
-                        <span class="badge">${erasMap[item.era] || 'Дүниежүзі тарихы'}</span>
+                        <span class="badge">${eraLabel}</span>
                         <div class="card-title">${item.title}</div>
                         <a href="${item.url}" target="_blank" class="btn btn-outline" style="margin-top:10px;">Ашу / Жүктеу</a>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Фактілер каруселін көрсету: мәтін, сілтеме немесе файл түрінде болуы мүмкін.
@@ -771,17 +922,18 @@
                 const icon = item.type === 'link' ? '🔗' : item.type === 'file' ? '📄' : '💡';
                 let actionHtml = '';
                 if (item.type === 'link' && item.url) {
-                    actionHtml = `<a href="${item.url}" target="_blank" class="btn btn-outline">Сілтемені ашу</a>`;
+                    actionHtml = `<a href="${item.url}" target="_blank" class="btn btn-outline" onclick="event.stopPropagation()">Сілтемені ашу</a>`;
                 } else if (item.type === 'file' && item.url) {
-                    actionHtml = `<a href="${item.url}" target="_blank" class="btn btn-outline">Файлды ашу</a>`;
+                    actionHtml = `<a href="${item.url}" target="_blank" class="btn btn-outline" onclick="event.stopPropagation()">Файлды ашу</a>`;
                 }
                 return `
-                    <div class="fact-card">
+                    <div class="fact-card" onclick="window.viewFact('${item.id}')">
                         <div class="fact-icon">${icon}</div>
                         <div class="fact-text">${item.text}</div>
+                        <div class="fact-read-more">Толығырақ оқу →</div>
                         <div class="fact-actions">
                             ${actionHtml}
-                            ${isAdmin ? `<button class="btn btn-danger" onclick="window.deleteItem('facts', '${item.id}')">Өшіру</button>` : ''}
+                            ${isAdmin ? `<button class="btn btn-danger" onclick="event.stopPropagation(); window.deleteItem('facts', '${item.id}')">Өшіру</button>` : ''}
                         </div>
                     </div>
                 `;
@@ -791,7 +943,7 @@
         function renderAll() {
             renderCategory('checklists');
             renderCategory('analyses');
-            renderBooks();
+            renderCategory('books');
             renderHomePreview();
             renderFacts();
         }
@@ -854,13 +1006,74 @@
             }
         });
 
-        // Файлды Firebase Storage-ке жүктеп, тұрақты сілтеме алу
-        async function uploadFileToStorage(file, folder) {
+        // Файлды Firebase Storage-ке жүктеп, тұрақты сілтеме алу.
+        // uploadBytesResumable қолданамыз (жай uploadBytes-тің орнына), себебі ол
+        // прогресс пайызын көрсетуге мүмкіндік береді және желі/рұқсат мәселесінде
+        // "мәңгі жүктеліп тұрады" дегеннің орнына нақты қате шығарады.
+        // onProgress(percent) — қаласаңыз, экранға пайызды шығару үшін.
+        function uploadFileToStorage(file, folder, onProgress) {
             const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
             const path = `${folder}/${Date.now()}_${safeName}`;
             const fileRef = storageRef(storage, path);
-            await uploadBytes(fileRef, file);
-            return await getDownloadURL(fileRef);
+            const task = uploadBytesResumable(fileRef, file);
+
+            const STUCK_TIMEOUT_MS = 30000; // 30 секунд ішінде ешбір прогресс болмаса — тоқтатамыз
+            let lastProgressAt = Date.now();
+
+            const uploadPromise = new Promise((resolve, reject) => {
+                task.on('state_changed',
+                    (snapshot) => {
+                        lastProgressAt = Date.now();
+                        if (onProgress && snapshot.totalBytes) {
+                            const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                            onProgress(pct);
+                        }
+                    },
+                    (error) => {
+                        reject(error);
+                    },
+                    async () => {
+                        try {
+                            const url = await getDownloadURL(task.snapshot.ref);
+                            resolve(url);
+                        } catch (err) {
+                            reject(err);
+                        }
+                    }
+                );
+            });
+
+            const watchdog = new Promise((_, reject) => {
+                const interval = setInterval(() => {
+                    if (Date.now() - lastProgressAt > STUCK_TIMEOUT_MS) {
+                        clearInterval(interval);
+                        task.cancel();
+                        reject(new Error('TIMEOUT'));
+                    }
+                }, 2000);
+                uploadPromise.finally(() => clearInterval(interval));
+            });
+
+            return Promise.race([uploadPromise, watchdog]);
+        }
+
+        // Firebase/желі қатесін адамға түсінікті хабарға айналдыру
+        function explainUploadError(error) {
+            const code = error && error.code;
+            const msg = error && error.message;
+            if (msg === 'TIMEOUT' || code === 'storage/canceled') {
+                return 'Жүктеу 30 секундтан астам прогресс бермеді — процесс тоқтатылды.\n\nЫқтимал себептер:\n1) Firebase Console → Storage бөлімі әлі іске қосылмаған (\"Get started\" басылмаған).\n2) Storage Rules жазуға рұқсат бермейді.\n3) storageBucket атауы Firebase Console-дағы нақты bucket атауымен сәйкес келмейді.\n4) Желі/AdBlock firebasestorage.googleapis.com доменін бұғаттап тұр.';
+            }
+            if (code === 'storage/unauthorized') {
+                return 'Рұқсат жоқ (storage/unauthorized). Firebase Console → Storage → Rules бөлімінде жазуға рұқсат (allow write) қосылғанын тексеріңіз.';
+            }
+            if (code === 'storage/unknown' || code === 'storage/retry-limit-exceeded') {
+                return 'Firebase Storage-пен байланыс орнатылмады (' + code + '). Storage бөлімі жобада қосылғанын (Get started басылғанын) және storageBucket атауы дұрыс екенін тексеріңіз.';
+            }
+            if (code === 'storage/quota-exceeded') {
+                return 'Storage квотасы таусылды.';
+            }
+            return (msg || String(error)) + '\n\nStorage рұқсаттарын (Firebase Console → Storage → Rules) тексеріңіз.';
         }
 
         // Add Content Form
@@ -869,11 +1082,12 @@
 
             const submitBtn = document.getElementById('addSubmitBtn');
             const statusEl = document.getElementById('uploadStatus');
-            const type = document.getElementById('addType').value;
+            const type = document.getElementById('addSection').value;
             const materialType = document.getElementById('materialType').value;
             const imageFile = document.getElementById('addImageFile').files[0];
             const documentFile = document.getElementById('addDocumentFile').files[0];
             const linkValue = document.getElementById('addLink').value;
+            const selectedEras = Array.from(document.querySelectorAll('#addEraCheckboxes input:checked')).map(cb => cb.value);
 
             if (materialType === 'file' && !documentFile) {
                 alert('Құжат файлын таңдаңыз.');
@@ -881,6 +1095,10 @@
             }
             if (materialType === 'link' && !linkValue) {
                 alert('Сілтемені енгізіңіз.');
+                return;
+            }
+            if (selectedEras.length === 0) {
+                alert('Кемінде бір дәуірді таңдаңыз.');
                 return;
             }
 
@@ -893,32 +1111,32 @@
                 // Мұқаба суретін жүктеу (файл таңдалған болса, URL-дің орнына соны қолданамыз)
                 let coverUrl = document.getElementById('addImageUrl').value || '';
                 if (imageFile) {
-                    statusEl.innerText = 'Сурет жүктелуде...';
-                    coverUrl = await uploadFileToStorage(imageFile, `covers/${type}`);
+                    coverUrl = await uploadFileToStorage(imageFile, `covers/${type}`, (pct) => {
+                        statusEl.innerText = `Сурет жүктелуде... ${pct}%`;
+                    });
                 }
 
                 // Негізгі материал: сілтеме немесе жүктелген файл
                 let materialUrl = linkValue;
                 if (materialType === 'file') {
-                    statusEl.innerText = 'Құжат жүктелуде...';
-                    materialUrl = await uploadFileToStorage(documentFile, `materials/${type}`);
+                    materialUrl = await uploadFileToStorage(documentFile, `materials/${type}`, (pct) => {
+                        statusEl.innerText = `Құжат жүктелуде... ${pct}%`;
+                    });
                 }
 
                 const newData = {
                     title: document.getElementById('addTitle').value,
                     url: materialUrl,
-                    coverUrl: coverUrl
+                    coverUrl: coverUrl,
+                    eras: selectedEras
                 };
-                if(type !== 'books') {
-                    newData.era = document.getElementById('addEra').value;
-                }
 
                 await addDoc(collection(db, type), newData);
                 window.closeModal('addModal');
                 fetchData();
             } catch(error) {
                 console.error("Қосу кезінде қате:", error);
-                alert("Қате пайда болды: " + (error.message || error) + "\n\nStorage рұқсаттарын (Firebase Console → Storage → Rules) тексеріңіз.");
+                alert("Қате пайда болды.\n\n" + explainUploadError(error));
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Қосу';
