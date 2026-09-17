@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>adi. — Дүниежүзі тарихы</title>
+<title>adi. — Дниежзі тарихы</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -176,12 +176,13 @@ align-items: center;
 gap: calc(var(--spacing-unit) * 2);
 }
 
+/* Updated Minimalist Theme Toggle */
 .theme-toggle {
-width: 40px;
-height: 40px;
+width: 36px;
+height: 36px;
 border-radius: var(--radius-full);
-background: var(--bg-tertiary);
-border: 1px solid var(--border);
+background: transparent;
+border: none;
 display: flex;
 align-items: center;
 justify-content: center;
@@ -190,13 +191,13 @@ transition: all 0.3s var(--transition);
 }
 
 .theme-toggle:hover {
-border-color: var(--primary);
+background: var(--bg-tertiary);
 transform: scale(1.05);
 }
 
 .theme-toggle svg {
-width: 18px;
-height: 18px;
+width: 20px;
+height: 20px;
 stroke: var(--text-primary);
 transition: transform 0.5s var(--transition);
 }
@@ -594,6 +595,96 @@ flex: 1;
 padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
 font-size: 13px;
 }
+
+/* New Styles for Book Cards */
+.book-card {
+position: relative;
+background: linear-gradient(135deg, #4ade80 0%, #16a34a 100%);
+border-radius: var(--radius-lg);
+overflow: hidden;
+display: flex;
+flex-direction: column;
+aspect-ratio: 2 / 3;
+transition: all 0.4s var(--transition);
+color: white;
+box-shadow: 0 4px 15px rgba(22, 163, 74, 0.2);
+}
+
+.book-card:hover {
+transform: translateY(-8px);
+box-shadow: 0 12px 30px rgba(22, 163, 74, 0.4);
+}
+
+.book-card-bg {
+position: absolute;
+inset: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+z-index: 0;
+opacity: 0.3;
+mix-blend-mode: overlay;
+}
+
+.book-card-overlay {
+position: absolute;
+inset: 0;
+background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
+z-index: 1;
+}
+
+.book-card-content {
+position: relative;
+z-index: 2;
+display: flex;
+flex-direction: column;
+height: 100%;
+padding: calc(var(--spacing-unit) * 3);
+justify-content: space-between;
+align-items: center;
+text-align: center;
+}
+
+.book-class-badge {
+align-self: flex-start;
+background: rgba(255, 255, 255, 0.25);
+backdrop-filter: blur(4px);
+padding: 4px 12px;
+border-radius: var(--radius-full);
+font-size: 13px;
+font-weight: 600;
+border: 1px solid rgba(255,255,255,0.3);
+}
+
+.book-title {
+font-size: 28px;
+font-weight: 800;
+line-height: 1.2;
+margin: auto 0;
+text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.book-meta-bottom {
+font-size: 14px;
+font-weight: 500;
+opacity: 0.95;
+margin-bottom: 16px;
+text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+
+.book-admin-actions {
+display: flex;
+gap: 8px;
+width: 100%;
+}
+
+.book-admin-actions .btn {
+flex: 1;
+padding: 8px;
+font-size: 13px;
+backdrop-filter: blur(4px);
+}
+/* End Book Cards */
 
 .fact-carousel {
 display: flex;
@@ -1043,7 +1134,7 @@ padding: calc(var(--spacing-unit) * 4);
 </div>
 <div class="nav-item" onclick="window.switchTab('analyses', event)">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-<span>Нұсқа талдаулар</span>
+<span>Нса талдаулар</span>
 </div>
 <div class="nav-item" onclick="window.switchTab('books', event)">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
@@ -1058,11 +1149,11 @@ padding: calc(var(--spacing-unit) * 4);
 <div class="header-actions">
 <div class="user-info" style="display: none;">
 <span class="user-email" id="currentUserEmail"></span>
-<button class="btn btn-secondary" onclick="window.logout()">Шығу</button>
+<button class="btn btn-secondary" onclick="window.logout()">Шыу</button>
 </div>
-<button class="theme-toggle" onclick="window.toggleTheme()" title="Тақырыпты өзгерту">
-<svg id="themeIconSVG" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+<button class="theme-toggle" onclick="window.toggleTheme()" title="Таырыпты згерту">
+<svg id="themeIconSVG" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<!-- Иконка по умолчанию будет установлена через JS -->
 </svg>
 </button>
 <button class="mobile-menu-btn" onclick="window.toggleMobileMenu()">
@@ -1085,7 +1176,7 @@ padding: calc(var(--spacing-unit) * 4);
 </div>
 <div class="nav-item" onclick="window.switchTab('analyses', event)">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-<span>Нұсқа талдаулар</span>
+<span>Нса талдаулар</span>
 </div>
 <div class="nav-item" onclick="window.switchTab('books', event)">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
@@ -1097,7 +1188,7 @@ padding: calc(var(--spacing-unit) * 4);
 </a>
 <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">
 <div class="user-email" id="mobileUserEmail" style="display: block; margin-bottom: 12px; text-align: center;"></div>
-<button class="btn btn-outline" style="width: 100%;" onclick="window.logout()">Шығу</button>
+<button class="btn btn-outline" style="width: 100%;" onclick="window.logout()">Шыу</button>
 </div>
 </nav>
 
@@ -1116,11 +1207,11 @@ padding: calc(var(--spacing-unit) * 4);
 <input type="email" id="loginEmail" class="form-control" required placeholder="email@example.com">
 </div>
 <div class="form-group">
-<label class="form-label">Құпия сөз</label>
+<label class="form-label">пия сз</label>
 <input type="password" id="loginPass" class="form-control" required placeholder="••••••••">
 </div>
 <p id="loginError" class="status-message error"></p>
-<button type="submit" class="btn btn-primary" style="width: 100%;">Жүйеге кіру</button>
+<button type="submit" class="btn btn-primary" style="width: 100%;">Жйеге кіру</button>
 </form>
 
 <form id="registerForm" style="display: none;">
@@ -1129,7 +1220,7 @@ padding: calc(var(--spacing-unit) * 4);
 <input type="email" id="regEmail" class="form-control" required placeholder="email@example.com">
 </div>
 <div class="form-group">
-<label class="form-label">Құпия сөз</label>
+<label class="form-label">пия сз</label>
 <input type="password" id="regPass" class="form-control" required minlength="6" placeholder="••••••••">
 </div>
 <p id="regError" class="status-message error"></p>
@@ -1144,35 +1235,35 @@ padding: calc(var(--spacing-unit) * 4);
 <div class="container section">
 <div class="hero">
 <div class="hero-content">
-<h1>Дүниежүзі тарихы</h1>
-<p>ҰБТ-ға тиімді дайындалуға арналған толық материалдар, чеклисттер мен видео талдаулар базасы.</p>
+<h1>Дниежзі тарихы</h1>
+<p>БТ-а тиімді дайындалуа арналан толы материалдар, чеклисттер мен видео талдаулар базасы.</p>
 </div>
 </div>
 
 <div class="banner">
 <div class="banner-content">
-<h3>ҰБТ Дүниежүзі тарихы онлайн курсына тіркелу</h3>
-<p>JUZ40-пен бірге жеке дайындық жоспарын құрып, жоғары балл жинаңыз.</p>
+<h3>БТ Дниежзі тарихы онлайн курсына тіркелу</h3>
+<p>JUZ40-пен бірге жеке дайынды жоспарын рып, жоары балл жинаыз.</p>
 </div>
-<a href="https://wa.me/77471401404?text=Саламатсыз%20ба!%20Дүниежүзі%20тарихы%20курсына%20тіркелу%20туралы%20білгім%20келеді." target="_blank" class="btn btn-whatsapp">
+<a href="https://wa.me/77471401404?text=Саламатсыз%20ба!%20Дниежзі%20тарихы%20курсына%20тіркелу%20туралы%20білгім%20келеді." target="_blank" class="btn btn-whatsapp">
 <svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-WhatsApp арқылы тіркелу
+WhatsApp арылы тіркелу
 </a>
 </div>
 
 <div class="section-header">
 <div>
-<h2 class="section-title">Соңғы қосылған чеклисттер</h2>
+<h2 class="section-title">Соы осылан чеклисттер</h2>
 </div>
 </div>
 <div id="homeChecklistsPreview" class="grid"></div>
 
 <div style="margin-top: 80px;">
 <div class="section-actions">
-<h3 class="section-title" style="margin: 0;">Қызықты фактілер</h3>
+<h3 class="section-title" style="margin: 0;">ызыты фактілер</h3>
 <button class="btn btn-primary admin-only" onclick="window.openFactModal()">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-Факт қосу
+Факт осу
 </button>
 </div>
 <div id="factsList" class="fact-carousel"></div>
@@ -1185,17 +1276,17 @@ WhatsApp арқылы тіркелу
 <div class="section-actions">
 <div>
 <h1 class="section-title">Чеклисттер</h1>
-<p class="section-subtitle">Пән бойынша барлық қысқаша конспектілер</p>
+<p class="section-subtitle">Пн бойынша барлы ысаша конспектілер</p>
 </div>
 <button class="btn btn-primary admin-only" onclick="window.openAddModal('checklists')">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-Қосу
+осу
 </button>
 </div>
 
 <div class="tabs" style="display: flex; align-items: center;">
 <div id="checklistsEraTabs" style="display: flex; gap: 12px; flex: 1; overflow-x: auto;"></div>
-<button class="btn-add-tab admin-only" onclick="window.promptNewEra('checklists')" title="Жаңа дәуір қосу">+</button>
+<button class="btn-add-tab admin-only" onclick="window.promptNewEra('checklists')" title="Жаа дуір осу">+</button>
 </div>
 
 <div id="checklistsGrid" class="grid"></div>
@@ -1206,18 +1297,18 @@ WhatsApp арқылы тіркелу
 <div class="container section">
 <div class="section-actions">
 <div>
-<h1 class="section-title">Нұсқа талдаулар</h1>
-<p class="section-subtitle">Тақырыптық және ҰБТ нұсқаларының видео талдаулары</p>
+<h1 class="section-title">Нса талдаулар</h1>
+<p class="section-subtitle">Таырыпты жне БТ нсаларыны видео талдаулары</p>
 </div>
 <button class="btn btn-primary admin-only" onclick="window.openAddModal('analyses')">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-Қосу
+осу
 </button>
 </div>
 
 <div class="tabs" style="display: flex; align-items: center;">
 <div id="analysesEraTabs" style="display: flex; gap: 12px; flex: 1; overflow-x: auto;"></div>
-<button class="btn-add-tab admin-only" onclick="window.promptNewEra('analyses')" title="Жаңа дәуір қосу">+</button>
+<button class="btn-add-tab admin-only" onclick="window.promptNewEra('analyses')" title="Жаа дуір осу">+</button>
 </div>
 
 <div id="analysesGrid" class="grid"></div>
@@ -1229,17 +1320,17 @@ WhatsApp арқылы тіркелу
 <div class="section-actions">
 <div>
 <h1 class="section-title">Кітаптар</h1>
-<p class="section-subtitle">Дүниежүзі тарихы бойынша ресми оқулықтар базасы</p>
+<p class="section-subtitle">Дниежзі тарихы бойынша ресми оулытар базасы</p>
 </div>
 <button class="btn btn-primary admin-only" onclick="window.openAddModal('books')">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-Кітап қосу
+Кітап осу
 </button>
 </div>
 
 <div class="tabs" style="display: flex; align-items: center;">
 <div id="booksEraTabs" style="display: flex; gap: 12px; flex: 1; overflow-x: auto;"></div>
-<button class="btn-add-tab admin-only" onclick="window.promptNewEra('books')" title="Жаңа санат қосу">+</button>
+<button class="btn-add-tab admin-only" onclick="window.promptNewEra('books')" title="Жаа санат осу">+</button>
 </div>
 
 <div id="booksGrid" class="grid"></div>
@@ -1250,13 +1341,13 @@ WhatsApp арқылы тіркелу
 
 <div id="addModal" class="modal-overlay">
 <div class="modal">
-<h3>Жаңа материал қосу</h3>
+<h3>Жаа материал осу</h3>
 <form id="addContentForm">
 <div class="form-group">
-<label class="form-label">Бөлім</label>
+<label class="form-label">Блім</label>
 <select id="addSection" class="form-control" onchange="window.onSectionChange(this.value)">
 <option value="checklists">Чеклист</option>
-<option value="analyses">Нұсқа талдау</option>
+<option value="analyses">Нса талдау</option>
 <option value="books">Кітап</option>
 </select>
 </div>
@@ -1272,12 +1363,12 @@ WhatsApp арқылы тіркелу
 </div>
 
 <div class="form-group" id="bookAuthorGroup" style="display: none;">
-<label class="form-label">Автор</label>
-<input type="text" id="addBookAuthor" class="form-control" placeholder="Автордың аты-жөні">
+<label class="form-label">Автор / Баспа, Жыл</label>
+<input type="text" id="addBookAuthor" class="form-control" placeholder="Мектеп - 2017">
 </div>
 
 <div class="form-group" id="eraSelectGroup">
-<label class="form-label">Дәуірлерді таңдаңыз</label>
+<label class="form-label">Дуірлерді тадаыз</label>
 <div id="addEraCheckboxes" class="era-checkbox-list"></div>
 </div>
 
@@ -1287,10 +1378,10 @@ WhatsApp арқылы тіркелу
 <div style="margin-top: 12px;">
 <label for="addImageFile" class="file-upload-btn">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-Файл таңдау
+Файл тадау
 </label>
 <input type="file" id="addImageFile" accept="image/*" style="display:none;">
-<div class="file-name" id="addImageFileName">Файл таңдалмады</div>
+<div class="file-name" id="addImageFileName">Файл тадалмады</div>
 </div>
 <div class="image-preview" id="modalImagePreview">
 <span style="color: var(--text-tertiary); font-size: 14px;">Сурет превьюі</span>
@@ -1298,10 +1389,10 @@ WhatsApp арқылы тіркелу
 </div>
 
 <div class="form-group">
-<label class="form-label">Материал түрі</label>
+<label class="form-label">Материал трі</label>
 <select id="materialType" class="form-control" onchange="window.toggleMaterialType(this.value)">
 <option value="link">Сілтеме / YouTube URL</option>
-<option value="file">Файл жүктеу</option>
+<option value="file">Файл жктеу</option>
 </select>
 </div>
 
@@ -1311,15 +1402,15 @@ WhatsApp арқылы тіркелу
 </div>
 
 <div class="form-group" id="fileInputWrapper" style="display:none;">
-<label class="form-label">Құжат / Файл</label>
+<label class="form-label">жат / Файл</label>
 <label for="addDocumentFile" class="file-upload-btn">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-Файл таңдау
+Файл тадау
 </label>
 <input type="file" id="addDocumentFile" style="display:none;">
-<div class="file-name" id="addDocumentFileName">Файл таңдалмады</div>
+<div class="file-name" id="addDocumentFileName">Файл тадалмады</div>
 <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
-Файл Supabase Storage-ке жүктеледі
+Файл Supabase Storage-ке жктеледі
 </p>
 </div>
 
@@ -1327,7 +1418,7 @@ WhatsApp арқылы тіркелу
 
 <div class="modal-actions">
 <button type="button" class="btn btn-outline" onclick="window.closeModal('addModal')">Бас тарту</button>
-<button type="submit" id="addSubmitBtn" class="btn btn-primary">Қосу</button>
+<button type="submit" id="addSubmitBtn" class="btn btn-primary">осу</button>
 </div>
 </form>
 </div>
@@ -1335,20 +1426,20 @@ WhatsApp арқылы тіркелу
 
 <div id="factModal" class="modal-overlay">
 <div class="modal">
-<h3>Жаңа факт қосу</h3>
+<h3>Жаа факт осу</h3>
 <form id="addFactForm">
 <div class="form-group">
-<label class="form-label">Факт түрі</label>
+<label class="form-label">Факт трі</label>
 <select id="factType" class="form-control" onchange="window.toggleFactType(this.value)">
-<option value="text">Мәтін</option>
+<option value="text">Мтін</option>
 <option value="link">Сілтеме</option>
 <option value="file">Файл</option>
 </select>
 </div>
 
 <div class="form-group">
-<label class="form-label">Факт мәтіні</label>
-<textarea id="factText" class="form-control" rows="4" required placeholder="Қызықты факт жазыңыз..."></textarea>
+<label class="form-label">Факт мтіні</label>
+<textarea id="factText" class="form-control" rows="4" required placeholder="ызыты факт жазыыз..."></textarea>
 </div>
 
 <div class="form-group" id="factLinkWrapper" style="display:none;">
@@ -1360,27 +1451,27 @@ WhatsApp арқылы тіркелу
 <label class="form-label">Файл</label>
 <label for="factFile" class="file-upload-btn">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-Файл таңдау
+Файл тадау
 </label>
 <input type="file" id="factFile" style="display:none;">
-<div class="file-name" id="factFileName">Файл таңдалмады</div>
+<div class="file-name" id="factFileName">Файл тадалмады</div>
 </div>
 
 <div class="form-group">
 <label class="form-label">Факт превьюі (Фон суреті)</label>
 <label for="factPreviewFile" class="file-upload-btn">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-Сурет таңдау
+Сурет тадау
 </label>
 <input type="file" id="factPreviewFile" accept="image/*" style="display:none;">
-<div class="file-name" id="factPreviewFileName">Сурет таңдалмады</div>
+<div class="file-name" id="factPreviewFileName">Сурет тадалмады</div>
 </div>
 
 <div id="factUploadStatus" class="status-message"></div>
 
 <div class="modal-actions">
 <button type="button" class="btn btn-outline" onclick="window.closeFactModal()">Бас тарту</button>
-<button type="submit" id="factSubmitBtn" class="btn btn-primary">Қосу</button>
+<button type="submit" id="factSubmitBtn" class="btn btn-primary">осу</button>
 </div>
 </form>
 </div>
@@ -1424,7 +1515,7 @@ const db = getFirestore(app);
 
 enableIndexedDbPersistence(db).catch((err) => {
 if (err.code !== 'failed-precondition' && err.code !== 'unimplemented') {
-console.warn('Кэш қосылмады:', err);
+console.warn('Кэш осылмады:', err);
 }
 });
 
@@ -1432,9 +1523,9 @@ const ADMIN_EMAIL = "zhtkrgnadlt3245@gmail.com";
 
 const defaultEras = {
 'ancient': 'Ежелгі заман',
-'medieval': 'Орта ғасырлар',
-'modern': 'Жаңа заман',
-'contemporary': 'Қазіргі заман'
+'medieval': 'Орта асырлар',
+'modern': 'Жаа заман',
+'contemporary': 'азіргі заман'
 };
 
 let erasMap = {
@@ -1452,10 +1543,12 @@ const currentTheme = html.getAttribute('data-theme');
 const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 html.setAttribute('data-theme', newTheme);
 const icon = document.getElementById('themeIconSVG');
+
+// Обновленные минималистичные иконки солнца и луны
 if (newTheme === 'dark') {
-icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
+icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
 } else {
-icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>';
+icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
 }
 localStorage.setItem('theme', newTheme);
 }
@@ -1464,7 +1557,9 @@ const savedTheme = localStorage.getItem('theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
 const icon = document.getElementById('themeIconSVG');
 if (savedTheme === 'dark') {
-icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
+icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+} else {
+icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
 }
 
 window.toggleMobileMenu = function() {
@@ -1512,8 +1607,8 @@ document.getElementById(id).classList.remove('active');
 if (id === 'addModal') {
 document.getElementById('addContentForm').reset();
 document.getElementById('modalImagePreview').innerHTML = '<span style="color: var(--text-tertiary); font-size: 14px;">Сурет превьюі</span>';
-document.getElementById('addImageFileName').innerText = 'Файл таңдалмады';
-document.getElementById('addDocumentFileName').innerText = 'Файл таңдалмады';
+document.getElementById('addImageFileName').innerText = 'Файл тадалмады';
+document.getElementById('addDocumentFileName').innerText = 'Файл тадалмады';
 }
 }
 
@@ -1534,8 +1629,8 @@ window.openFactModal = function() {
 document.getElementById('addFactForm').reset();
 document.getElementById('factType').value = 'text';
 window.toggleFactType('text');
-document.getElementById('factFileName').innerText = 'Файл таңдалмады';
-document.getElementById('factPreviewFileName').innerText = 'Сурет таңдалмады';
+document.getElementById('factFileName').innerText = 'Файл тадалмады';
+document.getElementById('factPreviewFileName').innerText = 'Сурет тадалмады';
 document.getElementById('factModal').classList.add('active');
 }
 
@@ -1592,19 +1687,19 @@ document.getElementById('authScreen').classList.remove('hidden');
 }
 
 window.deleteItem = async function(type, id) {
-if (confirm('Бұл материалды өшіруге сенімдісіз бе?')) {
+if (confirm('Бл материалды шіруге сенімдісіз бе?')) {
 try {
 await deleteDoc(doc(db, type, id));
 fetchData();
 } catch (err) {
-console.error('Өшіру қатесі:', err);
-alert('Өшіру кезінде қате шықты.');
+console.error('шіру атесі:', err);
+alert('шіру кезінде ате шыты.');
 }
 }
 }
 
 window.promptNewEra = async function(type) {
-const eraName = prompt("Жаңа дәуір/санат атауын енгізіңіз:");
+const eraName = prompt("Жаа дуір/санат атауын енгізііз:");
 if (eraName && eraName.trim() !== "") {
 const key = 'era_' + Date.now();
 erasMap[type][key] = eraName.trim();
@@ -1612,8 +1707,8 @@ try {
 await setDoc(doc(db, 'meta', 'eras'), erasMap);
 renderEraTabsUI();
 } catch (err) {
-console.error('Дәуірді сақтау қатесі:', err);
-alert('Дәуірді сақтау кезінде қате шықты.');
+console.error('Дуірді сатау атесі:', err);
+alert('Дуірді сатау кезінде ате шыты.');
 delete erasMap[type][key];
 }
 }
@@ -1621,7 +1716,7 @@ delete erasMap[type][key];
 
 window.deleteEra = async function(type, key) {
 const eraName = erasMap[type][key];
-if (!confirm(`"${eraName}" дәуірін өшіруге сенімдісіз бе?`)) return;
+if (!confirm(`"${eraName}" дуірін шіруге сенімдісіз бе?`)) return;
 
 const backup = JSON.parse(JSON.stringify(erasMap));
 delete erasMap[type][key];
@@ -1631,8 +1726,8 @@ if (currentFilters[type] === key) currentFilters[type] = 'all';
 renderEraTabsUI();
 renderAll();
 } catch (err) {
-console.error('Дәуірді өшіру қатесі:', err);
-alert('Дәуірді өшіру кезінде қате шықты.');
+console.error('Дуірді шіру атесі:', err);
+alert('Дуірді шіру кезінде ате шыты.');
 erasMap = backup;
 renderEraTabsUI();
 }
@@ -1656,7 +1751,7 @@ books: { ...defaultEras }
 };
 }
 } catch (err) {
-console.error('Дәуірлерді жүктеу қатесі:', err);
+console.error('Дуірлерді жктеу атесі:', err);
 }
 }
 
@@ -1665,11 +1760,11 @@ function renderEraTabsUI() {
 const container = document.getElementById(`${type}EraTabs`);
 if (!container) return;
 
-let html = `<div class="tab ${currentFilters[type] === 'all' ? 'active' : ''}" onclick="window.filterEra('${type}', 'all')">Барлығы</div>`;
+let html = `<div class="tab ${currentFilters[type] === 'all' ? 'active' : ''}" onclick="window.filterEra('${type}', 'all')">Барлыы</div>`;
 for (let key in erasMap[type]) {
 html += `<div class="tab ${currentFilters[type] === key ? 'active' : ''}" onclick="window.filterEra('${type}', '${key}')">
 <span>${erasMap[type][key]}</span>
-${isAdmin ? `<span class="tab-delete" onclick="event.stopPropagation(); window.deleteEra('${type}', '${key}')">×</span>` : ''}
+${isAdmin ? `<span class="tab-delete" onclick="event.stopPropagation(); window.deleteEra('${type}', '${key}')">Ч</span>` : ''}
 </div>`;
 }
 container.innerHTML = html;
@@ -1708,7 +1803,7 @@ return item.era === filter;
 });
 
 if (items.length === 0) {
-container.innerHTML = `<p style="color: var(--text-tertiary); grid-column: 1/-1;">Материалдар әлі жоқ.</p>`;
+container.innerHTML = `<p style="color: var(--text-tertiary); grid-column: 1/-1;">Материалдар лі жо.</p>`;
 return;
 }
 
@@ -1717,6 +1812,29 @@ checklists: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&
 analyses: 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800&q=80',
 books: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80'
 };
+
+// Новый рендер для секции Книг
+if (type === 'books') {
+container.innerHTML = items.map(item => {
+const hasCustomCover = item.coverUrl && item.coverUrl !== defaultCovers.books;
+return `
+<div class="book-card">
+${hasCustomCover ? `<img src="${item.coverUrl}" class="book-card-bg" alt="${item.title}">` : ''}
+<div class="book-card-overlay"></div>
+<div class="book-card-content">
+<div class="book-class-badge">${item.bookClass || 'Сынып'}</div>
+<div class="book-title">${item.title}</div>
+<div class="book-meta-bottom">${item.bookAuthor || 'Автор крсетілмеген'}</div>
+<div class="book-admin-actions">
+<a href="${item.url}" target="_blank" class="btn btn-outline" style="border-color: rgba(255,255,255,0.4); color: white; border-radius: 8px;">Ашу</a>
+${isAdmin ? `<button class="btn btn-danger" style="border-radius: 8px; flex: 0.3;" onclick="window.deleteItem('${type}', '${item.id}')">Ш</button>` : ''}
+</div>
+</div>
+</div>
+`;
+}).join('');
+return;
+}
 
 container.innerHTML = items.map(item => {
 let imgCover = item.coverUrl || defaultCovers[type];
@@ -1733,26 +1851,15 @@ eraLabel = item.eras.map(e => sectionEras[e] || e).join(', ');
 eraLabel = sectionEras[item.era] || 'Материал';
 }
 
-let metaHTML = '';
-if (type === 'books') {
-metaHTML = `
-<div class="card-meta">
-${item.bookClass ? `<div class="card-meta-item"><span class="card-meta-label">Сынып:</span> ${item.bookClass}</div>` : ''}
-${item.bookAuthor ? `<div class="card-meta-item"><span class="card-meta-label">Автор:</span> ${item.bookAuthor}</div>` : ''}
-</div>
-`;
-}
-
 return `
 <div class="card">
 <img src="${imgCover}" class="card-image" alt="${item.title}">
 <div class="card-body">
 <span class="card-badge">${eraLabel}</span>
 <div class="card-title">${item.title}</div>
-${metaHTML}
 <div class="card-actions">
 <a href="${item.url}" target="_blank" class="btn ${type === 'analyses' ? 'btn-outline' : 'btn-primary'}">
-${type === 'analyses' ? 'Көру' : 'Ашу'}
+${type === 'analyses' ? 'Кру' : 'Ашу'}
 </a>
 ${isAdmin ? `<button class="btn btn-danger" onclick="window.deleteItem('${type}', '${item.id}')">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -1767,7 +1874,7 @@ ${isAdmin ? `<button class="btn btn-danger" onclick="window.deleteItem('${type}'
 function renderHomePreview() {
 const container = document.getElementById('homeChecklistsPreview');
 if (contentDB.checklists.length === 0) {
-container.innerHTML = `<p style="color: var(--text-tertiary);">Материалдар әлі қосылмаған.</p>`;
+container.innerHTML = `<p style="color: var(--text-tertiary);">Материалдар лі осылмаан.</p>`;
 return;
 }
 container.innerHTML = contentDB.checklists.slice(0, 3).map(item => {
@@ -1795,7 +1902,7 @@ function renderFacts() {
 const container = document.getElementById('factsList');
 if (!container) return;
 if (contentDB.facts.length === 0) {
-container.innerHTML = `<p style="color: var(--text-tertiary);">Фактілер әлі қосылмаған.</p>`;
+container.innerHTML = `<p style="color: var(--text-tertiary);">Фактілер лі осылмаан.</p>`;
 return;
 }
 
@@ -1812,10 +1919,10 @@ return `
 <div class="fact-card" onclick="window.viewFact('${item.id}')" style="${bgStyle}">
 <div class="fact-text" style="${textStyle}">${item.text}</div>
 <div class="fact-read-more" style="${readMoreStyle}">
-Толығырақ
+Толыыра
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
 </div>
-${isAdmin ? `<button class="btn btn-danger" style="width:100%; margin-top:12px;" onclick="event.stopPropagation(); window.deleteItem('facts', '${item.id}')">Өшіру</button>` : ''}
+${isAdmin ? `<button class="btn btn-danger" style="width:100%; margin-top:12px;" onclick="event.stopPropagation(); window.deleteItem('facts', '${item.id}')">шіру</button>` : ''}
 </div>
 `;
 }).join('');
@@ -1874,7 +1981,7 @@ const pass = document.getElementById('loginPass').value;
 signInWithEmailAndPassword(auth, email, pass).catch(err => {
 const errorEl = document.getElementById('loginError');
 errorEl.style.display = 'block';
-errorEl.innerText = 'Қате: ' + err.message;
+errorEl.innerText = 'ате: ' + err.message;
 });
 });
 
@@ -1885,7 +1992,7 @@ const pass = document.getElementById('regPass').value;
 createUserWithEmailAndPassword(auth, email, pass).catch(err => {
 const errorEl = document.getElementById('regError');
 errorEl.style.display = 'block';
-errorEl.innerText = 'Қате: ' + err.message;
+errorEl.innerText = 'ате: ' + err.message;
 });
 });
 
@@ -1920,20 +2027,20 @@ const linkValue = document.getElementById('addLink').value;
 const selectedEras = Array.from(document.querySelectorAll('#addEraCheckboxes input:checked')).map(cb => cb.value);
 
 if (materialType === 'file' && !documentFile) {
-alert('Құжат файлын таңдаңыз.');
+alert('жат файлын тадаыз.');
 return;
 }
 if (materialType === 'link' && !linkValue) {
-alert('Сілтемені енгізіңіз.');
+alert('Сілтемені енгізііз.');
 return;
 }
 if (selectedEras.length === 0) {
-alert('Кемінде бір дәуірді таңдаңыз.');
+alert('Кемінде бір дуірді тадаыз.');
 return;
 }
 
 submitBtn.disabled = true;
-submitBtn.innerText = 'Жүктелуде...';
+submitBtn.innerText = 'Жктелуде...';
 statusEl.style.display = 'block';
 statusEl.className = 'status-message success';
 statusEl.innerText = 'Деректер дайындалуда...';
@@ -1942,14 +2049,14 @@ try {
 let coverUrl = document.getElementById('addImageUrl').value || '';
 if (imageFile) {
 coverUrl = await uploadFileToStorage(imageFile, `covers/${type}`, (pct) => {
-statusEl.innerText = `Сурет жүктелуде... ${pct}%`;
+statusEl.innerText = `Сурет жктелуде... ${pct}%`;
 });
 }
 
 let materialUrl = linkValue;
 if (materialType === 'file') {
 materialUrl = await uploadFileToStorage(documentFile, `materials/${type}`, (pct) => {
-statusEl.innerText = `Құжат жүктелуде... ${pct}%`;
+statusEl.innerText = `жат жктелуде... ${pct}%`;
 });
 }
 
@@ -1969,12 +2076,12 @@ await addDoc(collection(db, type), newData);
 window.closeModal('addModal');
 fetchData();
 } catch (error) {
-console.error("Қосу қатесі:", error);
+console.error("осу атесі:", error);
 statusEl.className = 'status-message error';
-statusEl.innerText = "Қате: " + error.message;
+statusEl.innerText = "ате: " + error.message;
 } finally {
 submitBtn.disabled = false;
-submitBtn.innerText = 'Қосу';
+submitBtn.innerText = 'осу';
 setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
 }
 });
@@ -1992,16 +2099,16 @@ const previewFile = document.getElementById('factPreviewFile').files[0];
 
 if (!text) return;
 if (type === 'link' && !linkValue) {
-alert('Сілтемені енгізіңіз.');
+alert('Сілтемені енгізііз.');
 return;
 }
 if (type === 'file' && !file) {
-alert('Файлды таңдаңыз.');
+alert('Файлды тадаыз.');
 return;
 }
 
 submitBtn.disabled = true;
-submitBtn.innerText = 'Жүктелуде...';
+submitBtn.innerText = 'Жктелуде...';
 statusEl.style.display = 'block';
 statusEl.className = 'status-message success';
 statusEl.innerText = 'Деректер дайындалуда...';
@@ -2012,14 +2119,14 @@ let fileName = '';
 let coverUrl = '';
 
 if (previewFile) {
-statusEl.innerText = 'Превью сурет жүктелуде...';
+statusEl.innerText = 'Превью сурет жктелуде...';
 coverUrl = await uploadFileToStorage(previewFile, 'fact_covers');
 }
 
 if (type === 'link') {
 url = linkValue;
 } else if (type === 'file') {
-statusEl.innerText = 'Файл жүктелуде...';
+statusEl.innerText = 'Файл жктелуде...';
 url = await uploadFileToStorage(file, 'facts');
 fileName = file.name;
 }
@@ -2035,12 +2142,12 @@ createdAt: Date.now()
 window.closeFactModal();
 fetchData();
 } catch (error) {
-console.error("Факт қосу қатесі:", error);
+console.error("Факт осу атесі:", error);
 statusEl.className = 'status-message error';
-statusEl.innerText = "Қате: " + error.message;
+statusEl.innerText = "ате: " + error.message;
 } finally {
 submitBtn.disabled = false;
-submitBtn.innerText = 'Қосу';
+submitBtn.innerText = 'осу';
 setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
 }
 });
@@ -2063,13 +2170,24 @@ if (file) {
 nameSpan.innerText = file.name;
 preview.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="Превью">`;
 } else {
-nameSpan.innerText = 'Файл таңдалмады';
+nameSpan.innerText = 'Файл тадалмады';
 }
 });
 
 document.getElementById('addDocumentFile').addEventListener('change', (e) => {
 const file = e.target.files[0];
-document.getElementById('addDocumentFileName').innerText = file ? file.name : 'Файл таңдалмады';
+document.getElementById('addDocumentFileName').innerText = file ? file.name : 'Файл тадалмады';
 });
 
-document.getElementById('factFile').addEventListener('change', (e)
+document.getElementById('factFile').addEventListener('change', (e) => {
+const file = e.target.files[0];
+document.getElementById('factFileName').innerText = file ? file.name : 'Файл тадалмады';
+});
+
+document.getElementById('factPreviewFile').addEventListener('change', (e) => {
+const file = e.target.files[0];
+document.getElementById('factPreviewFileName').innerText = file ? file.name : 'Сурет тадалмады';
+});
+</script>
+</body>
+</html>
