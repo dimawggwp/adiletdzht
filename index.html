@@ -41,7 +41,6 @@
 --container-width: 1280px;
 --spacing-unit: 8px;
 
-/* Шрифты өзгертілді */
 --font-display: 'JUZ40', 'Space Grotesk', -apple-system, sans-serif;
 --font-body: 'JUZ40', 'Inter', -apple-system, sans-serif;
 
@@ -428,10 +427,10 @@ margin-bottom: calc(var(--spacing-unit) * 4);
 overflow-x: auto;
 padding-bottom: calc(var(--spacing-unit) * 1);
 -webkit-overflow-scrolling: touch;
-scrollbar-width: none; /* Firefox */
+scrollbar-width: none;
 }
 .tabs::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  display: none;
 }
 
 .tab {
@@ -587,7 +586,6 @@ padding: calc(var(--spacing-unit) * 1.25) calc(var(--spacing-unit) * 2);
 font-size: 13px;
 }
 
-/* Updated Book Cards (Жасыл фон алып тасталды) */
 .book-card {
 position: relative;
 background: var(--surface);
@@ -679,7 +677,6 @@ padding: 8px;
 font-size: 12px;
 backdrop-filter: blur(4px);
 }
-/* End Book Cards */
 
 .fact-carousel {
 display: flex;
@@ -1049,75 +1046,157 @@ font-size: 15px;
 padding: calc(var(--spacing-unit) * 2);
 }
 
+/* ========================================================= */
+/* МОБИЛЬДІ НҰСҚА ЖАҢАРТЫЛҒАН СТИЛЬДЕРІ (КЕҢ ЖӘНЕ ЫҢҒАЙЛЫ)    */
+/* ========================================================= */
 @media (max-width: 868px) {
-.header-content {
-padding: 0 calc(var(--spacing-unit) * 2);
-}
+  .header-content {
+    padding: 0 16px;
+  }
 
-.nav {
-display: none;
-}
+  .nav {
+    display: none;
+  }
 
-.mobile-menu-btn {
-display: flex;
-}
+  .mobile-menu-btn {
+    display: flex;
+  }
 
-.mobile-nav {
-display: block;
-}
+  .mobile-nav {
+    display: block;
+  }
 
-.user-email {
-display: none;
-}
+  .user-email {
+    display: none;
+  }
 
-.container {
-padding: 0 calc(var(--spacing-unit) * 2);
-}
+  .container {
+    padding: 0 16px;
+  }
 
-.section {
-padding: calc(var(--spacing-unit) * 4) 0;
-}
+  .section {
+    padding: 24px 0 32px 0;
+  }
 
-.hero {
-padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 3);
-border-radius: var(--radius-lg);
-}
+  .hero {
+    padding: 24px 20px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
+  }
 
-.banner {
-flex-direction: column;
-text-align: center;
-padding: calc(var(--spacing-unit) * 3);
-}
+  .hero h1 {
+    font-size: 26px;
+    margin-bottom: 12px;
+  }
 
-.grid {
-grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-gap: calc(var(--spacing-unit) * 2);
-}
+  .hero p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
 
-.tabs {
-margin-left: calc(var(--spacing-unit) * -2);
-margin-right: calc(var(--spacing-unit) * -2);
-padding-left: calc(var(--spacing-unit) * 2);
-padding-right: calc(var(--spacing-unit) * 2);
-}
+  .banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px 16px;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .banner-content h3 {
+    font-size: 16px;
+  }
+
+  .banner-content p {
+    font-size: 13px;
+  }
+
+  .btn-whatsapp {
+    width: 100%;
+  }
+
+  /* Карточкаларды бір бағанға қойып, арасын кеңейту */
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .card-body {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .card-title {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .card-actions .btn {
+    padding: 10px 16px;
+  }
+
+  .tabs {
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .section-actions {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+
+  .section-subtitle {
+    font-size: 13px;
+  }
+
+  .book-card {
+    aspect-ratio: 3 / 4;
+  }
+
+  .book-card-content {
+    padding: 20px 16px;
+  }
+
+  .book-title {
+    font-size: 20px;
+  }
+
+  .fact-card {
+    min-width: 270px;
+    padding: 20px;
+  }
 }
 
 @media (max-width: 640px) {
-.section-title {
-font-size: 24px;
-}
+  .modal {
+    padding: 20px 16px;
+    border-radius: var(--radius-lg);
+  }
 
-.hero h1 {
-font-size: 28px;
-}
+  .auth-container {
+    padding: 24px 18px;
+    width: 92%;
+  }
 
-.modal {
-padding: calc(var(--spacing-unit) * 3);
-}
+  .section-title {
+    font-size: 22px;
+  }
 
-.auth-container {
-padding: calc(var(--spacing-unit) * 3);
-}
+  .hero h1 {
+    font-size: 24px;
+  }
 }
 </style>
 </head>
@@ -1134,7 +1213,7 @@ padding: calc(var(--spacing-unit) * 3);
 </div>
 <div class="nav-item" onclick="window.switchTab('checklists', event)">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-<span>Чек-парақтар</span>
+<span>Чеклисттер</span>
 </div>
 <div class="nav-item" onclick="window.switchTab('analyses', event)">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
@@ -1157,7 +1236,6 @@ padding: calc(var(--spacing-unit) * 3);
 </div>
 <button class="theme-toggle" onclick="window.toggleTheme()" title="Тақырыпты өзгерту">
 <svg id="themeIconSVG" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-<!-- Иконка JS арқылы қойылады -->
 </svg>
 </button>
 <button class="mobile-menu-btn" onclick="window.toggleMobileMenu()">
@@ -1176,7 +1254,7 @@ padding: calc(var(--spacing-unit) * 3);
 </div>
 <div class="nav-item" onclick="window.switchTab('checklists', event)">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-<span>Чек-парақтар</span>
+<span>Чеклисттер</span>
 </div>
 <div class="nav-item" onclick="window.switchTab('analyses', event)">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
@@ -1240,7 +1318,7 @@ padding: calc(var(--spacing-unit) * 3);
 <div class="hero">
 <div class="hero-content">
 <h1>Дүниежүзі тарихы</h1>
-<p>ҰБТ-ға тиімді дайындалуға арналған толық материалдар, чек-парақтар мен видео талдаулар базасы.</p>
+<p>ҰБТ-ға тиімді дайындалуға арналған толық материалдар, чеклисттер мен видео талдаулар базасы.</p>
 </div>
 </div>
 
@@ -1257,12 +1335,12 @@ WhatsApp арқылы тіркелу
 
 <div class="section-header">
 <div>
-<h2 class="section-title">Соңғы қосылған чек-парақтар</h2>
+<h2 class="section-title">Соңғы қосылған чеклисттер</h2>
 </div>
 </div>
 <div id="homeChecklistsPreview" class="grid"></div>
 
-<div style="margin-top: 80px;">
+<div style="margin-top: 60px;">
 <div class="section-actions">
 <h3 class="section-title" style="margin: 0;">Қызықты фактілер</h3>
 <button class="btn btn-primary admin-only" onclick="window.openFactModal()">
@@ -1279,7 +1357,7 @@ WhatsApp арқылы тіркелу
 <div class="container section">
 <div class="section-actions">
 <div>
-<h1 class="section-title">Чек-парақтар</h1>
+<h1 class="section-title">Чеклисттер</h1>
 <p class="section-subtitle">Пән бойынша барлық қысқаша конспектілер</p>
 </div>
 <button class="btn btn-primary admin-only" onclick="window.openAddModal('checklists')">
@@ -1332,8 +1410,6 @@ WhatsApp арқылы тіркелу
 </button>
 </div>
 
-<!-- Кітаптар бөлімінде дәуірлер табтары толығымен алынып тасталды -->
-
 <div id="booksGrid" class="grid"></div>
 </div>
 </section>
@@ -1347,7 +1423,7 @@ WhatsApp арқылы тіркелу
 <div class="form-group">
 <label class="form-label">Бөлім</label>
 <select id="addSection" class="form-control" onchange="window.onSectionChange(this.value)">
-<option value="checklists">Чек-парақ</option>
+<option value="checklists">Чеклист</option>
 <option value="analyses">Нұсқа талдау</option>
 <option value="books">Кітап</option>
 </select>
@@ -1619,7 +1695,7 @@ const eraSelectGroup = document.getElementById('eraSelectGroup');
 if (type === 'books') {
 bookClassGroup.style.display = 'block';
 bookAuthorGroup.style.display = 'block';
-eraSelectGroup.style.display = 'none'; // Кітаптарда дәуір көрсетілмейді
+eraSelectGroup.style.display = 'none';
 } else {
 bookClassGroup.style.display = 'none';
 bookAuthorGroup.style.display = 'none';
@@ -1821,7 +1897,6 @@ analyses: 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800&q=
 books: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80'
 };
 
-// Кітаптардың жаңартылған дизайны
 if (type === 'books') {
 container.innerHTML = items.map(item => {
 const imgCover = item.coverUrl || defaultCovers.books;
