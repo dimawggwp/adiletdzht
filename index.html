@@ -269,15 +269,17 @@ margin-bottom: calc(var(--spacing-unit) * 4);
 flex-wrap: wrap;
 }
 
+/* 1. HERO ХИТ: ЭВОЛЮЦИЯ СУРЕТІ БАР ФОН ЖӘНЕ АНЫҚ ТЕКСТ */
 .hero {
-background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+background: linear-gradient(135deg, rgba(10, 8, 5, 0.82) 0%, rgba(157, 90, 19, 0.88) 100%), 
+            url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Human_evolution.svg/1200px-Human_evolution.svg.png') center/cover no-repeat;
 border-radius: var(--radius-xl);
 padding: calc(var(--spacing-unit) * 8) calc(var(--spacing-unit) * 6);
 margin-bottom: calc(var(--spacing-unit) * 6);
 color: white;
 position: relative;
 overflow: hidden;
-box-shadow: 0 10px 30px rgba(189, 109, 24, 0.2);
+box-shadow: 0 10px 30px rgba(189, 109, 24, 0.25);
 }
 
 .hero::before {
@@ -287,7 +289,7 @@ top: -50%;
 right: -20%;
 width: 600px;
 height: 600px;
-background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
 pointer-events: none;
 }
 
@@ -300,16 +302,19 @@ max-width: 700px;
 .hero h1 {
 font-family: var(--font-display);
 font-size: clamp(28px, 5vw, 56px);
-font-weight: 700;
+font-weight: 800;
 letter-spacing: -0.03em;
 margin-bottom: calc(var(--spacing-unit) * 3);
 line-height: 1.1;
+text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.6);
 }
 
 .hero p {
 font-size: 16px;
-opacity: 0.95;
+opacity: 0.98;
 line-height: 1.6;
+text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+font-weight: 500;
 }
 
 .banner {
@@ -447,6 +452,25 @@ white-space: nowrap;
 display: inline-flex;
 align-items: center;
 gap: calc(var(--spacing-unit) * 1);
+user-select: none;
+}
+
+/* 2. DRAG AND DROP СТИЛЬДЕРІ АДМИН ҮШІН */
+.tab[draggable="true"] {
+cursor: grab;
+}
+.tab[draggable="true"]:active {
+cursor: grabbing;
+}
+.tab.dragging {
+opacity: 0.4;
+border: 2px dashed var(--primary);
+transform: scale(0.95);
+}
+.tab.drag-over {
+border-color: var(--primary);
+transform: scale(1.05);
+box-shadow: 0 0 10px rgba(189, 109, 24, 0.4);
 }
 
 .tab:hover {
@@ -522,6 +546,19 @@ overflow: hidden;
 transition: all 0.4s var(--transition);
 display: flex;
 flex-direction: column;
+user-select: none;
+}
+
+.card[draggable="true"] {
+cursor: grab;
+}
+.card.card-dragging {
+opacity: 0.4;
+border: 2px dashed var(--primary);
+}
+.card.card-drag-over {
+border-color: var(--primary);
+transform: scale(1.02);
 }
 
 .card:hover {
@@ -597,6 +634,11 @@ flex-direction: column;
 aspect-ratio: 2 / 3;
 transition: all 0.4s var(--transition);
 box-shadow: 0 4px 15px var(--shadow);
+user-select: none;
+}
+
+.book-card[draggable="true"] {
+cursor: grab;
 }
 
 .book-card:hover {
@@ -1046,9 +1088,6 @@ font-size: 15px;
 padding: calc(var(--spacing-unit) * 2);
 }
 
-/* ========================================================= */
-/* МОБИЛЬДІ НҰСҚА ЖАҢАРТЫЛҒАН СТИЛЬДЕРІ (КЕҢ ЖӘНЕ ЫҢҒАЙЛЫ)    */
-/* ========================================================= */
 @media (max-width: 868px) {
   .header-content {
     padding: 0 16px;
@@ -1114,7 +1153,6 @@ padding: calc(var(--spacing-unit) * 2);
     width: 100%;
   }
 
-  /* Карточкаларды бір бағанға қойып, арасын кеңейту */
   .grid {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -1206,6 +1244,7 @@ padding: calc(var(--spacing-unit) * 2);
 <div class="header-content">
 <div class="brand">adi.</div>
 
+<!-- 3. ДЕСКТОП НАВИГАЦИЯ: ZETIX ЖӘНЕ JUZDEREK БАТЫРМАЛАРЫ -->
 <nav class="nav">
 <div class="nav-item active" onclick="window.switchTab('home', event)">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -1227,6 +1266,10 @@ padding: calc(var(--spacing-unit) * 2);
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
 <span>Zetix.kz</span>
 </a>
+<a href="https://juzderek.vercel.app/index.html" target="_blank" class="nav-item">
+<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+<span>Juzderek</span>
+</a>
 </nav>
 
 <div class="header-actions">
@@ -1247,6 +1290,7 @@ padding: calc(var(--spacing-unit) * 2);
 </div>
 </header>
 
+<!-- 3. МОБИЛЬДІ НАВИГАЦИЯ: ZETIX ЖӘНЕ JUZDEREK БАТЫРМАЛАРЫ -->
 <nav class="mobile-nav" id="mobileNav">
 <div class="nav-item active" onclick="window.switchTab('home', event)">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -1267,6 +1311,10 @@ padding: calc(var(--spacing-unit) * 2);
 <a href="https://zetix.kz" target="_blank" class="nav-item">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
 <span>Zetix.kz</span>
+</a>
+<a href="https://juzderek.vercel.app/index.html" target="_blank" class="nav-item">
+<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+<span>Juzderek</span>
 </a>
 <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">
 <div class="user-email" id="mobileUserEmail" style="display: block; margin-bottom: 12px; text-align: center;"></div>
@@ -1813,6 +1861,105 @@ renderEraTabsUI();
 }
 }
 
+/* 2. DRAG AND DROP ЛОГИКАСЫ - АДМИН ТАБТАРДЫ МЕН КАРТОЧКАЛАРДЫ АУЫСТЫРҒАНДА БАЗАҒА САҚТАЙДЫ */
+let draggedType = null;
+let draggedKey = null;
+let draggedCardId = null;
+
+window.handleEraDragStart = function(e, type, key) {
+if (!isAdmin) return;
+draggedType = type;
+draggedKey = key;
+e.target.classList.add('dragging');
+e.dataTransfer.setData('text/plain', JSON.stringify({ type, key }));
+};
+
+window.handleEraDragOver = function(e) {
+if (!isAdmin) return;
+e.preventDefault();
+e.currentTarget.classList.add('drag-over');
+};
+
+window.handleEraDragLeave = function(e) {
+e.currentTarget.classList.remove('drag-over');
+};
+
+window.handleEraDrop = async function(e, targetType, targetKey) {
+if (!isAdmin) return;
+e.preventDefault();
+e.currentTarget.classList.remove('drag-over');
+document.querySelectorAll('.tab').forEach(t => t.classList.remove('dragging'));
+
+if (draggedType !== targetType || draggedKey === targetKey) return;
+
+const entries = Object.entries(erasMap[targetType]);
+const draggedIndex = entries.findIndex(([k]) => k === draggedKey);
+const targetIndex = entries.findIndex(([k]) => k === targetKey);
+
+if (draggedIndex === -1 || targetIndex === -1) return;
+
+const [moved] = entries.splice(draggedIndex, 1);
+entries.splice(targetIndex, 0, moved);
+
+const newMap = {};
+entries.forEach(([k, v]) => { newMap[k] = v; });
+erasMap[targetType] = newMap;
+
+try {
+await setDoc(doc(db, 'meta', 'eras'), erasMap);
+renderEraTabsUI();
+renderAll();
+} catch (err) {
+console.error('Реттілікті сақтау қатесі:', err);
+}
+};
+
+window.handleCardDragStart = function(e, type, id) {
+if (!isAdmin) return;
+draggedType = type;
+draggedCardId = id;
+e.currentTarget.classList.add('card-dragging');
+e.dataTransfer.setData('text/plain', JSON.stringify({ type, id }));
+};
+
+window.handleCardDragOver = function(e) {
+if (!isAdmin) return;
+e.preventDefault();
+e.currentTarget.classList.add('card-drag-over');
+};
+
+window.handleCardDragLeave = function(e) {
+e.currentTarget.classList.remove('card-drag-over');
+};
+
+window.handleCardDrop = async function(e, targetType, targetId) {
+if (!isAdmin) return;
+e.preventDefault();
+e.currentTarget.classList.remove('card-drag-over');
+document.querySelectorAll('.card, .book-card').forEach(c => c.classList.remove('card-dragging'));
+
+if (draggedType !== targetType || draggedCardId === targetId) return;
+
+const list = contentDB[targetType];
+const fromIdx = list.findIndex(item => item.id === draggedCardId);
+const toIdx = list.findIndex(item => item.id === targetId);
+
+if (fromIdx === -1 || toIdx === -1) return;
+
+const [moved] = list.splice(fromIdx, 1);
+list.splice(toIdx, 0, moved);
+
+for (let i = 0; i < list.length; i++) {
+list[i].order = i;
+try {
+await setDoc(doc(db, targetType, list[i].id), { order: i }, { merge: true });
+} catch (err) {
+console.error('Карточка ретін сақтау қатесі:', err);
+}
+}
+renderAll();
+};
+
 async function fetchEras() {
 try {
 const snap = await getDoc(doc(db, 'meta', 'eras'));
@@ -1840,7 +1987,17 @@ if (!container) return;
 
 let html = `<div class="tab ${currentFilters[type] === 'all' ? 'active' : ''}" onclick="window.filterEra('${type}', 'all')">Барлығы</div>`;
 for (let key in erasMap[type]) {
-html += `<div class="tab ${currentFilters[type] === key ? 'active' : ''}" onclick="window.filterEra('${type}', '${key}')">
+const dragAttrs = isAdmin ? `
+draggable="true"
+ondragstart="window.handleEraDragStart(event, '${type}', '${key}')"
+ondragover="window.handleEraDragOver(event)"
+ondragleave="window.handleEraDragLeave(event)"
+ondrop="window.handleEraDrop(event, '${type}', '${key}')"
+` : '';
+
+html += `<div class="tab ${currentFilters[type] === key ? 'active' : ''}" 
+onclick="window.filterEra('${type}', '${key}')"
+${dragAttrs}>
 <span>${erasMap[type][key]}</span>
 ${isAdmin ? `<span class="tab-delete" onclick="event.stopPropagation(); window.deleteEra('${type}', '${key}')">✕</span>` : ''}
 </div>`;
@@ -1900,8 +2057,16 @@ books: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80'
 if (type === 'books') {
 container.innerHTML = items.map(item => {
 const imgCover = item.coverUrl || defaultCovers.books;
+const cardDragAttrs = isAdmin ? `
+draggable="true"
+ondragstart="window.handleCardDragStart(event, '${type}', '${item.id}')"
+ondragover="window.handleCardDragOver(event)"
+ondragleave="window.handleCardDragLeave(event)"
+ondrop="window.handleCardDrop(event, '${type}', '${item.id}')"
+` : '';
+
 return `
-<div class="book-card">
+<div class="book-card" ${cardDragAttrs}>
 <img src="${imgCover}" class="book-card-bg" alt="${item.title}">
 <div class="book-card-overlay"></div>
 <div class="book-card-content">
@@ -1934,8 +2099,16 @@ eraLabel = item.eras.map(e => sectionEras[e] || e).join(', ');
 eraLabel = sectionEras[item.era] || 'Материал';
 }
 
+const cardDragAttrs = isAdmin ? `
+draggable="true"
+ondragstart="window.handleCardDragStart(event, '${type}', '${item.id}')"
+ondragover="window.handleCardDragOver(event)"
+ondragleave="window.handleCardDragLeave(event)"
+ondrop="window.handleCardDrop(event, '${type}', '${item.id}')"
+` : '';
+
 return `
-<div class="card">
+<div class="card" ${cardDragAttrs}>
 <img src="${imgCover}" class="card-image" alt="${item.title}">
 <div class="card-body">
 <span class="card-badge">${eraLabel}</span>
@@ -2031,6 +2204,9 @@ contentDB[type] = [];
 snapshots[i].forEach((docSnap) => {
 contentDB[type].push({ id: docSnap.id, ...docSnap.data() });
 });
+if (type !== 'facts') {
+contentDB[type].sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+}
 });
 
 renderEraTabsUI();
@@ -2147,7 +2323,8 @@ const newData = {
 title: document.getElementById('addTitle').value,
 url: materialUrl,
 coverUrl: coverUrl,
-eras: type === 'books' ? [] : selectedEras
+eras: type === 'books' ? [] : selectedEras,
+order: Date.now()
 };
 
 if (type === 'books') {
