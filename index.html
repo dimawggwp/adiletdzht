@@ -271,7 +271,7 @@ flex-wrap: wrap;
 
 /* 1. HERO ХИТ: ЭВОЛЮЦИЯ СУРЕТІ БАР ФОН ЖӘНЕ АНЫҚ ТЕКСТ */
 .hero {
-background: linear-gradient(135deg, rgba(10, 8, 5, 0.82) 0%, rgba(157, 90, 19, 0.88) 100%), 
+background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(157, 90, 19, 0.88) 100%), 
             url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Human_evolution.svg/1200px-Human_evolution.svg.png') center/cover no-repeat;
 border-radius: var(--radius-xl);
 padding: calc(var(--spacing-unit) * 8) calc(var(--spacing-unit) * 6);
@@ -306,14 +306,14 @@ font-weight: 800;
 letter-spacing: -0.03em;
 margin-bottom: calc(var(--spacing-unit) * 3);
 line-height: 1.1;
-text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.6);
+text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 0 6px rgba(0, 0, 0, 0.8);
 }
 
 .hero p {
 font-size: 16px;
 opacity: 0.98;
 line-height: 1.6;
-text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 font-weight: 500;
 }
 
@@ -428,9 +428,10 @@ transform: none !important;
 .tabs {
 display: flex;
 gap: calc(var(--spacing-unit) * 1.5);
-margin-bottom: calc(var(--spacing-unit) * 4);
+margin-bottom: calc(var(--spacing-unit) * 3);
 overflow-x: auto;
-padding-bottom: calc(var(--spacing-unit) * 1);
+padding: 8px 4px;
+margin-top: -4px;
 -webkit-overflow-scrolling: touch;
 scrollbar-width: none;
 }
@@ -531,6 +532,8 @@ display: grid;
 grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 gap: calc(var(--spacing-unit) * 3);
 animation: fadeIn 0.6s ease-out;
+padding: 10px 6px;
+margin: -10px -6px;
 }
 
 @keyframes fadeIn {
@@ -660,7 +663,7 @@ opacity: 1;
 .book-card-overlay {
 position: absolute;
 inset: 0;
-background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 100%);
 z-index: 1;
 }
 
@@ -679,14 +682,14 @@ color: white;
 
 .book-class-badge {
 align-self: flex-start;
-background: rgba(255, 255, 255, 0.25);
-backdrop-filter: blur(4px);
+background: rgba(0, 0, 0, 0.5);
+backdrop-filter: blur(6px);
 padding: 4px 12px;
 border-radius: var(--radius-full);
 font-size: 12px;
 font-weight: 600;
-border: 1px solid rgba(255,255,255,0.3);
-color: white;
+border: 1px solid rgba(255,255,255,0.4);
+color: #ffffff;
 }
 
 .book-title {
@@ -694,17 +697,17 @@ font-size: 22px;
 font-weight: 800;
 line-height: 1.2;
 margin: auto 0;
-text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-color: white;
+text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.9);
+color: #ffffff;
 }
 
 .book-meta-bottom {
 font-size: 13px;
-font-weight: 500;
-opacity: 0.95;
+font-weight: 600;
+opacity: 1;
 margin-bottom: 12px;
-text-shadow: 0 1px 2px rgba(0,0,0,0.6);
-color: white;
+text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+color: #f3f4f6;
 }
 
 .book-admin-actions {
@@ -725,7 +728,8 @@ display: flex;
 gap: calc(var(--spacing-unit) * 3);
 overflow-x: auto;
 scroll-snap-type: x mandatory;
-padding-bottom: calc(var(--spacing-unit) * 2);
+padding: 12px 6px;
+margin: -6px -6px calc(var(--spacing-unit) * 2) -6px;
 -webkit-overflow-scrolling: touch;
 scrollbar-width: none;
 }
@@ -1364,6 +1368,10 @@ padding: calc(var(--spacing-unit) * 2);
 <section id="home-view" class="view-section active">
 <div class="container section">
 <div class="hero">
+<button class="btn btn-secondary admin-only" onclick="window.openHeroPhotoModal()" style="position: absolute; top: 16px; right: 16px; z-index: 10; background: rgba(0,0,0,0.6); color: white; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(4px);">
+<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+Суретті өзгерту
+</button>
 <div class="hero-content">
 <h1>Дүниежүзі тарихы</h1>
 <p>ҰБТ-ға тиімді дайындалуға арналған толық материалдар, чеклисттер мен видео талдаулар базасы.</p>
@@ -1613,6 +1621,62 @@ WhatsApp арқылы тіркелу
 </div>
 </div>
 
+<!-- МОДАЛЬДІ ТЕРЕЗЕ: HERO СУРЕТІН АУЫСТЫРУ -->
+<div id="heroPhotoModal" class="modal-overlay">
+<div class="modal">
+<h3>Hero суретін ауыстыру</h3>
+<form id="heroPhotoForm">
+<div class="form-group">
+<label class="form-label">Сурет сілтемесі (URL)</label>
+<input type="url" id="heroImageUrl" class="form-control" placeholder="https://...">
+</div>
+<div class="form-group">
+<label class="form-label">Немесе сурет файлын жүктеңіз</label>
+<label for="heroImageFile" class="file-upload-btn">
+<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+Файл таңдау
+</label>
+<input type="file" id="heroImageFile" accept="image/*" style="display:none;">
+<div class="file-name" id="heroImageFileName">Файл таңдалмады</div>
+</div>
+<div id="heroUploadStatus" class="status-message"></div>
+<div class="modal-actions">
+<button type="button" class="btn btn-outline" onclick="window.closeModal('heroPhotoModal')">Бас тарту</button>
+<button type="submit" id="heroSubmitBtn" class="btn btn-primary">Сақтау</button>
+</div>
+</form>
+</div>
+</div>
+
+<!-- МОДАЛЬДІ ТЕРЕЗЕ: КАРТОЧКА СУРЕТІН АУЫСТЫРУ -->
+<div id="editPhotoModal" class="modal-overlay">
+<div class="modal">
+<h3>Суретті ауыстыру</h3>
+<form id="editPhotoForm">
+<input type="hidden" id="editPhotoType">
+<input type="hidden" id="editPhotoId">
+<div class="form-group">
+<label class="form-label">Жаңа сурет сілтемесі (URL)</label>
+<input type="url" id="editPhotoUrl" class="form-control" placeholder="https://...">
+</div>
+<div class="form-group">
+<label class="form-label">Немесе файл жүктеңіз</label>
+<label for="editPhotoFile" class="file-upload-btn">
+<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+Файл таңдау
+</label>
+<input type="file" id="editPhotoFile" accept="image/*" style="display:none;">
+<div class="file-name" id="editPhotoFileName">Файл таңдалмады</div>
+</div>
+<div id="editPhotoStatus" class="status-message"></div>
+<div class="modal-actions">
+<button type="button" class="btn btn-outline" onclick="window.closeModal('editPhotoModal')">Бас тарту</button>
+<button type="submit" id="editPhotoSubmitBtn" class="btn btn-primary">Сақтау</button>
+</div>
+</form>
+</div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -1660,6 +1724,7 @@ analyses: { ...defaultEras }
 let contentDB = { checklists: [], analyses: [], books: [], facts: [] };
 let currentFilters = { checklists: 'all', analyses: 'all', books: 'all' };
 let isAdmin = false;
+let heroUrl = '';
 
 window.toggleTheme = function() {
 const html = document.documentElement;
@@ -1825,6 +1890,20 @@ alert('Өшіру кезінде қате шықты.');
 }
 }
 
+window.openHeroPhotoModal = function() {
+document.getElementById('heroPhotoForm').reset();
+document.getElementById('heroImageFileName').innerText = 'Файл таңдалмады';
+document.getElementById('heroPhotoModal').classList.add('active');
+};
+
+window.openEditPhotoModal = function(type, id) {
+document.getElementById('editPhotoForm').reset();
+document.getElementById('editPhotoType').value = type;
+document.getElementById('editPhotoId').value = id;
+document.getElementById('editPhotoFileName').innerText = 'Файл таңдалмады';
+document.getElementById('editPhotoModal').classList.add('active');
+};
+
 window.promptNewEra = async function(type) {
 const eraName = prompt("Жаңа дәуір/санат атауын енгізіңіз:");
 if (eraName && eraName.trim() !== "") {
@@ -1960,6 +2039,25 @@ console.error('Карточка ретін сақтау қатесі:', err);
 renderAll();
 };
 
+async function fetchHeroPhoto() {
+try {
+const snap = await getDoc(doc(db, 'meta', 'hero'));
+if (snap.exists() && snap.data().heroUrl) {
+heroUrl = snap.data().heroUrl;
+applyHeroPhoto(heroUrl);
+}
+} catch (err) {
+console.error('Hero суретін жүктеу қатесі:', err);
+}
+}
+
+function applyHeroPhoto(url) {
+const heroEl = document.querySelector('.hero');
+if (heroEl && url) {
+heroEl.style.background = `linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(157, 90, 19, 0.88) 100%), url('${url}') center/cover no-repeat`;
+}
+}
+
 async function fetchEras() {
 try {
 const snap = await getDoc(doc(db, 'meta', 'eras'));
@@ -2075,7 +2173,10 @@ return `
 <div class="book-meta-bottom">${item.bookAuthor || 'Автор көрсетілмеген'}</div>
 <div class="book-admin-actions">
 <a href="${item.url}" target="_blank" class="btn btn-primary" style="border-radius: 8px;">Ашу</a>
-${isAdmin ? `<button class="btn btn-danger" style="border-radius: 8px; flex: 0.3;" onclick="window.deleteItem('${type}', '${item.id}')">✕</button>` : ''}
+${isAdmin ? `
+<button class="btn btn-secondary" style="border-radius: 8px; flex: 0.5;" onclick="window.openEditPhotoModal('${type}', '${item.id}')" title="Суретті ауыстыру">📷</button>
+<button class="btn btn-danger" style="border-radius: 8px; flex: 0.3;" onclick="window.deleteItem('${type}', '${item.id}')">✕</button>
+` : ''}
 </div>
 </div>
 </div>
@@ -2117,7 +2218,11 @@ return `
 <a href="${item.url}" target="_blank" class="btn ${type === 'analyses' ? 'btn-outline' : 'btn-primary'}">
 ${type === 'analyses' ? 'Көру' : 'Ашу'}
 </a>
-${isAdmin ? `<button class="btn btn-danger" onclick="window.deleteItem('${type}', '${item.id}')">
+${isAdmin ? `
+<button class="btn btn-secondary" style="padding: calc(var(--spacing-unit) * 1.25);" onclick="window.openEditPhotoModal('${type}', '${item.id}')" title="Суретті ауыстыру">
+<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+</button>
+<button class="btn btn-danger" onclick="window.deleteItem('${type}', '${item.id}')">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
 </button>` : ''}
 </div>
@@ -2166,9 +2271,9 @@ const sorted = [...contentDB.facts].sort((a, b) => (b.createdAt || 0) - (a.creat
 
 container.innerHTML = sorted.map(item => {
 const bgStyle = item.coverUrl
-? `background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('${item.coverUrl}') center/cover no-repeat; border-color: transparent;`
+? `background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.88)), url('${item.coverUrl}') center/cover no-repeat; border-color: transparent;`
 : '';
-const textStyle = item.coverUrl ? `color: #f7fafc;` : '';
+const textStyle = item.coverUrl ? `color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.8);` : '';
 const readMoreStyle = item.coverUrl ? `color: #F59E0B;` : '';
 
 return `
@@ -2178,7 +2283,12 @@ return `
 Толығырақ
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
 </div>
-${isAdmin ? `<button class="btn btn-danger" style="width:100%; margin-top:12px;" onclick="event.stopPropagation(); window.deleteItem('facts', '${item.id}')">Өшіру</button>` : ''}
+${isAdmin ? `
+<div style="display:flex; gap:8px; margin-top:12px;">
+<button class="btn btn-secondary" style="flex:1;" onclick="event.stopPropagation(); window.openEditPhotoModal('facts', '${item.id}')">Суретті ауыстыру</button>
+<button class="btn btn-danger" style="flex:1;" onclick="event.stopPropagation(); window.deleteItem('facts', '${item.id}')">Өшіру</button>
+</div>
+` : ''}
 </div>
 `;
 }).join('');
@@ -2194,8 +2304,9 @@ renderFacts();
 
 async function fetchData() {
 const types = ['checklists', 'analyses', 'books', 'facts'];
-const [, ...snapshots] = await Promise.all([
+const [, , ...snapshots] = await Promise.all([
 fetchEras(),
+fetchHeroPhoto(),
 ...types.map(type => getDocs(collection(db, type)))
 ]);
 
@@ -2270,6 +2381,97 @@ el.style.display = isAdmin ? 'inline-flex' : 'none';
 fetchData();
 } else {
 document.getElementById('authScreen').classList.remove('hidden');
+}
+});
+
+document.getElementById('heroImageFile').addEventListener('change', (e) => {
+const file = e.target.files[0];
+document.getElementById('heroImageFileName').innerText = file ? file.name : 'Файл таңдалмады';
+});
+
+document.getElementById('heroPhotoForm').addEventListener('submit', async (e) => {
+e.preventDefault();
+const submitBtn = document.getElementById('heroSubmitBtn');
+const statusEl = document.getElementById('heroUploadStatus');
+const file = document.getElementById('heroImageFile').files[0];
+const urlValue = document.getElementById('heroImageUrl').value.trim();
+
+if (!file && !urlValue) {
+alert('Сурет файлын таңдаңыз немесе сілтеме енгізіңіз.');
+return;
+}
+
+submitBtn.disabled = true;
+submitBtn.innerText = 'Сақталуда...';
+statusEl.style.display = 'block';
+statusEl.className = 'status-message success';
+statusEl.innerText = 'Сурет дайындалуда...';
+
+try {
+let finalUrl = urlValue;
+if (file) {
+finalUrl = await uploadFileToStorage(file, 'covers/hero', (pct) => {
+statusEl.innerText = `Сурет жүктелуде... ${pct}%`;
+});
+}
+await setDoc(doc(db, 'meta', 'hero'), { heroUrl: finalUrl }, { merge: true });
+heroUrl = finalUrl;
+applyHeroPhoto(finalUrl);
+window.closeModal('heroPhotoModal');
+} catch (err) {
+console.error('Hero суретін сақтау қатесі:', err);
+statusEl.className = 'status-message error';
+statusEl.innerText = 'Қате: ' + err.message;
+} finally {
+submitBtn.disabled = false;
+submitBtn.innerText = 'Сақтау';
+setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+}
+});
+
+document.getElementById('editPhotoFile').addEventListener('change', (e) => {
+const file = e.target.files[0];
+document.getElementById('editPhotoFileName').innerText = file ? file.name : 'Файл таңдалмады';
+});
+
+document.getElementById('editPhotoForm').addEventListener('submit', async (e) => {
+e.preventDefault();
+const submitBtn = document.getElementById('editPhotoSubmitBtn');
+const statusEl = document.getElementById('editPhotoStatus');
+const type = document.getElementById('editPhotoType').value;
+const id = document.getElementById('editPhotoId').value;
+const file = document.getElementById('editPhotoFile').files[0];
+const urlValue = document.getElementById('editPhotoUrl').value.trim();
+
+if (!file && !urlValue) {
+alert('Сурет файлын таңдаңыз немесе сілтеме енгізіңіз.');
+return;
+}
+
+submitBtn.disabled = true;
+submitBtn.innerText = 'Сақталуда...';
+statusEl.style.display = 'block';
+statusEl.className = 'status-message success';
+statusEl.innerText = 'Сурет дайындалуда...';
+
+try {
+let finalUrl = urlValue;
+if (file) {
+finalUrl = await uploadFileToStorage(file, `covers/${type}`, (pct) => {
+statusEl.innerText = `Сурет жүктелуде... ${pct}%`;
+});
+}
+await setDoc(doc(db, type, id), { coverUrl: finalUrl }, { merge: true });
+window.closeModal('editPhotoModal');
+fetchData();
+} catch (err) {
+console.error('Суретті жаңарту қатесі:', err);
+statusEl.className = 'status-message error';
+statusEl.innerText = 'Қате: ' + err.message;
+} finally {
+submitBtn.disabled = false;
+submitBtn.innerText = 'Сақтау';
+setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
 }
 });
 
